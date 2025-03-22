@@ -7,11 +7,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Create New Channel</h5>
-                    <a href="/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
+                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('channels.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">

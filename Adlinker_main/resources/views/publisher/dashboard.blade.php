@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Publisher Dashboard') }}</span>
-                    <a href="{{ route('channels.create') }}" class="btn btn-primary">Add New Channel</a>
+                    <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="btn btn-primary">Add New Channel</a>
                 </div>
 
                 <div class="card-body">
@@ -16,7 +16,7 @@
                             <div class="card bg-primary text-white">
                                 <div class="card-body">
                                     <h5 class="card-title">Active Channels</h5>
-                                    <h2 class="mb-0">{{ $activeChannels ?? 0 }}</h2>
+                                    <h2 class="mb-0">{{ $activeChannels }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                             <div class="card bg-success text-white">
                                 <div class="card-body">
                                     <h5 class="card-title">Total Earnings</h5>
-                                    <h2 class="mb-0">${{ number_format($totalEarnings ?? 0, 2) }}</h2>
+                                    <h2 class="mb-0">${{ number_format($totalEarnings, 2) }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                             <div class="card bg-info text-white">
                                 <div class="card-body">
                                     <h5 class="card-title">Total Subscribers</h5>
-                                    <h2 class="mb-0">0</h2>
+                                    <h2 class="mb-0">{{ $channels->sum('subscribers_count') }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -57,8 +57,8 @@
                                         <td>0</td>
                                         <td>${{ number_format($channel->earnings ?? 0, 2) }}</td>
                                         <td>
-                                            <a href="{{ route('channels.show', $channel) }}" class="btn btn-sm btn-info">View</a>
-                                            <a href="{{ route('channels.edit', $channel) }}" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{{ route('channels.show', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-info">View</a>
+                                            <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-warning">Edit</a>
                                         </td>
                                     </tr>
                                 @empty

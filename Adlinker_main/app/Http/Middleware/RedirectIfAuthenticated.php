@@ -23,9 +23,9 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 $user = Auth::guard($guard)->user();
                 if ($user->role === 'advertiser') {
-                    return redirect('/advertiser/dashboard');
+                    return redirect('/' . $user->id . '/advertiser/dashboard');
                 } else if ($user->role === 'publisher') {
-                    return redirect('/publisher/dashboard');
+                    return redirect('/' . $user->id . '/publisher/dashboard');
                 } else {
                     return redirect('/home');
                 }

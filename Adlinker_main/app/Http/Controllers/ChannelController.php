@@ -54,25 +54,25 @@ class ChannelController extends Controller
             ->with('success', 'Channel created successfully.');
     }
 
-    public function show(Channel $channel)
+    public function show($user, Channel $channel)
     {
-        if ($channel->publisher_id !== auth()->user()->publisher->id) {
+        if ($channel->publisher_id !== auth()->user()->publisher->id || $user != auth()->id()) {
             abort(403);
         }
         return view('channels.show', compact('channel'));
     }
 
-    public function edit(Channel $channel)
+    public function edit($user, Channel $channel)
     {
-        if ($channel->publisher_id !== auth()->user()->publisher->id) {
+        if ($channel->publisher_id !== auth()->user()->publisher->id || $user != auth()->id()) {
             abort(403);
         }
         return view('channels.edit', compact('channel'));
     }
 
-    public function update(Request $request, Channel $channel)
+    public function update(Request $request, $user, Channel $channel)
     {
-        if ($channel->publisher_id !== auth()->user()->publisher->id) {
+        if ($channel->publisher_id !== auth()->user()->publisher->id || $user != auth()->id()) {
             abort(403);
         }
 
@@ -103,9 +103,9 @@ class ChannelController extends Controller
 
     }
 
-    public function destroy(Channel $channel)
+    public function destroy($user, Channel $channel)
     {
-        if ($channel->publisher_id !== auth()->user()->publisher->id) {
+        if ($channel->publisher_id !== auth()->user()->publisher->id || $user != auth()->id()) {
             abort(403);
         }
 

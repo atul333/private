@@ -8,8 +8,8 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Channel Details</h5>
                     <div>
-                        <a href="{{ route('channels.edit', $channel) }}" class="btn btn-warning">Edit Channel</a>
-                        <a href="/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
+                        <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-warning">Edit Channel</a>
+                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@
                         <p>{{ $channel->updated_at->format('F j, Y') }}</p>
                     </div>
 
-                    <form action="{{ route('channels.destroy', $channel) }}" method="POST" class="mt-4">
+                    <form action="{{ route('channels.destroy', ['user' => Auth::id(), 'channel' => $channel]) }}" method="POST" class="mt-4">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this channel?')">

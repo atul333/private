@@ -7,11 +7,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Edit Channel</h5>
-                    <a href="{{ route('channels.index') }}" class="btn btn-secondary">Back to Channels</a>
+                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('channels.update', $channel) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('channels.update', ['user' => Auth::id(), 'channel' => $channel]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 

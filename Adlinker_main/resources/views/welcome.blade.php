@@ -21,7 +21,7 @@
                                 @if(Auth::user()->role === 'advertiser')
                                     <a href="/advertiser/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                                 @elseif(Auth::user()->role === 'publisher')
-                                    <a href="/publisher/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                                 @endif
                             @else
                                 <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-4 py-2">Log in</a>

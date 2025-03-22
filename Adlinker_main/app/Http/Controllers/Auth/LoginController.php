@@ -32,8 +32,11 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        if (auth()->user()->role === 'publisher') {
-            return '/publisher/dashboard';
+        $user = auth()->user();
+        if ($user->role === 'publisher') {
+            return '/' . $user->id . '/publisher/dashboard';
+        } elseif ($user->role === 'advertiser') {
+            return '/' . $user->id . '/advertiser/dashboard';
         }
         return '/home';
     }

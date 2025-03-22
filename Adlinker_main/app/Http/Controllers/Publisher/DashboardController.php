@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index($user)
     {
-        $user = Auth::user();
-        $channels = Channel::where('publisher_id', $user->id)->get();
+        $currentUser = Auth::user();
+        if ($currentUser->id != $user) {
+            return redirect('/' . $currentUser->id . '/publisher/dashboard');
+        }
+        
+        $channels = Channel::where('publisher_id', $currentUser->publisher->id)->get();
         $activeChannels = $channels->where('status', 'active')->count();
         $totalEarnings = $channels->sum('earnings');
 
