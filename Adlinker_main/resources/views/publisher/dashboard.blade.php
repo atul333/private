@@ -7,7 +7,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Publisher Dashboard') }}</span>
-                    <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="btn btn-primary">Add New Channel</a>
+                    <div>
+                        <a href="{{ route('publisher.withdrawals.create') }}" class="btn btn-success me-2">Withdraw Earnings</a>
+                        <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="btn btn-primary">Add New Channel</a>
+                    </div>
                 </div>
 
                 <div class="card-body">
@@ -42,28 +45,44 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Channel Logo</th>
                                     <th>Channel Name</th>
                                     <th>Subscribers</th>
-                                    <th>Views</th>
                                     <th>Earnings</th>
+                                    <th>Channel Status</th>
                                     <th>Actions</th>
+                                    <th>Ad Details</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($channels as $channel)
                                     <tr>
+                                        <td class="text-center">
+                                            @if($channel->logo_path)
+                                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="img-fluid" style="max-height: 40px;">
+                                            @else
+                                                <span class="text-muted">No Logo</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $channel->name }}</td>
                                         <td>{{ number_format($channel->subscribers_count) }}</td>
-                                        <td>0</td>
                                         <td>${{ number_format($channel->earnings ?? 0, 2) }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $channel->status === 'active' ? 'success' : 'warning' }}">
+                                                {{ ucfirst($channel->status) }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <a href="{{ route('channels.show', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-info">View</a>
                                             <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-warning">Edit</a>
                                         </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary">View Status</button>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">No channels found</td>
+                                        <td colspan="6" class="text-center">No channels found</td>
                                     </tr>
                                 @endforelse
                             </tbody>

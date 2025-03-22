@@ -46,6 +46,11 @@ Route::middleware(['auth', 'role:publisher'])->group(function () {
     Route::put('/{user}/channels/{channel}', [App\Http\Controllers\ChannelController::class, 'update'])->name('channels.update');
     Route::get('/{user}/channels/{channel}', [App\Http\Controllers\ChannelController::class, 'show'])->name('channels.show');
     Route::delete('/{user}/channels/{channel}', [App\Http\Controllers\ChannelController::class, 'destroy'])->name('channels.destroy');
+
+    // Withdrawal Routes
+    Route::get('/withdrawals', [App\Http\Controllers\Publisher\WithdrawalController::class, 'index'])->name('publisher.withdrawals.index');
+    Route::get('/withdrawals/create', [App\Http\Controllers\Publisher\WithdrawalController::class, 'create'])->name('publisher.withdrawals.create');
+    Route::post('/withdrawals', [App\Http\Controllers\Publisher\WithdrawalController::class, 'store'])->name('publisher.withdrawals.store');
 });
 
 Route::middleware(['auth', 'role:advertiser'])->group(function () {
