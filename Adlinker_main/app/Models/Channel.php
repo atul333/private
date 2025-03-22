@@ -11,11 +11,16 @@ class Channel extends Model
 
     protected $fillable = [
         'name',
+        'link',
         'description',
+        'logo_path',
+        'subscribers_count',
+        'price_1_day',
+        'price_2_days',
+        'price_3_days',
+        'price_7_days',
         'status',
-        'publisher_id',
-        'subscribers',
-        'views'
+        'publisher_id'
     ];
 
     public function publisher()

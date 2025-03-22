@@ -9,7 +9,7 @@
                     <h5 class="mb-0">Channel Details</h5>
                     <div>
                         <a href="{{ route('channels.edit', $channel) }}" class="btn btn-warning">Edit Channel</a>
-                        <a href="{{ route('channels.index') }}" class="btn btn-secondary">Back to Channels</a>
+                        <a href="/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
                     </div>
                 </div>
 

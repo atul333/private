@@ -25,9 +25,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="channel_link" class="form-label">Channel Link</label>
-                            <input type="url" class="form-control @error('channel_link') is-invalid @enderror" id="channel_link" name="channel_link" value="{{ old('channel_link') }}" required placeholder="https://t.me/yourchannel">
-                            @error('channel_link')
+                            <label for="link" class="form-label">Channel Link</label>
+                            <input type="url" class="form-control @error('link') is-invalid @enderror" id="link" name="link" value="{{ old('link') }}" required placeholder="https://t.me/yourchannel">
+                            @error('link')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -54,9 +54,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="subscribers" class="form-label">Subscribers Count</label>
-                            <input type="number" class="form-control @error('subscribers') is-invalid @enderror" id="subscribers" name="subscribers" value="{{ old('subscribers') }}" required min="0">
-                            @error('subscribers')
+                            <label for="subscribers_count" class="form-label">Subscribers Count</label>
+                            <input type="number" class="form-control @error('subscribers_count') is-invalid @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count') }}" required min="0">
+                            @error('subscribers_count')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

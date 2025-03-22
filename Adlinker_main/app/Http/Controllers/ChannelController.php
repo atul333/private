@@ -28,14 +28,26 @@ class ChannelController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'link' => 'nullable|url',
             'description' => 'required|string',
-            'subscribers' => 'required|integer|min:0',
-            'views' => 'required|integer|min:0'
+            'subscribers_count' => 'required|integer|min:0',
+            'price_1_day' => 'nullable|numeric|min:0',
+            'price_2_days' => 'nullable|numeric|min:0',
+            'price_3_days' => 'nullable|numeric|min:0',
+            'price_7_days' => 'nullable|numeric|min:0',
+            'logo' => 'nullable|image|max:2048'
         ]);
 
-        $channel = new Channel($validated);
-        $channel->status = 'active';
+        $channel = new Channel();
+        $channel->fill($validated);
         $channel->publisher_id = auth()->user()->publisher->id;
+        $channel->status = 'active';
+
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('channel-logos', 'public');
+            $channel->logo_path = $path;
+        }
+
         $channel->save();
 
         return redirect()->route('channels.show', $channel)
