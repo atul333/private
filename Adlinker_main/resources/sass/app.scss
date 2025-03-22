@@ -1,0 +1,28 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Theme
+@import 'theme';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// Theme overrides
+.navbar {
+  background: var(--bg-primary) !important;
+}
+
+// Theme toggle
+.theme-toggle {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: var(--theme-transition);
+  
+  &:hover {
+    background: rgba(var(--accent-color), 0.1);
+  }
+}

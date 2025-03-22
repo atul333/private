@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
+// Include auth routes
+require __DIR__.'/auth.php';
+
+// Redirect root to home
 Route::get('/', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+        if ($user->role === 'advertiser') {
+            return redirect('/advertiser/dashboard');
+        } else if ($user->role === 'publisher') {
+            return redirect('/publisher/dashboard');
+        }
+    }
     return view('welcome');
 });
+
+Route::resource('campaigns', App\Http\Controllers\CampaignController::class);
+
+Route::middleware(['auth', 'role:publisher'])->group(function () {
+    Route::resource('channels', App\Http\Controllers\ChannelController::class);
+});
+
+Auth::routes();
+
