@@ -14,8 +14,6 @@ Route::middleware('web')->group(function () {
 
     // Publisher routes
     Route::prefix('publisher')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('publisher.dashboard');
-        })->middleware('auth');
+        Route::get('/dashboard', [\App\Http\Controllers\Publisher\DashboardController::class, 'index'])->middleware('auth');
     });
 });

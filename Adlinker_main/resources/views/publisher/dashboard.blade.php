@@ -50,9 +50,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="5" class="text-center">No channels found</td>
-                                </tr>
+                                @forelse($channels as $channel)
+                                    <tr>
+                                        <td>{{ $channel->name }}</td>
+                                        <td>{{ number_format($channel->subscribers_count) }}</td>
+                                        <td>0</td>
+                                        <td>${{ number_format($channel->earnings ?? 0, 2) }}</td>
+                                        <td>
+                                            <a href="{{ route('channels.show', $channel) }}" class="btn btn-sm btn-info">View</a>
+                                            <a href="{{ route('channels.edit', $channel) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">No channels found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
