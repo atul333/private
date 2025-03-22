@@ -50,7 +50,7 @@ class ChannelController extends Controller
 
         $channel->save();
 
-        return redirect()->route('channels.show', $channel)
+        return redirect()->to('/' . auth()->id() . '/publisher/dashboard')
             ->with('success', 'Channel created successfully.');
     }
 
@@ -98,7 +98,7 @@ class ChannelController extends Controller
         $channel->touch(); // Update the updated_at timestamp
         $channel->save();
 
-        return redirect()->route('channels.show', $channel)
+        return redirect()->route('channels.show', ['user' => auth()->id(), 'channel' => $channel])
             ->with('success', 'Channel updated successfully.');
 
     }
@@ -111,7 +111,7 @@ class ChannelController extends Controller
 
         $channel->delete();
 
-        return redirect()->route('channels.index')
+        return redirect()->to('/' . auth()->id() . '/publisher/dashboard')
             ->with('success', 'Channel deleted successfully.');
     }
 }
