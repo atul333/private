@@ -78,14 +78,29 @@ class ChannelController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'link' => 'nullable|url',
             'description' => 'required|string',
-            'status' => 'required|in:active,inactive'
+            'subscribers_count' => 'required|integer|min:0',
+            'price_1_day' => 'nullable|numeric|min:0',
+            'price_2_days' => 'nullable|numeric|min:0',
+            'price_3_days' => 'nullable|numeric|min:0',
+            'price_7_days' => 'nullable|numeric|min:0',
+            'status' => 'required|in:active,inactive',
+            'logo' => 'nullable|image|max:2048'
         ]);
 
-        $channel->update($validated);
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('channel-logos', 'public');
+            $channel->logo_path = $path;
+        }
+
+        $channel->fill($validated);
+        $channel->touch(); // Update the updated_at timestamp
+        $channel->save();
 
         return redirect()->route('channels.show', $channel)
             ->with('success', 'Channel updated successfully.');
+
     }
 
     public function destroy(Channel $channel)
