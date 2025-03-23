@@ -53,9 +53,9 @@
                         </div>
                     </div>
                     <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
-                        <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+                        <div class="relative mx-auto w-full lg:max-w-md">
                             <div class="relative block w-full bg-white rounded-lg overflow-hidden">
-                                <img class="w-full" src="https://telega.io/img/main/hero-image.png" alt="Dashboard screenshot">
+                                <!-- Dashboard screenshot removed for cleaner layout -->
                             </div>
                         </div>
                     </div>

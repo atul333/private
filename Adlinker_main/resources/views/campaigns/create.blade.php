@@ -5,62 +5,68 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Create New Campaign</h5>
+                    <div class="text-end">
+                        <h6 class="mb-0">Total Selected: <span id="totalPrice" class="text-primary">$0.00</span></h6>
+                    </div>
                 </div>
                 <div class="card-body">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('campaigns.store') }}">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Campaign Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <h5 class="mb-4">Select Channels</h5>
+                        <div class="row g-4">
+                            @foreach($channels as $channel)
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                @if($channel->logo_path)
+                                                    <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }}" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                                @endif
+                                                <div>
+                                                    <label class="text-muted small mb-1">Channel Name:</label>
+                                                    <h6 class="card-title mb-0">{{ $channel->name }}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="text-muted small mb-1">Description:</label>
+                                                <p class="card-text small mb-0">{{ Str::limit($channel->description, 100) }}</p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="text-muted small mb-1">Subscribers:</label>
+                                                <p class="card-text small mb-0">
+                                                    <i class="bi bi-people-fill"></i> {{ number_format($channel->subscribers_count) }}
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="text-muted small mb-1">Duration:</label>
+                                                <select name="durations[{{ $channel->id }}]" class="form-select channel-duration" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
+                                                    <option value="">Select Duration</option>
+                                                    <option value="1">1 Days (${{ number_format($channel->price_1_day, 2) }})</option>
+                                                    <option value="2">2 Days (${{ number_format($channel->price_2_days, 2) }})</option>
+                                                    <option value="3">3 Days (${{ number_format($channel->price_3_days, 2) }})</option>
+                                                    <option value="7">7 Days (${{ number_format($channel->price_7_days, 2) }})</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
 
-                        <div class="mb-3">
-                            <label for="budget" class="form-label">Budget ($)</label>
-                            <input type="number" step="0.01" class="form-control @error('budget') is-invalid @enderror" id="budget" name="budget" value="{{ old('budget') }}" required>
-                            @error('budget')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Start Date</label>
-                            <input type="date" class="form-control @error('start_date') is-invalid @enderror" id="start_date" name="start_date" value="{{ old('start_date') }}" required>
-                            @error('start_date')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="end_date" class="form-label">End Date</label>
-                            <input type="date" class="form-control @error('end_date') is-invalid @enderror" id="end_date" name="end_date" value="{{ old('end_date') }}" required>
-                            @error('end_date')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="target_audience" class="form-label">Target Audience</label>
-                            <input type="text" class="form-control @error('target_audience') is-invalid @enderror" id="target_audience" name="target_audience" value="{{ old('target_audience') }}" required>
-                            @error('target_audience')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mt-4">
                             <a href="{{ route('campaigns.index') }}" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">Create Campaign</button>
                         </div>
@@ -71,3 +77,33 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const durationSelects = document.querySelectorAll('.channel-duration');
+    const totalPriceElement = document.getElementById('totalPrice');
+    const submitButton = document.querySelector('button[type="submit"]');
+
+    function updateTotalPrice() {
+        let total = 0;
+        durationSelects.forEach(select => {
+            const duration = select.value;
+            if (duration) {
+                const price = parseFloat(select.getAttribute(`data-price-${duration}`));
+                total += price;
+            }
+        });
+        totalPriceElement.textContent = `$${total.toFixed(2)}`;
+
+        // Update total price display
+        totalPriceElement.classList.remove('text-danger', 'text-primary');
+        totalPriceElement.classList.add('text-primary');
+    }
+
+    durationSelects.forEach(select => {
+        select.addEventListener('change', updateTotalPrice);
+    });
+});
+</script>
+@endpush

@@ -16,13 +16,12 @@ class DashboardController extends Controller
         }
         
         $campaigns = Campaign::where('advertiser_id', $currentUser->id)->get();
-        $activeAds = $campaigns->sum(function($campaign) {
-            return $campaign->ads()->where('status', 'active')->count();
-        });
-        $totalSpent = $campaigns->sum(function($campaign) {
-            return $campaign->ads()->sum('budget');
+        $activeCampaigns = $campaigns->where('status', 'active')->count();
+        $totalBudget = $campaigns->sum('budget');
+        $totalImpressions = $campaigns->sum(function($campaign) {
+            return $campaign->ads()->sum('impressions');
         });
 
-        return view('advertiser.dashboard', compact('campaigns', 'activeAds', 'totalSpent'));
+        return view('advertiser.dashboard', compact('campaigns', 'activeCampaigns', 'totalBudget', 'totalImpressions'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use App\Models\Channel;
 use Illuminate\Http\Request;
 
 class CampaignController extends Controller
@@ -20,7 +21,8 @@ class CampaignController extends Controller
 
     public function create()
     {
-        return view('campaigns.create');
+        $channels = Channel::where('status', 'active')->get();
+        return view('campaigns.create', compact('channels'));
     }
 
     public function store(Request $request)
