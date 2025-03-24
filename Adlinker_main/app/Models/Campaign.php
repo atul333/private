@@ -8,13 +8,10 @@ class Campaign extends Model
 {
     protected $fillable = [
         'user_id',
-        'name',
-        'budget',
-        'status',
-        'start_date',
-        'end_date',
-        'target_audience',
-        'description'
+        'channel_id',
+        'duration',
+        'price',
+        'status'
     ];
 
     protected $casts = [

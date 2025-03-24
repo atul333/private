@@ -41,6 +41,11 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
     Route::put('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'update'])->name('campaigns.update');
     Route::delete('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'destroy'])->name('campaigns.destroy');
     Route::get('/{user}/campaigns/channel/{channel}', [App\Http\Controllers\CampaignController::class, 'showChannelDetails'])->name('campaigns.channel.details');
+
+    // Redirect /id/campaigns/channel/{channel} to user-specific channel details
+    Route::get('/id/campaigns/channel/{channel}', function($channel) {
+        return redirect('/' . Auth::id() . '/campaigns/channel/' . $channel);
+    });
 });
 
 // Redirect /campaigns to user-specific campaigns

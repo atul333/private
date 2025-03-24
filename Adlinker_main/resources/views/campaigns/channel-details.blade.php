@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Channel Details</h5>
-                    <a href="{{ route('campaigns.create') }}" class="btn btn-sm btn-outline-primary">Back to Campaign Creation</a>
+                    <a href="{{ route('campaigns.create', auth()->id()) }}" class="btn btn-sm btn-outline-primary">Back to Channel Selection</a>
                 </div>
 
                 <div class="card-body">
@@ -31,46 +31,37 @@
                                     <i class="fas fa-external-link-alt me-1"></i> Visit Channel
                                 </a>
                             @endif
-                        </div>
-                    </div>
 
-                    <div class="pricing-section mt-4">
-                        <h5 class="mb-3">Advertising Pricing</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Duration</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if($channel->price_1_day)
-                                        <tr>
-                                            <td>1 Day</td>
-                                            <td>${{ number_format($channel->price_1_day, 2) }}</td>
-                                        </tr>
-                                    @endif
-                                    @if($channel->price_2_days)
-                                        <tr>
-                                            <td>2 Days</td>
-                                            <td>${{ number_format($channel->price_2_days, 2) }}</td>
-                                        </tr>
-                                    @endif
-                                    @if($channel->price_3_days)
-                                        <tr>
-                                            <td>3 Days</td>
-                                            <td>${{ number_format($channel->price_3_days, 2) }}</td>
-                                        </tr>
-                                    @endif
-                                    @if($channel->price_7_days)
-                                        <tr>
-                                            <td>7 Days</td>
-                                            <td>${{ number_format($channel->price_7_days, 2) }}</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                            @if(request('duration') && request('price'))
+                                <div class="pricing-section mt-4">
+                                    <h5 class="mb-3">Selected Advertising Plan</h5>
+                                    <div class="card bg-primary-subtle border border-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="fas fa-clock me-2"></i>
+                                                    <span class="fw-bold">Duration:</span> {{ request('duration') }} Days
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-tag me-2"></i>
+                                                    <span class="fw-bold">Price:</span> ${{ request('price') }}
+                                                </div>
+                                            </div>
+                                            <form method="POST" action="{{ route('campaigns.store', ['user' => auth()->id()]) }}" class="mt-3">
+                                                @csrf
+                                                <input type="hidden" name="channel_id" value="{{ $channel->id }}">
+                                                <input type="hidden" name="duration" value="{{ request('duration') }}">
+                                                <input type="hidden" name="price" value="{{ request('price') }}">
+                                                <button type="submit" class="btn btn-primary w-100">Proceed with Campaign</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="alert alert-warning mt-3">
+                                    Please select a duration and price on the previous page before proceeding.
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -79,3 +70,7 @@
     </div>
 </div>
 @endsection
+
+
+
+

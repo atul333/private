@@ -36,19 +36,24 @@ class CampaignController extends Controller
         if (auth()->id() != $user) {
             abort(403, 'Unauthorized action.');
         }
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'budget' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'target_audience' => 'required|string',
-            'description' => 'required|string'
+            'channel_id' => 'required|exists:channels,id',
+            'duration' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0'
         ]);
 
-$campaign = Campaign::create(array_merge($validated, ['user_id' => auth()->id()]));
+        $campaign = Campaign::create([
+            'user_id' => auth()->id(),
+            'channel_id' => $validated['channel_id'],
+            'duration' => $validated['duration'],
+            'price' => $validated['price'],
+            'status' => 'pending'
+        ]);
 
-        return redirect()->route('campaigns.show', $campaign)
+        return redirect()->route('campaigns.index', ['user' => auth()->id()])
             ->with('status', 'Campaign created successfully!');
+
     }
 
     public function show($user, Campaign $campaign)
