@@ -8,7 +8,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Advertiser Dashboard') }}</span>
                     <div>
-                        <a href="{{ route('campaigns.create') }}" class="btn btn-primary">Create New Campaign</a>
+                        <a href="/{{ Auth::id() }}/campaigns/create" class="btn btn-primary">Create New Campaign</a>
                     </div>
                 </div>
 

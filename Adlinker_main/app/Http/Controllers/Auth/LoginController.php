@@ -64,8 +64,9 @@ class LoginController extends Controller
 
         $credentials = $this->credentials($request);
         $credentials['role'] = $request->role;
+        $remember = $request->filled('remember');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
             }

@@ -7,9 +7,6 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Create New Campaign</h5>
-                    <div class="text-end">
-                        <h6 class="mb-0">Total Selected: <span id="totalPrice" class="text-primary">$0.00</span></h6>
-                    </div>
                 </div>
                 <div class="card-body">
                     @if($errors->any())
@@ -21,7 +18,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('campaigns.store') }}">
+                    <form method="POST" action="{{ route('campaigns.store', ['user' => Auth::id()]) }}">
                         @csrf
 
                         <h5 class="mb-4">Select Channels</h5>
@@ -60,15 +57,17 @@
                                                     <option value="7">7 Days (${{ number_format($channel->price_7_days, 2) }})</option>
                                                 </select>
                                             </div>
+                                            <div class="text-center mt-3">
+                                                <a href="{{ route('campaigns.channel.details', ['user' => Auth::id(), 'channel' => $channel->id]) }}" class="btn btn-primary w-100">Select Channel</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('campaigns.index') }}" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Create Campaign</button>
+                        <div class="d-flex justify-content-start mt-4">
+                            <a href="/{{ Auth::id() }}/advertiser/dashboard" class="btn btn-secondary">Go Back</a>
                         </div>
                     </form>
                 </div>
@@ -82,28 +81,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const durationSelects = document.querySelectorAll('.channel-duration');
-    const totalPriceElement = document.getElementById('totalPrice');
-    const submitButton = document.querySelector('button[type="submit"]');
-
-    function updateTotalPrice() {
-        let total = 0;
-        durationSelects.forEach(select => {
-            const duration = select.value;
-            if (duration) {
-                const price = parseFloat(select.getAttribute(`data-price-${duration}`));
-                total += price;
-            }
-        });
-        totalPriceElement.textContent = `$${total.toFixed(2)}`;
-
-        // Update total price display
-        totalPriceElement.classList.remove('text-danger', 'text-primary');
-        totalPriceElement.classList.add('text-primary');
-    }
-
-    durationSelects.forEach(select => {
-        select.addEventListener('change', updateTotalPrice);
-    });
 });
 </script>
 @endpush

@@ -13,20 +13,29 @@ class CampaignController extends Controller
         $this->middleware(['auth', 'role:advertiser']);
     }
 
-    public function index()
+    public function index($user)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $campaigns = auth()->user()->campaigns;
         return view('campaigns.index', compact('campaigns'));
     }
 
-    public function create()
+    public function create($user)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $channels = Channel::where('status', 'active')->get();
         return view('campaigns.create', compact('channels'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $user)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'budget' => 'required|numeric|min:0',
@@ -42,20 +51,29 @@ $campaign = Campaign::create(array_merge($validated, ['user_id' => auth()->id()]
             ->with('status', 'Campaign created successfully!');
     }
 
-    public function show(Campaign $campaign)
+    public function show($user, Campaign $campaign)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $this->authorize('view', $campaign);
         return view('campaigns.show', compact('campaign'));
     }
 
-    public function edit(Campaign $campaign)
+    public function edit($user, Campaign $campaign)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $this->authorize('update', $campaign);
         return view('campaigns.edit', compact('campaign'));
     }
 
-    public function update(Request $request, Campaign $campaign)
+    public function update(Request $request, $user, Campaign $campaign)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $this->authorize('update', $campaign);
 
         $validated = $request->validate([
@@ -73,8 +91,19 @@ $campaign = Campaign::create(array_merge($validated, ['user_id' => auth()->id()]
             ->with('status', 'Campaign updated successfully!');
     }
 
-    public function destroy(Campaign $campaign)
+    public function showChannelDetails($user, Channel $channel)
     {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
+        return view('campaigns.channel-details', compact('channel'));
+    }
+
+    public function destroy($user, Campaign $campaign)
+    {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
         $this->authorize('delete', $campaign);
         $campaign->delete();
 

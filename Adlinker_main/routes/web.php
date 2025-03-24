@@ -32,7 +32,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('campaigns', App\Http\Controllers\CampaignController::class);
+Route::middleware(['auth', 'role:advertiser'])->group(function () {
+    Route::get('/{user}/campaigns', [App\Http\Controllers\CampaignController::class, 'index'])->name('campaigns.index');
+    Route::get('/{user}/campaigns/create', [App\Http\Controllers\CampaignController::class, 'create'])->name('campaigns.create');
+    Route::post('/{user}/campaigns', [App\Http\Controllers\CampaignController::class, 'store'])->name('campaigns.store');
+    Route::get('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'show'])->name('campaigns.show');
+    Route::get('/{user}/campaigns/{campaign}/edit', [App\Http\Controllers\CampaignController::class, 'edit'])->name('campaigns.edit');
+    Route::put('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'update'])->name('campaigns.update');
+    Route::delete('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'destroy'])->name('campaigns.destroy');
+    Route::get('/{user}/campaigns/channel/{channel}', [App\Http\Controllers\CampaignController::class, 'showChannelDetails'])->name('campaigns.channel.details');
+});
+
+// Redirect /campaigns to user-specific campaigns
+Route::get('/campaigns', function() {
+    return redirect('/' . Auth::id() . '/campaigns');
+});
 
 Route::middleware(['auth', 'role:publisher'])->group(function () {
     Route::get('/{user}/publisher/dashboard', [App\Http\Controllers\Publisher\DashboardController::class, 'index'])
