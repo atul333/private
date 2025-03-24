@@ -35,27 +35,53 @@
                             @if(request('duration') && request('price'))
                                 <div class="pricing-section mt-4">
                                     <h5 class="mb-3">Selected Advertising Plan</h5>
-                                    <div class="card bg-primary-subtle border border-primary">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <i class="fas fa-clock me-2"></i>
-                                                    <span class="fw-bold">Duration:</span> {{ request('duration') }} Days
-                                                </div>
-                                                <div>
-                                                    <i class="fas fa-tag me-2"></i>
-                                                    <span class="fw-bold">Price:</span> ${{ request('price') }}
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="card h-100 bg-light">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-clock fa-2x mb-2 text-primary"></i>
+                                                    <h6 class="fw-bold">Duration</h6>
+                                                    <p class="mb-0 fs-5">{{ request('duration') }} Days</p>
                                                 </div>
                                             </div>
-                                            <form method="POST" action="{{ route('campaigns.store', ['user' => auth()->id()]) }}" class="mt-3">
-                                                @csrf
-                                                <input type="hidden" name="channel_id" value="{{ $channel->id }}">
-                                                <input type="hidden" name="duration" value="{{ request('duration') }}">
-                                                <input type="hidden" name="price" value="{{ request('price') }}">
-                                                <button type="submit" class="btn btn-primary w-100">Proceed with Campaign</button>
-                                            </form>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card h-100 bg-light">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-tag fa-2x mb-2 text-primary"></i>
+                                                    <h6 class="fw-bold">Price</h6>
+                                                    <p class="mb-0 fs-5">${{ request('price') }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    
+                                    <form method="POST" action="{{ route('campaigns.store', ['user' => auth()->id()]) }}" class="mt-4" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="channel_id" value="{{ $channel->id }}">
+                                        <input type="hidden" name="duration" value="{{ request('duration') }}">
+                                        <input type="hidden" name="price" value="{{ request('price') }}">
+
+                                        <div class="mb-4">
+                                            <h5 class="mb-3">Advertisement Details</h5>
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <label for="ad_image" class="form-label fw-bold">Advertisement Image</label>
+                                                        <input type="file" class="form-control" id="ad_image" name="ad_image" accept="image/*" required>
+                                                        <small class="text-muted">Upload your advertisement image (Max: 2MB)</small>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="ad_content" class="form-label fw-bold">Advertisement Content</label>
+                                                        <textarea class="form-control" id="ad_content" name="ad_content" rows="4" required placeholder="Enter your advertisement content here..."></textarea>
+                                                        <small class="text-muted">Write compelling content for your advertisement</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">Proceed with Campaign</button>
+                                    </form>
                                 </div>
                             @else
                                 <div class="alert alert-warning mt-3">
