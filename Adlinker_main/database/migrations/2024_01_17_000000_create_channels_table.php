@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    
             $table->foreignId('publisher_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('link')->nullable();
