@@ -7,22 +7,38 @@ use Illuminate\Database\Eloquent\Model;
 class Campaign extends Model
 {
     protected $fillable = [
-        'user_id',
+        'publisher_id',
+        'advertiser_id',
         'channel_id',
+        'channel_name',
+        'subscribers',
+        'channel_link',
         'duration',
         'price',
+        'advertisement_image',
+        'advertisement_content',
         'status'
     ];
 
     protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
-        'budget' => 'decimal:2'
+        'price' => 'decimal:2',
+        'subscribers' => 'integer',
+        'duration' => 'integer'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'advertiser_id');
+    }
+
+    public function advertiser()
+    {
+        return $this->belongsTo(User::class, 'advertiser_id');
+    }
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
     }
 
     public function ads()

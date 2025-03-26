@@ -18,7 +18,7 @@ class CampaignController extends Controller
         if (auth()->id() != $user) {
             abort(403, 'Unauthorized action.');
         }
-        $campaigns = auth()->user()->campaigns;
+        $campaigns = Campaign::where('advertiser_id', auth()->id())->get();
         return view('campaigns.index', compact('campaigns'));
     }
 
@@ -38,21 +38,36 @@ class CampaignController extends Controller
         }
 
         $validated = $request->validate([
-            'channel_id' => 'required|exists:channels,id',
-            'duration' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0'
+            'advertisement_content' => 'required|string',
+            'advertisement_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
+        $channelId = $request->query('channel_id', $request->input('channel_id'));
+        $duration = $request->query('duration', $request->input('duration'));
+        $price = $request->query('price', $request->input('price'));
+
+        if (!$channelId || !$duration || !$price) {
+            return redirect()->back()->withErrors(['error' => 'Missing required channel information']);
+        }
+
+        $channel = Channel::findOrFail($channelId);
+        $imagePath = $request->file('advertisement_image')->store('advertisements', 'public');
+
         $campaign = Campaign::create([
-            'user_id' => auth()->id(),
-            'channel_id' => $validated['channel_id'],
-            'duration' => $validated['duration'],
-            'price' => $validated['price'],
+            'publisher_id' => $channel->publisher_id,
+            'advertiser_id' => auth()->id(),
+            'channel_id' => $channelId,
+            'channel_name' => $channel->name,
+            'subscribers' => $channel->subscribers_count,
+            'channel_link' => $channel->link,
+            'duration' => $duration,
+            'price' => $price,
+            'advertisement_image' => $imagePath,
+            'advertisement_content' => $validated['advertisement_content'],
             'status' => 'pending'
         ]);
 
-        return redirect()->route('campaigns.index', ['user' => auth()->id()])
-            ->with('status', 'Campaign created successfully!');
+        return redirect()->route('campaigns.payment.create', ['user' => auth()->id(), 'campaign' => $campaign->id]);
 
     }
 
@@ -82,13 +97,14 @@ class CampaignController extends Controller
         $this->authorize('update', $campaign);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'budget' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'target_audience' => 'required|string',
-            'description' => 'required|string'
+            'advertisement_content' => 'required|string',
+            'advertisement_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
+
+        if ($request->hasFile('advertisement_image')) {
+            $imagePath = $request->file('advertisement_image')->store('advertisements', 'public');
+            $validated['advertisement_image'] = $imagePath;
+        }
 
         $campaign->update($validated);
 

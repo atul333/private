@@ -42,6 +42,10 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
     Route::delete('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'destroy'])->name('campaigns.destroy');
     Route::get('/{user}/campaigns/channel/{channel}', [App\Http\Controllers\CampaignController::class, 'showChannelDetails'])->name('campaigns.channel.details');
 
+    // Razorpay Payment Routes
+    Route::get('/{user}/campaigns/{campaign}/payment', [App\Http\Controllers\RazorpayController::class, 'createOrder'])->name('campaigns.payment.create');
+    Route::post('/{user}/campaigns/{campaign}/payment/complete', [App\Http\Controllers\RazorpayController::class, 'handlePayment'])->name('campaigns.payment.complete');
+
     // Redirect /id/campaigns/channel/{channel} to user-specific channel details
     Route::get('/id/campaigns/channel/{channel}', function($channel) {
         return redirect('/' . Auth::id() . '/campaigns/channel/' . $channel);

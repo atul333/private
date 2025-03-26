@@ -67,20 +67,26 @@
                                             <div class="card bg-light">
                                                 <div class="card-body">
                                                     <div class="mb-3">
-                                                        <label for="ad_image" class="form-label fw-bold">Advertisement Image</label>
-                                                        <input type="file" class="form-control" id="ad_image" name="ad_image" accept="image/*" required>
+                                                        <label for="advertisement_image" class="form-label fw-bold">Advertisement Image</label>
+                                                        <input type="file" class="form-control @error('advertisement_image') is-invalid @enderror" id="advertisement_image" name="advertisement_image" accept="image/*" required>
                                                         <small class="text-muted">Upload your advertisement image (Max: 2MB)</small>
+                                                        @error('advertisement_image')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="ad_content" class="form-label fw-bold">Advertisement Content</label>
-                                                        <textarea class="form-control" id="ad_content" name="ad_content" rows="4" required placeholder="Enter your advertisement content here..."></textarea>
+                                                        <label for="advertisement_content" class="form-label fw-bold">Advertisement Content</label>
+                                                        <textarea class="form-control @error('advertisement_content') is-invalid @enderror" id="advertisement_content" name="advertisement_content" rows="4" required placeholder="Enter your advertisement content here...">{{ old('advertisement_content') }}</textarea>
                                                         <small class="text-muted">Write compelling content for your advertisement</small>
+                                                        @error('advertisement_content')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">Proceed with Campaign</button>
+                                        <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">Create Campaign</button>
                                     </form>
                                 </div>
                             @else
