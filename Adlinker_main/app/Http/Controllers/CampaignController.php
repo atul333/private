@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Campaign;
 use App\Models\Channel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CampaignController extends Controller
 {
@@ -78,6 +80,25 @@ class CampaignController extends Controller
         }
         $this->authorize('view', $campaign);
         return view('campaigns.show', compact('campaign'));
+    }
+
+    public function processPayment($user, Campaign $campaign)
+    {
+        if (auth()->id() != $user) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $route = request()->route()->getName();
+        
+        if ($route === 'campaigns.payment.create') {
+            return view('campaigns.payment', compact('campaign'));
+        }
+
+        // Simple payment process - just activate the campaign
+        $campaign->update(['status' => 'active']);
+
+        Session::flash('success', 'Payment processed successfully! Your campaign is now active.');
+        return redirect('/'. auth()->id() .'/advertiser/dashboard');
     }
 
     public function edit($user, Campaign $campaign)
