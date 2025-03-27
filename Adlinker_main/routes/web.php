@@ -60,6 +60,21 @@ Route::get('/campaigns', function() {
 Route::middleware(['auth', 'role:publisher'])->group(function () {
     Route::get('/{user}/publisher/dashboard', [App\Http\Controllers\Publisher\DashboardController::class, 'index'])
         ->name('publisher.dashboard');
+
+    Route::get('/{user}/publisher/channels/{channel}/campaigns', [\App\Http\Controllers\Publisher\CampaignStatusController::class, 'show'])
+        ->name('publisher.channel.campaigns');
+
+Route::post('/publisher/campaign/{campaign}/accept', [\App\Http\Controllers\Publisher\CampaignActionController::class, 'accept'])
+->name('publisher.campaign.accept');
+
+Route::post('/publisher/campaign/{campaign}/reject', [\App\Http\Controllers\Publisher\CampaignActionController::class, 'reject'])
+->name('publisher.campaign.reject');
+
+Route::get('/publisher/campaign/{campaign}/submit-link', [\App\Http\Controllers\Publisher\CampaignActionController::class, 'showSubmitLinkForm'])
+->name('publisher.campaign.submit-link.form');
+
+Route::post('/publisher/campaign/{campaign}/submit-link', [\App\Http\Controllers\Publisher\CampaignActionController::class, 'submitLink'])
+->name('publisher.campaign.submit-link');
     Route::get('/publisher/dashboard', function() {
         return redirect('/' . Auth::id() . '/publisher/dashboard');
     });

@@ -77,7 +77,7 @@
                                             <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-warning">Edit</a>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary">View Status</button>
+                                            <a href="{{ route('publisher.channel.campaigns', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-primary">View Status</a>
                                         </td>
                                     </tr>
                                 @empty

@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Add New Channel') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('channels.store') }}">
+                    <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}">
                         @csrf
 
                         <div class="mb-3">
@@ -55,7 +55,7 @@
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Add Channel') }}
                             </button>
-                            <a href="{{ route('publisher.dashboard') }}" class="btn btn-secondary">
+                            <a href="{{ route('publisher.dashboard', ['user' => Auth::id()]) }}" class="btn btn-secondary">
                                 {{ __('Cancel') }}
                             </a>
                         </div>
