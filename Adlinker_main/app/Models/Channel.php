@@ -32,4 +32,9 @@ class Channel extends Model
     {
         return $this->hasMany(Ad::class);
     }
+
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
 }

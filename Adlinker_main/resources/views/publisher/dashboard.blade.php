@@ -77,7 +77,13 @@
                                             <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-warning">Edit</a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('publisher.channel.campaigns', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-primary">View Status</a>
+                                            <a href="{{ route('publisher.channel.campaigns', ['user' => Auth::id(), 'channel' => $channel]) }}" 
+                                               class="btn btn-sm btn-primary {{ $channel->campaigns->count() > 0 ? '' : 'disabled' }}">
+                                                View Status
+                                                @if($channel->campaigns->count() > 0)
+                                                    <span class="badge bg-info ms-1">{{ $channel->campaigns->count() }}</span>
+                                                @endif
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty
