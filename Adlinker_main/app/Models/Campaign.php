@@ -17,7 +17,9 @@ class Campaign extends Model
         'price',
         'advertisement_image',
         'advertisement_content',
-        'status'
+        'status',
+        'post_link',
+        'notes'
     ];
 
     protected $casts = [

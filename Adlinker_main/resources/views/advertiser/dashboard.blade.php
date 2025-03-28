@@ -49,9 +49,10 @@
                                     <th>Channel Link</th>
                                     <th>Duration</th>
                                     <th>Price</th>
-                                    <th>Advertisement Content</th>                                 
+                                    <th>Image</th>
+                                    <th>Content</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,17 +71,13 @@
                                             @endif
                                         </td>
                                         <td>{{ Str::limit($campaign->advertisement_content, 50) }}</td>
-                                        <td><span class="badge bg-{{ $campaign->status === 'active' ? 'success' : ($campaign->status === 'pending' ? 'warning' : ($campaign->status === 'completed' ? 'info' : 'danger')) }}">{{ ucfirst($campaign->status) }}</span></td>
+                                        <td><span class="badge bg-{{ $campaign->status === 'active' ? 'success' : ($campaign->status === 'pending' ? 'warning' : ($campaign->status === 'completed' ? 'info' : 'danger')) }}">{{ $campaign->status === 'active' ? 'Payment Successful' : ($campaign->status === 'pending' ? 'Payment Unsuccessful' : ucfirst($campaign->status)) }}</span></td>
                                         <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('campaigns.show', ['user' => auth()->id(), 'campaign' => $campaign]) }}" class="btn btn-sm btn-info">View</a>
-                                                <a href="{{ route('campaigns.edit', ['user' => auth()->id(), 'campaign' => $campaign]) }}" class="btn btn-sm btn-warning">Edit</a>
-                                                <form action="{{ route('campaigns.destroy', ['user' => auth()->id(), 'campaign' => $campaign]) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this campaign?')">Delete</button>
-                                                </form>
-                                            </div>
+                                            @if($campaign->post_link)
+                                                <a href="{{ $campaign->post_link }}" target="_blank" class="btn btn-sm btn-success">View Post</a>
+                                            @else
+                                                <span class="badge bg-secondary">No Post Link</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

@@ -48,7 +48,7 @@ class CampaignActionController extends Controller
 
         $request->validate([
             'post_link' => 'required|url',
-            'notes' => 'nullable|string|max:500'
+            'notes' => 'nullable|string|max:1000'
         ]);
 
         $campaign->update([
