@@ -28,7 +28,13 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function redirectTo()
+    {
+        $user = auth()->user();
+        return $user->role === 'publisher' 
+            ? route('publisher.dashboard', ['user' => $user->id])
+            : route('advertiser.dashboard', ['user' => $user->id]);
+    }
 
     /**
      * Create a new controller instance.

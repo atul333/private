@@ -16,7 +16,7 @@
                 <div class="card-body">
                     @if($channel->logo_path)
                     <div class="mb-4 text-center">
-                        <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Channel Logo" class="img-fluid" style="max-width: 200px;">
+                        <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Channel Logo" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
                     </div>
                     @endif
 

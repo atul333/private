@@ -7,6 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Create New Campaign</h5>
+                    <a href="/{{ Auth::id() }}/advertiser/dashboard" class="btn btn-primary">Go Back</a>
                 </div>
                 <div class="card-body">
                     @if($errors->any())
@@ -29,7 +30,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             @if($channel->logo_path)
-                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }}" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }}" class="me-3 rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
                             @endif
                             <div>
                                 <label class="text-muted small mb-1">Channel Name:</label>
@@ -104,7 +105,6 @@
     </div>
 
     <div class="d-flex justify-content-start mt-4">
-        <a href="/{{ Auth::id() }}/advertiser/dashboard" class="btn btn-secondary">Go Back</a>
     </div>
     
 </form>

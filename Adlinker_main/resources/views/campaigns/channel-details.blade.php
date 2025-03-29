@@ -14,7 +14,7 @@
                     <div class="row mb-4">
                         <div class="col-md-3">
                             @if($channel->logo_path)
-                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }}" class="img-fluid rounded">
+                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }}" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
                             @else
                                 <div class="bg-light rounded p-3 text-center">No Logo</div>
                             @endif

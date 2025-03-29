@@ -59,7 +59,7 @@
                                     <tr>
                                         <td class="text-center">
                                             @if($channel->logo_path)
-                                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="img-fluid" style="max-height: 40px;">
+                                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
                                             @else
                                                 <span class="text-muted">No Logo</span>
                                             @endif

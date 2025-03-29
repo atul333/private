@@ -39,7 +39,7 @@
                             <label for="logo" class="form-label">Logo</label>
                             @if($channel->logo_path)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Channel Logo" class="img-thumbnail" style="max-width: 200px">
+                                    <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Channel Logo" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
                                 </div>
                             @endif
                             <input type="file" class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo">

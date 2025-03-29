@@ -7,82 +7,193 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="antialiased bg-gray-50">
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white shadow-sm fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <span class="text-2xl font-bold text-blue-600">AdLinker</span>
                 </div>
                 <div class="flex items-center space-x-4">
-                   
-                            @auth
-                                @if(Auth::user()->role === 'advertiser')
-                                    <a href="/advertiser/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
-                                @elseif(Auth::user()->role === 'publisher')
-                                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
-                                @endif
-                            @else
-                                <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-4 py-2">Log in</a>
-                                <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Sign up</a>
-                            @endauth
-                           
-                        
-                    
+                    @auth
+                        @if(Auth::user()->role === 'advertiser')
+                            <a href="/advertiser/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                        @elseif(Auth::user()->role === 'publisher')
+                            <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-4 py-2">Log in</a>
+                        <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">Sign up</a>
+                    @endauth
                 </div>
             </div>
         </div>
     </nav>
 
-    <main>
-        <div class="relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-                <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+                <div class="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
                     <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
-                        <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                            Telegram ads platform: <span class="text-blue-600">trusted and effective</span>
+                        <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl leading-tight">
+                            Amplify Your Reach on <span class="text-blue-600">Telegram</span>
                         </h1>
-                        <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg">
-                            We help with finding target audiences on Telegram and launching successful advertising campaigns
+                        <p class="mt-6 text-xl text-gray-500 leading-relaxed">
+                            Connect with millions of engaged users through targeted advertising on Telegram channels. Launch successful campaigns that drive real results.
                         </p>
-                        <div class="mt-8 sm:mx-auto sm:max-w-lg lg:mx-0">
-                            <button class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
-                                Create Telegram Ad
-                            </button>
+                        <div class="mt-10 sm:flex sm:justify-center lg:justify-start space-x-4">
+                            <a href="{{ route('register') }}" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition duration-300 shadow-lg hover:shadow-xl">
+                                Start Advertising
+                                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                            <a href="#features" class="inline-flex items-center px-8 py-4 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
+                                Learn More
+                            </a>
                         </div>
                     </div>
                     <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
-                        <div class="relative mx-auto w-full lg:max-w-md">
-                            <div class="relative block w-full bg-white rounded-lg overflow-hidden">
-                                <!-- Dashboard screenshot removed for cleaner layout -->
+                        <div class="relative mx-auto w-full rounded-lg shadow-lg overflow-hidden">
+                            <div class="relative block w-full bg-white pt-16 pb-20 px-6 sm:pt-20 sm:pb-24 lg:pb-28 rounded-lg">
+                                <div class="space-y-8">
+                                    <div class="flex items-center space-x-4 bg-blue-50 p-4 rounded-lg">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-chart-line text-2xl text-blue-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="text-lg font-medium text-gray-900">Real-time Analytics</h3>
+                                            <p class="mt-1 text-sm text-gray-500">Track your campaign performance live</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4 bg-green-50 p-4 rounded-lg">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-users text-2xl text-green-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="text-lg font-medium text-gray-900">Targeted Reach</h3>
+                                            <p class="mt-1 text-sm text-gray-500">Connect with your ideal audience</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4 bg-purple-50 p-4 rounded-lg">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-rocket text-2xl text-purple-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="text-lg font-medium text-gray-900">Quick Launch</h3>
+                                            <p class="mt-1 text-sm text-gray-500">Go live in minutes, not days</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                        <div class="px-4 py-5 sm:p-6">
-                            <dt class="text-4xl font-extrabold text-blue-600">252,128</dt>
-                            <dd class="mt-1 text-sm text-gray-500">Total Channels</dd>
+                <!-- Stats Section -->
+                <div class="mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    @php
+                        $stats = app(\App\Http\Controllers\StatisticsController::class)->getStatistics();
+                        $stats = json_decode($stats->getContent());
+                    @endphp
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg transform transition duration-300 hover:scale-105">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <dt class="text-5xl font-extrabold text-blue-600 mb-4">{{ number_format($stats->total_channels) }}</dt>
+                            <dd class="text-lg font-medium text-gray-600">Total Channels</dd>
+                            <p class="mt-2 text-sm text-gray-500">Active and growing network</p>
                         </div>
                     </div>
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                        <div class="px-4 py-5 sm:p-6">
-                            <dt class="text-4xl font-extrabold text-blue-600">7,087</dt>
-                            <dd class="mt-1 text-sm text-gray-500">Active Advertisers</dd>
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg transform transition duration-300 hover:scale-105">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <dt class="text-5xl font-extrabold text-blue-600 mb-4">{{ number_format($stats->active_advertisers) }}</dt>
+                            <dd class="text-lg font-medium text-gray-600">Active Advertisers</dd>
+                            <p class="mt-2 text-sm text-gray-500">Trust our platform</p>
                         </div>
                     </div>
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                        <div class="px-4 py-5 sm:p-6">
-                            <dt class="text-4xl font-extrabold text-blue-600">2,768</dt>
-                            <dd class="mt-1 text-sm text-gray-500">Online Now</dd>
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg transform transition duration-300 hover:scale-105">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <dt class="text-5xl font-extrabold text-blue-600 mb-4">{{ number_format($stats->active_publishers) }}</dt>
+                            <dd class="text-lg font-medium text-gray-600">Active Publishers</dd>
+                            <p class="mt-2 text-sm text-gray-500">Active community</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Features Section -->
+        <div id="features" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Why Choose AdLinker?</h2>
+                    <p class="mt-4 text-xl text-gray-600">Everything you need to succeed in Telegram advertising</p>
+                </div>
+
+                <div class="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="relative p-6 bg-white rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                                <i class="fas fa-bullseye text-2xl text-blue-600"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900">Precise Targeting</h3>
+                            <p class="mt-4 text-base text-gray-500">Reach your ideal audience with advanced targeting options based on interests, demographics, and behavior.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="relative p-6 bg-white rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                                <i class="fas fa-chart-bar text-2xl text-blue-600"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900">Detailed Analytics</h3>
+                            <p class="mt-4 text-base text-gray-500">Monitor your campaign performance with real-time analytics and comprehensive reporting tools.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="relative p-6 bg-white rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                                <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900">Secure Platform</h3>
+                            <p class="mt-4 text-base text-gray-500">Your campaigns and data are protected with enterprise-grade security measures.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="bg-blue-600">
+            <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+                <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                    <span class="block">Ready to grow your reach?</span>
+                    <span class="block text-blue-200">Start your campaign today.</span>
+                </h2>
+                <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+                    <div class="inline-flex rounded-md shadow">
+                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition duration-300">
+                            Get started
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-base text-gray-400">&copy; {{ date('Y') }} AdLinker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
