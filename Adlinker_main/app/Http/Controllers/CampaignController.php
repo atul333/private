@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use App\Models\Channel;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -52,11 +53,16 @@ class CampaignController extends Controller
             return redirect()->back()->withErrors(['error' => 'Missing required channel information']);
         }
 
-        $channel = Channel::findOrFail($channelId);
+        $channel = Channel::with('publisher.user')->findOrFail($channelId);
+        
+        if (!$channel->publisher || !$channel->publisher->user) {
+            return redirect()->back()->withErrors(['error' => 'Invalid channel publisher']);
+        }
+
         $imagePath = $request->file('advertisement_image')->store('advertisements', 'public');
 
         $campaign = Campaign::create([
-            'publisher_id' => $channel->publisher_id,
+            'publisher_id' => $channel->publisher->user->id,
             'advertiser_id' => auth()->id(),
             'channel_id' => $channelId,
             'channel_name' => $channel->name,
@@ -94,11 +100,30 @@ class CampaignController extends Controller
             return view('campaigns.payment', compact('campaign'));
         }
 
-        // Simple payment process - just activate the campaign
-        $campaign->update(['status' => 'active']);
+        // Get advertiser's wallet
+        $wallet = Wallet::where('user_id', auth()->id())->firstOrFail();
 
-        Session::flash('success', 'Payment processed successfully! Your campaign is now active.');
-        return redirect('/'. auth()->id() .'/advertiser/dashboard');
+        // Check if wallet has sufficient balance
+        if ($wallet->balance < $campaign->price) {
+            Session::flash('error', 'Insufficient wallet balance. Please add funds to your wallet.');
+            return redirect()->back();
+        }
+
+        try {
+            // Deduct amount from wallet
+            if (!$wallet->withdraw($campaign->price, 'Payment for Campaign #' . $campaign->id)) {
+                throw new \Exception('Failed to process wallet transaction');
+            }
+
+            // Activate the campaign
+            $campaign->update(['status' => 'active']);
+
+            Session::flash('success', 'Payment processed successfully! Your campaign is now active.');
+            return redirect('/'. auth()->id() .'/advertiser/dashboard');
+        } catch (\Exception $e) {
+            Session::flash('error', 'An error occurred while processing the payment. Please try again.');
+            return redirect()->back();
+        }
     }
 
     public function edit($user, Campaign $campaign)

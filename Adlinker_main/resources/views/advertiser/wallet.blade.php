@@ -5,7 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Wallet Balance</h2>
+                <div class="d-flex align-items-center">
+                    <a href="javascript:history.back()" class="btn btn-primary me-3 d-flex align-items-center">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </a>
+                    <h2 class="mb-0">Wallet Balance</h2>
+                </div>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
             </div>
             <div class="row">
