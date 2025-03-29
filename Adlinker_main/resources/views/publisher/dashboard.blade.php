@@ -8,7 +8,6 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Publisher Dashboard') }}</span>
                     <div>
-                        <a href="{{ route('publisher.withdrawals.create') }}" class="btn btn-success me-2">Withdraw Earnings</a>
                         <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="btn btn-primary">Add New Channel</a>
                     </div>
                 </div>

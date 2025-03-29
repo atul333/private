@@ -57,6 +57,14 @@
                                 </li>
                             @endif
                         @else
+                            @if(Auth::check())
+                                <li class="nav-item me-2">
+                                    <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="nav-link">
+                                        <i class="fas fa-wallet"></i>
+                                        <span class="ms-1">Wallet</span>
+                                    </a>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

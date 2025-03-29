@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// Include wallet routes
+Route::middleware(['auth'])->group(function () {
+    require __DIR__.'/wallet.php';
+});
 use Illuminate\Support\Facades\Auth;
 
 /*
