@@ -48,6 +48,19 @@ class CountdownTimer {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                         }
+                    }).then(() => {
+                        // Update the status badge in the UI
+                        const row = this.element.closest('tr');
+                        if (row) {
+                            const statusCell = row.querySelector('td:nth-child(8)');
+                            if (statusCell) {
+                                const badge = statusCell.querySelector('.badge');
+                                if (badge) {
+                                    badge.className = 'badge bg-info';
+                                    badge.textContent = 'Completed';
+                                }
+                            }
+                        }
                     }).catch(error => console.error('Error updating campaign status:', error));
                 }
                 return;

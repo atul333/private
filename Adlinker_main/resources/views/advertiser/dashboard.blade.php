@@ -53,6 +53,7 @@
                                     <th>Image</th>
                                     <th>Content</th>
                                     <th>Status</th>
+                                    <th>Countdown</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -72,7 +73,23 @@
                                             @endif
                                         </td>
                                         <td>{{ Str::limit($campaign->advertisement_content, 50) }}</td>
-                                        <td><span class="badge bg-{{ $campaign->status === 'active' ? 'success' : ($campaign->status === 'pending' ? 'warning' : ($campaign->status === 'completed' ? 'info' : 'danger')) }}">{{ $campaign->status === 'active' ? 'Payment Successful' : ($campaign->status === 'pending' ? 'Payment Unsuccessful' : ucfirst($campaign->status)) }}</span></td>
+                                        <td><span class="badge bg-{{ $campaign->status === 'active' ? ($campaign->post_link ? 'success' : 'warning') : ($campaign->status === 'pending' ? 'warning' : ($campaign->status === 'completed' ? 'info' : 'danger')) }}">{{ $campaign->status === 'active' ? ($campaign->post_link ? 'Active' : 'Payment Successful') : ($campaign->status === 'pending' ? 'Payment Unsuccessful' : ucfirst($campaign->status)) }}</span></td>
+                                        <td>
+                                            @if($campaign->status === 'active')
+                                                <div class="countdown-container">
+                                                    <div class="countdown-timer" data-campaign-id="{{ $campaign->id }}" 
+                                                         data-duration="{{ $campaign->duration }}"
+                                                         data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
+                                                         data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
+                                                        <div class="countdown-text">
+                                                            {{ $campaign->post_submitted_at ? 'Loading...' : 'Waiting for link submission...' }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <span class="badge bg-secondary">N/A</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($campaign->post_link)
                                                 <a href="{{ $campaign->post_link }}" target="_blank" class="btn btn-sm btn-success">View Post</a>
@@ -95,3 +112,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<!-- The countdown timer functionality is now handled by countdown.js -->
+@endpush
