@@ -12,6 +12,15 @@
                         <h4>Payment Details</h4>
                         <p class="lead">Campaign Duration: {{ $campaign->duration }} Days</p>
                         <h2 class="mb-4">Amount: ${{ number_format($campaign->price, 2) }}</h2>
+                        <div class="alert alert-info">
+                            <h5>Wallet Balance</h5>
+                            <h3>${{ number_format($wallet->balance ?? 0.00, 2) }}</h3>
+                            @if($wallet->balance < $campaign->price)
+                                <div class="alert alert-warning mt-2">
+                                    <small>Insufficient balance. Please <a href="/{{ auth()->id() }}/advertiser/wallet">add funds</a> to your wallet.</small>
+                                </div>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="text-center">

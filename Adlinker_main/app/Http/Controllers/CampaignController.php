@@ -97,7 +97,11 @@ class CampaignController extends Controller
         $route = request()->route()->getName();
         
         if ($route === 'campaigns.payment.create') {
-            return view('campaigns.payment', compact('campaign'));
+            $wallet = Wallet::firstOrCreate(
+                ['user_id' => auth()->id()],
+                ['balance' => 0, 'pending_balance' => 0]
+            );
+            return view('campaigns.payment', compact('campaign', 'wallet'));
         }
 
         // Get advertiser's wallet
