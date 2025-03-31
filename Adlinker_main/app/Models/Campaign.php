@@ -19,13 +19,19 @@ class Campaign extends Model
         'advertisement_content',
         'status',
         'post_link',
-        'notes'
+        'notes',
+        'submission_timestamp',
+        'post_submitted_at'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'subscribers' => 'integer',
-        'duration' => 'integer'
+        'duration' => 'integer',
+        'submission_timestamp' => 'datetime',
+        'post_submitted_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     public function user()

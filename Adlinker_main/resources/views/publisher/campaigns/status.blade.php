@@ -21,6 +21,7 @@
                                     <th>Price</th>
                                     <th>Status</th>
                                     <th>Actions</th>
+                                    <th>Countdown</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,15 +58,28 @@
                                                     </form>
                                                 </div>
                                             @elseif($campaign->status === 'active')
-                                                <a href="{{ route('publisher.campaign.submit-link.form', ['campaign' => $campaign->id]) }}" class="btn btn-sm btn-primary">Submit Link</a>
+                                                <a href="{{ route('publisher.campaign.submit-link.form', ['campaign' => $campaign->id]) }}" class="btn btn-sm btn-primary" id="submitLinkBtn-{{ $campaign->id }}">Submit Link</a>
                                             @else
-                                                -
+                                                - 
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($campaign->status === 'active')
+                                                <div class="countdown-container">
+                                                    <div class="countdown-timer" 
+                                                         data-duration="{{ $campaign->duration }}"
+                                                         data-start="{{ $campaign->created_at->toISOString() }}">
+                                                        <div class="countdown-text">Loading...</div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <span class="text-muted">-</span>
                                             @endif
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No active campaigns found</td>
+                                        <td colspan="7" class="text-center">No active campaigns found</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -76,4 +90,9 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<!-- The countdown timer functionality is now handled by countdown.js -->
+@endpush
+
 @endsection

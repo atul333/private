@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('advertisement_image');
             $table->text('advertisement_content');
             $table->enum('status', ['pending', 'active', 'completed', 'rejected']);
+            $table->timestamp('submission_timestamp')->nullable();
+            $table->timestamp('post_submitted_at')->nullable();
             $table->timestamps();
         });
     }

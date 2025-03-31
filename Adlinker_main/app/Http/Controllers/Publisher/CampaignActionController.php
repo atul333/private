@@ -53,7 +53,9 @@ class CampaignActionController extends Controller
 
         $campaign->update([
             'post_link' => $request->post_link,
-            'notes' => $request->notes
+            'notes' => $request->notes,
+            'post_submitted_at' => now(),
+            'submission_timestamp' => now()
         ]);
 
         return redirect()->route('publisher.channel.campaigns', [
