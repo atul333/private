@@ -38,6 +38,18 @@ class CountdownTimer {
             if (remainingSeconds <= 0) {
                 this.countdownText.textContent = 'Campaign Ended';
                 this.cleanup();
+                
+                // Update campaign status to completed
+                const campaignId = this.element.dataset.campaignId;
+                if (campaignId) {
+                    fetch(`/api/campaigns/${campaignId}/complete`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    }).catch(error => console.error('Error updating campaign status:', error));
+                }
                 return;
             }
 

@@ -70,7 +70,7 @@
                                         <td>
                                             @if($campaign->status === 'active')
                                                 <div class="countdown-container">
-                                                    <div class="countdown-timer" 
+                                                    <div class="countdown-timer" data-campaign-id="{{ $campaign->id }}" 
                                                          data-duration="{{ $campaign->duration }}"
                                                          data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
                                                          data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
