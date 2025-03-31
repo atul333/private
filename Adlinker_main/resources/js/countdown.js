@@ -3,8 +3,25 @@ class CountdownTimer {
     constructor(element) {
         this.element = element;
         this.countdownText = element.querySelector('.countdown-text');
-        this.duration = parseInt(element.dataset.duration);
-        this.startDate = new Date(element.dataset.start);
+        
+        // Add error handling for invalid duration
+        const duration = parseInt(element.dataset.duration);
+        if (isNaN(duration) || duration <= 0) {
+            this.duration = 0;
+            this.countdownText.textContent = 'Invalid campaign duration';
+            return;
+        }
+        this.duration = duration;
+
+        // Add error handling for invalid start date
+        const startDate = new Date(element.dataset.start);
+        if (isNaN(startDate.getTime())) {
+            this.startDate = null;
+            this.countdownText.textContent = 'Invalid start date';
+            return;
+        }
+        this.startDate = startDate;
+        
         this.intervalId = null;
         this.observer = null;
     }
@@ -72,7 +89,11 @@ class CountdownTimer {
 document.addEventListener('DOMContentLoaded', () => {
     const countdownTimers = document.querySelectorAll('.countdown-timer');
     countdownTimers.forEach(timer => {
-        const countdownInstance = new CountdownTimer(timer);
-        countdownInstance.start();
+        const isSubmitted = timer.dataset.submitted === 'true';
+        
+        if (isSubmitted && timer.dataset.start) {
+            const countdownInstance = new CountdownTimer(timer);
+            countdownInstance.start();
+        }
     });
 });

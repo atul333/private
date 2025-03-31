@@ -58,7 +58,11 @@
                                                     </form>
                                                 </div>
                                             @elseif($campaign->status === 'active')
-                                                <a href="{{ route('publisher.campaign.submit-link.form', ['campaign' => $campaign->id]) }}" class="btn btn-sm btn-primary" id="submitLinkBtn-{{ $campaign->id }}">Submit Link</a>
+                                                @if($campaign->post_submitted_at)
+                                                    <button class="btn btn-sm btn-primary" disabled>Link Submitted</button>
+                                                @else
+                                                    <a href="{{ route('publisher.campaign.submit-link.form', ['campaign' => $campaign->id]) }}" class="btn btn-sm btn-primary" id="submitLinkBtn-{{ $campaign->id }}">Submit Link</a>
+                                                @endif
                                             @else
                                                 - 
                                             @endif
@@ -68,8 +72,11 @@
                                                 <div class="countdown-container">
                                                     <div class="countdown-timer" 
                                                          data-duration="{{ $campaign->duration }}"
-                                                         data-start="{{ $campaign->created_at->toISOString() }}">
-                                                        <div class="countdown-text">Loading...</div>
+                                                         data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
+                                                         data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
+                                                        <div class="countdown-text">
+                                                            {{ $campaign->post_submitted_at ? 'Loading...' : 'Waiting for link submission...' }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             @else
