@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/theme.js', 'resources/js/countdown.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/countdown.js'])
 </head>
 <body>
     <div id="app">
@@ -38,11 +38,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <button class="theme-toggle nav-link border-0 bg-transparent" onclick="toggleTheme()">
-                                <i class="fas fa-sun" id="theme-icon"></i>
-                            </button>
-                        </li>
+
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
