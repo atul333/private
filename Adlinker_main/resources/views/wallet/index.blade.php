@@ -1,124 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Wallet Balance</h2>
-                @if(auth()->user()->role === 'publisher')
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#withdrawFundsModal">Withdraw Funds</button>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Wallet Balance</h2>
+            @if(auth()->user()->role === 'publisher')
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#withdrawFundsModal">Withdraw Funds</button>
+            @else
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
+            @endif
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl shadow-lg p-6">
+                <div class="text-white">
+                    <h5 class="text-xl font-semibold mb-4">Available Balance</h5>
+                    <h2 class="text-4xl font-bold">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl shadow-lg p-6">
+                <div class="text-white">
+                    <h5 class="text-xl font-semibold mb-4">Pending Payments</h5>
+                    <h2 class="text-4xl font-bold">${{ number_format($pendingPayments ?? 0.00, 2) }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="border-b border-gray-200 px-6 py-4">
+                <h5 class="text-xl font-semibold text-gray-800">Transaction History</h5>
+            </div>
+            <div class="p-6">
+                @if(isset($transactions) && count($transactions) > 0)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach($transactions as $transaction)
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-600">{{ $transaction->description }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${{ number_format($transaction->amount, 2) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $transaction->status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ ucfirst($transaction->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 @else
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
+                    <p class="text-center text-gray-500">No transactions found.</p>
                 @endif
             </div>
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card bg-success text-white h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Available Balance</h5>
-                            <h2 class="display-4">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card bg-info text-white h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Pending Payments</h5>
-                            <h2 class="display-4">${{ number_format($pendingPayments ?? 0.00, 2) }}</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Transaction History</h5>
-                </div>
-                <div class="card-body">
-                    @if(isset($transactions) && count($transactions) > 0)
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Description</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($transactions as $transaction)
-                                    <tr>
-                                        <td>{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
-                                        <td>{{ $transaction->description }}</td>
-                                        <td>${{ number_format($transaction->amount, 2) }}</td>
-                                        <td>
-                                            <span class="badge bg-{{ $transaction->status === 'completed' ? 'success' : 'warning' }}">
-                                                {{ ucfirst($transaction->status) }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <p class="text-center mb-0">No transactions found.</p>
-                    @endif
-                </div>
-            </div>
+        </div>
         </div>
     </div>
 </div>
 
-<!-- Add Funds Modal -->
-<div class="modal fade" id="addFundsModal" tabindex="-1" aria-labelledby="addFundsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addFundsModalLabel">Add Funds to Wallet</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('advertiser.wallet.deposit', ['id' => auth()->id()]) }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">Amount ($)</label>
-                        <input type="number" class="form-control" id="amount" name="amount" min="0.01" step="0.01" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Funds</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Withdraw Funds Modal -->
-<div class="modal fade" id="withdrawFundsModal" tabindex="-1" aria-labelledby="withdrawFundsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="withdrawFundsModalLabel">Withdraw Funds</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('publisher.wallet.withdraw', ['id' => auth()->id()]) }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="withdraw_amount" class="form-label">Amount ($)</label>
-                        <input type="number" class="form-control" id="withdraw_amount" name="amount" min="0.01" step="0.01" max="{{ $availableBalance }}" required>
-                        <small class="text-muted">Maximum withdrawal amount: ${{ number_format($availableBalance, 2) }}</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Withdraw Funds</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 @endsection

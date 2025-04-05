@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'SocialAdLinker') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -16,77 +16,178 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/countdown.js'])
+    @vite(['resources/js/app.js', 'resources/js/countdown.js','resources/sass/app.scss'])
 </head>
-<body>
+<body class="bg-gray-50">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <nav class="bg-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex">
+                        <div class="flex-shrink-0 flex items-center">
+                            <a class="text-2xl font-extrabold text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out" href="{{ url('/') }}">
+                                SocialAdLinker
+                            </a>
+                        </div>
+                    </div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+                    <!-- Mobile menu button -->
+                    <div class="-mr-2 flex items-center sm:hidden">
+                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
 
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <!-- Desktop menu -->
+                    <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <div class="flex space-x-4">
 
                         <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                            @guest
+                                @if (Route::has('login'))
+                                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ __('Login') }}</a>
+                                @endif
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            @if(Auth::check())
-                                <li class="nav-item me-2">
-                                    <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="nav-link">
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ __('Register') }}</a>
+                                @endif
+                            @else
+                                @if(Auth::check())
+                                    <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                                         <i class="fas fa-wallet"></i>
-                                        <span class="ms-1">Wallet</span>
+                                        <span class="ml-1">Wallet</span>
                                     </a>
-                                </li>
-                            @endif
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                @endif
+                                
+                                <div class="ml-3 relative group">
+                                    <div>
+                                        <button type="button" class="bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                            <span class="sr-only">Open user menu</span>
+                                            <span class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ Auth::user()->name }}</span>
+                                            <svg class="ml-2 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                
+                                    <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" id="user-menu-dropdown" style="pointer-events: auto;">
+                                        <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2" onclick="document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                            @csrf
+                                        </form>
+                                    </div>
                                 </div>
-                            </li>
-                        @endguest
-                    </ul>
+                            @endguest
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div class="sm:hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    @guest
+                        @if (Route::has('login'))
+                            <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ __('Login') }}</a>
+                        @endif
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ __('Register') }}</a>
+                        @endif
+                    @else
+                        @if(Auth::check())
+                            <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
+                                <i class="fas fa-wallet"></i>
+                                <span class="ml-1">Wallet</span>
+                            </a>
+                        @endif
+                        <a href="#" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ Auth::user()->name }}</a>
+                        <a href="{{ route('logout') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+                    @endguest
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             @yield('content')
         </main>
     </div>
+
+    <script>
+        // Toggle mobile menu
+        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    
+        // Handle user menu dropdown
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+        let isDropdownOpen = false;
+    
+        if (userMenuButton && userMenuDropdown) {
+            // Toggle on click
+            userMenuButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                isDropdownOpen = !isDropdownOpen;
+                userMenuDropdown.classList.toggle('hidden');
+                userMenuButton.setAttribute('aria-expanded', isDropdownOpen);
+            });
+    
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!userMenuButton.contains(event.target) && !userMenuDropdown.contains(event.target)) {
+                    userMenuDropdown.classList.add('hidden');
+                    isDropdownOpen = false;
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+    
+            // Handle hover events with delay
+            const menuContainer = userMenuButton.closest('.group');
+            let hoverTimeout;
+    
+            if (menuContainer) {
+                menuContainer.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimeout);
+                    userMenuDropdown.classList.remove('hidden');
+                    isDropdownOpen = true;
+                    userMenuButton.setAttribute('aria-expanded', 'true');
+                });
+    
+                menuContainer.addEventListener('mouseleave', function() {
+                    hoverTimeout = setTimeout(() => {
+                        if (!isDropdownOpen) {
+                            userMenuDropdown.classList.add('hidden');
+                            userMenuButton.setAttribute('aria-expanded', 'false');
+                        }
+                    }, 200);
+                });
+    
+                // Prevent dropdown from closing when hovering over it
+                userMenuDropdown.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimeout);
+                });
+    
+                userMenuDropdown.addEventListener('mouseleave', function() {
+                    if (!isDropdownOpen) {
+                        userMenuDropdown.classList.add('hidden');
+                        userMenuButton.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,110 +1,116 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Create New Channel</h5>
-                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn btn-secondary">Back to Channels</a>
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 sm:px-0">
+        <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+            <div class="max-w-md mx-auto">
+                <div class="flex items-center space-x-5 justify-between">
+                    <div class="block font-semibold text-xl text-gray-700">Create New Channel</div>
+                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium transition-colors duration-200">Back to Channels</a>
                 </div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data">
+                <div class="divide-y divide-gray-200">
+                    <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data" class="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Channel Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                        <div class="space-y-2">
+                            <label for="name" class="block text-sm font-medium text-gray-700">Channel Name</label>
+                            <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('name') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="name" name="name" value="{{ old('name') }}" required>
                             @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="link" class="form-label">Channel Link</label>
-                            <input type="url" class="form-control @error('link') is-invalid @enderror" id="link" name="link" value="{{ old('link') }}" required placeholder="https://t.me/yourchannel">
+                        <div class="space-y-2">
+                            <label for="link" class="block text-sm font-medium text-gray-700">Channel Link</label>
+                            <input type="url" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('link') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="link" name="link" value="{{ old('link') }}" required placeholder="https://t.me/yourchannel">
                             @error('link')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Channel Description</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
+                        <div class="space-y-2">
+                            <label for="description" class="block text-sm font-medium text-gray-700">Channel Description</label>
+                            <textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('description') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
                             @error('description')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="logo" class="form-label">Channel Logo</label>
-                            <input type="file" class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" accept="image/*" required>
+                        <div class="space-y-2">
+                            <label for="logo" class="block text-sm font-medium text-gray-700">Channel Logo</label>
+                            <input type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('logo') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="logo" name="logo" accept="image/*" required>
                             @error('logo')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="subscribers_count" class="form-label">Subscribers Count</label>
-                            <input type="number" class="form-control @error('subscribers_count') is-invalid @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count') }}" required min="0">
+                        <div class="space-y-2">
+                            <label for="subscribers_count" class="block text-sm font-medium text-gray-700">Subscribers Count</label>
+                            <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('subscribers_count') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count') }}" required min="0">
                             @error('subscribers_count')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <h5 class="mb-3">Pricing Options</h5>
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label for="price_1_day" class="form-label">Price for 1 Day ($)</label>
-                                <input type="number" step="0.01" class="form-control @error('price_1_day') is-invalid @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day') }}" required min="0">
-                                @error('price_1_day')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="price_2_days" class="form-label">Price for 2 Days ($)</label>
-                                <input type="number" step="0.01" class="form-control @error('price_2_days') is-invalid @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days') }}" required min="0">
-                                @error('price_2_days')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="price_3_days" class="form-label">Price for 3 Days ($)</label>
-                                <input type="number" step="0.01" class="form-control @error('price_3_days') is-invalid @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days') }}" required min="0">
-                                @error('price_3_days')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="price_7_days" class="form-label">Price for 7 Days ($)</label>
-                                <input type="number" step="0.01" class="form-control @error('price_7_days') is-invalid @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days') }}" required min="0">
-                                @error('price_7_days')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                        <div class="pt-6">
+                            <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Pricing Options</h3>
+                            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                                <div class="space-y-2">
+                                    <label for="price_1_day" class="block text-sm font-medium text-gray-700">Price for 1 Day ($)</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('price_1_day') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day') }}" required min="0">
+                                    </div>
+                                    @error('price_1_day')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="price_2_days" class="block text-sm font-medium text-gray-700">Price for 2 Days ($)</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('price_2_days') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days') }}" required min="0">
+                                    </div>
+                                    @error('price_2_days')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="price_3_days" class="block text-sm font-medium text-gray-700">Price for 3 Days ($)</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('price_3_days') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days') }}" required min="0">
+                                    </div>
+                                    @error('price_3_days')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            <div class="space-y-2">
+                                    <label for="price_7_days" class="block text-sm font-medium text-gray-700">Price for 7 Days ($)</label>
+                                    <div class="mt-1 relative rounded-md shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="number" step="0.01" class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('price_7_days') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days') }}" required min="0">
+                                    </div>
+                                    @error('price_7_days')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Submit Channel</button>
+                        <div class="pt-8">
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">Create Channel</button>
                         </div>
                     </form>
                 </div>

@@ -1,93 +1,89 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>{{ __('Publisher Dashboard') }}</span>
-                    <div>
-                        <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="btn btn-primary">Add New Channel</a>
-                    </div>
+<div class="container-custom py-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-800">{{ __('Publisher Dashboard') }}</h1>
+                <div>
+                    <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="btn btn-primary inline-flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Add New Channel
+                    </a>
                 </div>
+            </div>
 
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card bg-primary text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title">Active Channels</h5>
-                                    <h2 class="mb-0">{{ $activeChannels }}</h2>
-                                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-medium opacity-90">Active Channels</h3>
+                                <p class="text-3xl font-bold mt-2">{{ $activeChannels }}</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card bg-success text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title">Total Earnings</h5>
-                                    <h2 class="mb-0">${{ number_format($totalEarnings, 2) }}</h2>
-                                </div>
+                        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-medium opacity-90">Total Earnings</h3>
+                                <p class="text-3xl font-bold mt-2">${{ number_format($totalEarnings, 2) }}</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card bg-info text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title">Total Subscribers</h5>
-                                    <h2 class="mb-0">{{ $channels->sum('subscribers_count') }}</h2>
-                                </div>
+                        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-medium opacity-90">Total Subscribers</h3>
+                                <p class="text-3xl font-bold mt-2">{{ $channels->sum('subscribers_count') }}</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Channel Logo</th>
-                                    <th>Channel Name</th>
-                                    <th>Subscribers</th>
-                                    <th>Earnings</th>
-                                    <th>Channel Status</th>
-                                    <th>Actions</th>
-                                    <th>Ad Details</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel Logo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscribers</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earnings</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($channels as $channel)
-                                    <tr>
-                                        <td class="text-center">
+                                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                        <td class="px-6 py-4 whitespace-nowrap">
                                             @if($channel->logo_path)
-                                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="img-fluid rounded-circle" style="height: 40px; width: 40px; object-fit: cover;">
+                                                <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="h-10 w-10 rounded-full object-cover">
                                             @else
-                                                <span class="text-muted">No Logo</span>
+                                                <span class="text-gray-400">No Logo</span>
                                             @endif
                                         </td>
-                                        <td>{{ $channel->name }}</td>
-                                        <td>{{ number_format($channel->subscribers_count) }}</td>
-                                        <td>${{ number_format($channel->earnings ?? 0, 2) }}</td>
-                                        <td>
-                                            <span class="badge bg-{{ $channel->status === 'active' ? 'success' : 'warning' }}">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $channel->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($channel->subscribers_count) }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ number_format($channel->earnings ?? 0, 2) }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $channel->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                                                 {{ ucfirst($channel->status) }}
                                             </span>
                                         </td>
-                                        <td>
-                                            <a href="{{ route('channels.show', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-info">View</a>
-                                            <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                            <a href="{{ route('channels.show', ['user' => Auth::id(), 'channel' => $channel]) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                            <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                                         </td>
-                                        <td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="{{ route('publisher.channel.campaigns', ['user' => Auth::id(), 'channel' => $channel]) }}" 
-                                               class="btn btn-sm btn-primary {{ $channel->campaigns->count() > 0 ? '' : 'disabled' }}">
+                                               class="inline-flex items-center px-3 py-1 rounded-full {{ $channel->campaigns->count() > 0 ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
                                                 View Status
                                                 @if($channel->campaigns->count() > 0)
-                                                    <span class="badge bg-info ms-1">{{ $channel->campaigns->count() }}</span>
+                                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-blue-200">{{ $channel->campaigns->count() }}</span>
                                                 @endif
                                             </a>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No channels found</td>
+                                        <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">No channels found</td>
                                     </tr>
                                 @endforelse
                             </tbody>

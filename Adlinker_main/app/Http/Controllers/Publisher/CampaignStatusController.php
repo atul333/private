@@ -17,7 +17,11 @@ class CampaignStatusController extends Controller
         }
 
         $campaigns = Campaign::where('channel_id', $channel->id)
-                            ->where('status', 'active')
+                            ->orderByRaw("CASE 
+                                WHEN status = 'Active' THEN 1
+                                WHEN status = 'submitted' THEN 2
+                                WHEN status = 'completed' THEN 3
+                                ELSE 4 END")
                             ->get();
 
         return view('publisher.campaigns.status', compact('channel', 'campaigns'));

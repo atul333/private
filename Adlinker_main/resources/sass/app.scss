@@ -1,28 +1,57 @@
-// Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-// Variables
-@import 'variables';
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
 
-// Theme
-@import 'theme';
+  h1 {
+    @apply text-4xl font-bold mb-4;
+  }
 
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
+  h2 {
+    @apply text-3xl font-bold mb-3;
+  }
 
-// Theme overrides
-.navbar {
-  background: var(--bg-primary) !important;
+  h3 {
+    @apply text-2xl font-semibold mb-2;
+  }
 }
 
-// Theme toggle
-.theme-toggle {
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: var(--theme-transition);
-  
-  &:hover {
-    background: rgba(var(--accent-color), 0.1);
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+}
+
+@layer utilities {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600;
   }
 }
