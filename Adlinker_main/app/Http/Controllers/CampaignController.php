@@ -42,7 +42,9 @@ class CampaignController extends Controller
 
         $validated = $request->validate([
             'advertisement_content' => 'required|string',
-            'advertisement_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'advertisement_image' => 'required|image|mimes:jpg,jpeg|max:2048'
+        ], [
+            'advertisement_image.mimes' => 'Only .jpg file images are allowed to upload'
         ]);
 
         $channelId = $request->query('channel_id', $request->input('channel_id'));
@@ -148,7 +150,7 @@ class CampaignController extends Controller
 
         $validated = $request->validate([
             'advertisement_content' => 'required|string',
-            'advertisement_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'advertisement_image' => 'nullable|image|mimes:jpg,jpeg|max:2048'
         ]);
 
         if ($request->hasFile('advertisement_image')) {

@@ -42,19 +42,19 @@
                         @if(request('duration') && request('price'))
                             <div class="mt-6">
                                 <h4 class="text-lg font-semibold text-gray-900 mb-4">Selected Advertising Plan</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                    <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                                    <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-2">
                                         <div class="text-center">
-                                            <i class="fas fa-clock text-3xl text-indigo-500 mb-2"></i>
-                                            <h5 class="font-semibold text-gray-900 mb-1">Duration</h5>
-                                            <p class="text-xl text-indigo-600">{{ request('duration') }} Days</p>
+                                            <i class="fas fa-clock text-xl text-indigo-500"></i>
+                                            <h5 class="text-sm font-medium text-gray-900">Duration</h5>
+                                            <p class="text-base text-indigo-600">{{ request('duration') }} Days</p>
                                         </div>
                                     </div>
-                                    <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-4">
+                                    <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-2">
                                         <div class="text-center">
-                                            <i class="fas fa-tag text-3xl text-indigo-500 mb-2"></i>
-                                            <h5 class="font-semibold text-gray-900 mb-1">Price</h5>
-                                            <p class="text-xl text-indigo-600">${{ request('price') }}</p>
+                                            <i class="fas fa-tag text-xl text-indigo-500"></i>
+                                            <h5 class="text-sm font-medium text-gray-900">Price</h5>
+                                            <p class="text-base text-indigo-600">${{ request('price') }}</p>
                                         </div>
                                     </div>
                                 </div>

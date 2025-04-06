@@ -48,11 +48,16 @@
                         
                         <div class="flex items-center space-x-2 mb-4">
                             <i class="bi bi-link-45deg text-gray-600"></i>
-                            <a href="{{ $channel->channel_link }}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 hover:text-blue-800 hover:underline">View Channel</a>
+                            @if($channel->link)
+                                <a href="{{ $channel->link }}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 hover:text-blue-800 hover:underline">View Channel</a>
+                                    
+                                </a>
+                            @endif
+                            
                         </div>
                         
                         <div class="mb-3">
-                            <select name="durations[{{ $channel->id }}]" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-sm channel-duration" data-channel-id="{{ $channel->id }}" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
+                            <select name="durations[{{ $channel->id }}]" class="w-auto min-w-fit rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-sm channel-duration" data-channel-id="{{ $channel->id }}" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
                                 <option value="">Select Duration</option>
                                 <option value="1">1 Day (${{ number_format($channel->price_1_day, 2) }})</option>
                                 <option value="2">2 Days (${{ number_format($channel->price_2_days, 2) }})</option>

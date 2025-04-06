@@ -18,19 +18,19 @@
 
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-                        <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                             <div class="flex flex-col">
                                 <h3 class="text-lg font-medium opacity-90">Active Campaigns</h3>
                                 <p class="text-3xl font-bold mt-2">{{ $channel->campaigns->where('status', 'active')->count() }}</p>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                             <div class="flex flex-col">
                                 <h3 class="text-lg font-medium opacity-90">Total Budget</h3>
                                 <p class="text-3xl font-bold mt-2">${{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                             <div class="flex flex-col">
                                 <h3 class="text-lg font-medium opacity-90">Completed Campaigns</h3>
                                 <p class="text-3xl font-bold mt-2">{{ $channel->campaigns->where('status', 'completed')->count() }}</p>
