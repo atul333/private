@@ -5,14 +5,18 @@
     <div class="max-w-3xl mx-auto">
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                <h1 class="text-2xl font-semibold text-gray-800">{{ __('Submit Post Link') }}</h1>
-                <a href="{{ route('publisher.channel.campaigns', ['user' => Auth::id(), 'channel' => $campaign->channel_id]) }}" 
-                   class="inline-flex items-center px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors duration-200">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    Back to Campaigns
-                </a>
+            <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-2xl font-semibold text-gray-800">{{ __('Submit Post Link') }}</h1>
+                    </div>
+
+                
+                
             </div>
 
             <div class="p-6">

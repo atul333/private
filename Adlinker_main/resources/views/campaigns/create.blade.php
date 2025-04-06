@@ -5,7 +5,17 @@
     <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h1 class="text-xl font-semibold text-gray-800">Create New Campaign</h1>
+            <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-2xl font-semibold text-gray-800">Create New Campaign</h1>
+                    </div>
+
+               
             </div>
             <div class="p-6">
                     @if($errors->any())
@@ -24,7 +34,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @foreach($channels as $channel)
             <div class="w-full">
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                     <div class="p-4">
                         <div class="flex justify-between items-start space-x-4 mb-3">
                             <div class="flex items-center space-x-3">

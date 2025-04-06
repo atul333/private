@@ -51,11 +51,11 @@
 
                         <!-- Authentication Links -->
                             @guest
-                                @if (Route::has('login'))
+                                @if (Route::has('login') && !Request::is('login'))
                                     <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ __('Login') }}</a>
                                 @endif
 
-                                @if (Route::has('register'))
+                                @if (Route::has('register') && !Request::is('register'))
                                     <a href="{{ route('register') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ __('Register') }}</a>
                                 @endif
                             @else
@@ -97,11 +97,11 @@
             <div class="sm:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-40 transform transition-transform duration-300 ease-in-out translate-x-full" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     @guest
-                        @if (Route::has('login'))
+                        @if (Route::has('login') && !Request::is('login'))
                             <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ __('Login') }}</a>
                         @endif
 
-                        @if (Route::has('register'))
+                        @if (Route::has('register') && !Request::is('register'))
                             <a href="{{ route('register') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ __('Register') }}</a>
                         @endif
                     @else

@@ -38,7 +38,7 @@
 
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @forelse($campaigns as $campaign)
-                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
+                            <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-200 p-4">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-semibold text-gray-900">{{ $campaign->channel_name }}</h3>
                                     <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $campaign->status === 'active' ? ($campaign->post_link ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">{{ $campaign->status === 'active' ? ($campaign->post_link ? 'Active' : 'Payment Successful') : ($campaign->status === 'pending' ? 'Payment Unsuccessful' : ucfirst($campaign->status)) }}</span>
@@ -64,11 +64,12 @@
                                 </div>
 
                                 <div class="space-y-4">
-                                    @if($campaign->advertisement_image)
-                                        <div class="relative w-full h-32 rounded-lg overflow-hidden shadow-sm bg-gray-100 flex items-center justify-center">
-                                            <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" alt="Advertisement" class="w-full h-full object-contain">
-                                        </div>
-                                    @endif
+                                @if($campaign->advertisement_image)
+    <div class="relative w-32 h-32 rounded-lg overflow-hidden shadow-sm bg-gray-100 flex items-center justify-center mx-auto">
+        <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" alt="Advertisement" class="w-full h-full object-contain">
+    </div>
+@endif
+
 
                                     <div class="bg-gray-50 rounded-lg p-4">
                                         <p class="text-xs font-medium text-gray-700 mb-2">Content</p>

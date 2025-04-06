@@ -5,11 +5,18 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="p-6 border-b border-gray-200 flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-gray-900">Channel Details</h2>
-                <a href="{{ route('campaigns.create', auth()->id()) }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-600 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Back to Channel Selection
-                </a>
+            <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/campaigns/create" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-2xl font-semibold text-gray-800">Channel Details</h1>
+                    </div>
+
+                
+               
             </div>
 
             <div class="p-6">

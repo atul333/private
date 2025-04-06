@@ -5,93 +5,97 @@
     <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                <h1 class="text-2xl font-semibold text-gray-800">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
-                <a href="{{ route('publisher.dashboard', ['user' => Auth::id()]) }}" class="btn btn-secondary inline-flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    Back to Dashboard
-                </a>
+            <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-2xl font-semibold text-gray-800">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
+                    </div>
+
+              
             </div>
 
                 <div class="p-6">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Advertisement</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Countdown</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse($campaigns as $campaign)
-                                    <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            @if($campaign->advertisement_image)
-                                                <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" 
-                                                     alt="Advertisement Image" 
-                                                     class="h-20 w-20 object-cover rounded-lg mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @forelse($campaigns as $campaign)
+                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                                <div class="relative bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+                                    @if($campaign->advertisement_image)
+                                        <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" 
+                                             alt="Advertisement Image" 
+                                             class="w-full h-32 object-contain rounded-lg">
+                                    @else
+                                        <div class="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <span class="text-gray-400">No Image</span>
+                                        </div>
+                                    @endif
+                                    <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold {{ $campaign->status === 'active' ? 'bg-green-100 text-green-800' : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                        {{ ucfirst($campaign->status) }}
+                                    </span>
+                                </div>
+
+                                <div class="p-6 space-y-4">
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-start gap-2">
+                                            <p class="text-sm text-gray-900 line-clamp-2 flex-grow">{{ $campaign->advertisement_content }}</p>
+                                            <button onclick="copyContent('{{ $campaign->advertisement_content }}', '{{ asset('/storage/' . $campaign->advertisement_image) }}')"
+
+                                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                                                </svg>
+                                                Copy & Download
+                                            </button>
+                                        </div>
+                                        <div class="flex justify-between items-center text-sm text-gray-500">
+                                            <span>{{ $campaign->duration }} days</span>
+                                            <span>${{ number_format($campaign->price, 2) }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-3">
+                                        @if($campaign->status === 'pending')
+                                            <div class="flex gap-2">
+                                                <form action="{{ route('publisher.campaign.accept', ['campaign' => $campaign->id]) }}" method="POST" class="flex-1">
+                                                    @csrf
+                                                    <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Accept</button>
+                                                </form>
+                                                <form action="{{ route('publisher.campaign.reject', ['campaign' => $campaign->id]) }}" method="POST" class="flex-1">
+                                                    @csrf
+                                                    <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Reject</button>
+                                                </form>
+                                            </div>
+                                        @elseif($campaign->status === 'active')
+                                            @if($campaign->post_submitted_at)
+                                                <button class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 opacity-50 cursor-not-allowed" disabled>Link Submitted</button>
                                             @else
-                                                <span class="text-gray-400">No Image</span>
+                                                <a href="{{ route('publisher.campaign.submit-link.form', ['campaign' => $campaign->id]) }}" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="submitLinkBtn-{{ $campaign->id }}">Submit Link</a>
                                             @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $campaign->advertisement_content }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $campaign->duration }} days</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ number_format($campaign->price, 2) }}</td>
-                                        <td>
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $campaign->status === 'active' ? 'bg-green-100 text-green-800' : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                                {{ ucfirst($campaign->status) }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            @if($campaign->status === 'pending')
-                                                <div class="btn-group" role="group">
-                                                    <form action="{{ route('publisher.campaign.accept', ['campaign' => $campaign->id]) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Accept</button>
-                                                    </form>
-                                                    <form action="{{ route('publisher.campaign.reject', ['campaign' => $campaign->id]) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2">Reject</button>
-                                                    </form>
-                                                </div>
-                                            @elseif($campaign->status === 'active')
-                                                @if($campaign->post_submitted_at)
-                                                    <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 opacity-50 cursor-not-allowed" disabled>Link Submitted</button>
-                                                @else
-                                                    <a href="{{ route('publisher.campaign.submit-link.form', ['campaign' => $campaign->id]) }}" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" id="submitLinkBtn-{{ $campaign->id }}">Submit Link</a>
-                                                @endif
-                                            @else
-                                                - 
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($campaign->status === 'active')
-                                                <div class="countdown-container rounded-lg bg-gray-50 p-3">
-                                                    <div class="countdown-timer text-sm" data-campaign-id="{{ $campaign->id }}" 
-                                                         data-duration="{{ $campaign->duration }}"
-                                                         data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
-                                                         data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
-                                                        <div class="countdown-text">
-                                                            {{ $campaign->post_submitted_at ? 'Loading...' : 'Waiting for link submission...' }}
-                                                        </div>
+                                        @endif
+
+                                        @if($campaign->status === 'active')
+                                            <div class="countdown-container rounded-lg bg-gray-50 p-3">
+                                                <div class="countdown-timer text-sm" data-campaign-id="{{ $campaign->id }}" 
+                                                     data-duration="{{ $campaign->duration }}"
+                                                     data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
+                                                     data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
+                                                    <div class="countdown-text">
+                                                        {{ $campaign->post_submitted_at ? 'Loading...' : 'Waiting for link submission...' }}
                                                     </div>
                                                 </div>
-                                            @else
-                                                <span class="text-gray-400">-</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                        <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">No active campaigns found</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-span-full text-center py-8 text-gray-500">
+                                No active campaigns found
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -101,6 +105,41 @@
 
 @push('scripts')
 <!-- The countdown timer functionality is now handled by countdown.js -->
+<script>
+function copyContent(content, imageUrl) {
+    // Copy content to clipboard
+    navigator.clipboard.writeText(content).then(() => {
+        // After copying content, download the image
+        if (imageUrl) {
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'advertisement-image';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Show success message
+        const button = event.currentTarget;
+        const originalText = button.innerHTML;
+        button.innerHTML = `
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Copied!`;
+        button.classList.remove('bg-blue-100', 'text-blue-700');
+        button.classList.add('bg-green-100', 'text-green-700');
+
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('bg-green-100', 'text-green-700');
+            button.classList.add('bg-blue-100', 'text-blue-700');
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
+</script>
 @endpush
 
 @endsection

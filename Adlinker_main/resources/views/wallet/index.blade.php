@@ -4,10 +4,30 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-800">Wallet Balance</h2>
+
+
+            
             @if(auth()->user()->role === 'publisher')
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#withdrawFundsModal">Withdraw Funds</button>
+            <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-3xl font-bold text-gray-800">Wallet Balance</h2>
+                    </div>    
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#withdrawFundsModal">Withdraw Funds</button>
             @else
+            <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-3xl font-bold text-gray-800">Wallet Balance</h2>
+                    </div>
                 <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
             @endif
         </div>

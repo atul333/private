@@ -5,10 +5,16 @@
     <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 sm:px-0">
         <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
             <div class="max-w-md mx-auto">
-                <div class="flex items-center space-x-5 justify-between">
-                    <div class="block font-semibold text-xl text-gray-700">Create New Channel</div>
-                    <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium transition-colors duration-200">Back to Channels</a>
-                </div>
+            <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Back
+                        </a>
+                        <h1 class="text-2xl font-semibold text-gray-800">Create New Channel</h1>
+                
+
+           
 
                 <div class="divide-y divide-gray-200">
                     <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data" class="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
