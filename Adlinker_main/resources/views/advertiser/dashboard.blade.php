@@ -36,72 +36,69 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscribers</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel Link</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Countdown</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse($campaigns as $campaign)
-                                    <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $campaign->channel_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($campaign->subscribers) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><a href="{{ $campaign->channel_link }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">View Channel</a></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $campaign->duration }} days</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ number_format($campaign->price, 2) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            @if($campaign->advertisement_image)
-                                                <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" alt="Advertisement" class="h-16 w-16 object-cover rounded-lg">
-                                            @else
-                                                <span class="text-gray-400">No image</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ Str::limit($campaign->advertisement_content, 50) }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $campaign->status === 'active' ? ($campaign->post_link ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">{{ $campaign->status === 'active' ? ($campaign->post_link ? 'Active' : 'Payment Successful') : ($campaign->status === 'pending' ? 'Payment Unsuccessful' : ucfirst($campaign->status)) }}</span>
-                                        </td>
-                                        <td>
-                                            @if($campaign->status === 'active')
-                                                <div class="countdown-container">
-                                                    <div class="countdown-timer" data-campaign-id="{{ $campaign->id }}" 
-                                                         data-duration="{{ $campaign->duration }}"
-                                                         data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
-                                                         data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
-                                                        <div class="countdown-text">
-                                                            {{ $campaign->post_submitted_at ? 'Loading...' : 'Waiting for link submission...' }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <span class="badge bg-secondary">N/A</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($campaign->post_link)
-                                                <a href="{{ $campaign->post_link }}" target="_blank" class="btn btn-sm btn-success">View Post</a>
-                                            @else
-                                                <span class="badge bg-secondary">No Post Link</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="8" class="text-center">No campaigns found</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        @forelse($campaigns as $campaign)
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">{{ $campaign->channel_name }}</h3>
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $campaign->status === 'active' ? ($campaign->post_link ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">{{ $campaign->status === 'active' ? ($campaign->post_link ? 'Active' : 'Payment Successful') : ($campaign->status === 'pending' ? 'Payment Unsuccessful' : ucfirst($campaign->status)) }}</span>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-500">Subscribers</p>
+                                        <p class="text-sm text-gray-900">{{ number_format($campaign->subscribers) }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-500">Duration</p>
+                                        <p class="text-sm text-gray-900">{{ $campaign->duration }} days</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-500">Price</p>
+                                        <p class="text-sm text-gray-900">${{ number_format($campaign->price, 2) }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-500">Channel</p>
+                                        <a href="{{ $campaign->channel_link }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-900">View Channel</a>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    @if($campaign->advertisement_image)
+                                        <div class="relative w-full h-32 rounded-lg overflow-hidden shadow-sm bg-gray-100 flex items-center justify-center">
+                                            <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" alt="Advertisement" class="w-full h-full object-contain">
+                                        </div>
+                                    @endif
+
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <p class="text-sm font-medium text-gray-700 mb-2">Content</p>
+                                        <p class="text-sm text-gray-600 leading-relaxed">{{ Str::limit($campaign->advertisement_content, 100) }}</p>
+                                    </div>
+                                </div>
+
+                                @if($campaign->status === 'active')
+                                    <div class="countdown-container mb-4">
+                                        <p class="text-sm font-medium text-gray-500 mb-1">Campaign Timer</p>
+                                        <div class="countdown-timer" data-campaign-id="{{ $campaign->id }}" 
+                                             data-duration="{{ $campaign->duration }}"
+                                             data-start="{{ $campaign->post_submitted_at ? $campaign->post_submitted_at->toISOString() : '' }}"
+                                             data-submitted="{{ $campaign->post_submitted_at ? 'true' : 'false' }}">
+                                            <div class="countdown-text text-sm text-gray-900">
+                                                {{ $campaign->post_submitted_at ? 'Loading...' : 'Waiting for link submission...' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if($campaign->post_link)
+                                    <a href="{{ $campaign->post_link }}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full justify-center">View Post</a>
+                                @endif
+                            </div>
+                        @empty
+                            <div class="col-span-full text-center py-8 text-gray-500">
+                                No campaigns found
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>

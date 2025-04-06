@@ -15,7 +15,15 @@ class DashboardController extends Controller
             return redirect('/' . $currentUser->id . '/advertiser/dashboard');
         }
         
-        $campaigns = Campaign::where('advertiser_id', $currentUser->id)->get();
+        $campaigns = Campaign::where('advertiser_id', $currentUser->id)
+            ->orderByRaw("CASE 
+                WHEN status = 'active' AND post_link IS NULL THEN 1
+                WHEN status = 'active' AND post_link IS NOT NULL THEN 2
+                WHEN status = 'completed' THEN 3
+                WHEN status = 'pending' THEN 4
+                ELSE 5
+            END")
+            ->get();
         $activeCampaigns = $campaigns->where('status', 'active')->count();
         $totalBudget = $campaigns->sum('budget');
         $totalImpressions = $campaigns->sum(function($campaign) {

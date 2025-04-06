@@ -63,6 +63,43 @@
                         </div>
                         
                         <a href="{{ route('campaigns.channel.details', ['user' => Auth::id(), 'channel' => $channel->id]) }}" class="mt-3 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 select-channel-btn" data-channel-id="{{ $channel->id }}">Select Channel</a>
+						
+						   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const durationSelects = document.querySelectorAll('.channel-duration');
+        const channelButtons = document.querySelectorAll('.select-channel-btn');
+
+        durationSelects.forEach(select => {
+            select.addEventListener('change', function() {
+                const channelId = this.getAttribute('data-channel-id');
+                const duration = this.value;
+                const price = this.getAttribute(`data-price-${duration}`);
+
+                if (duration && price) {
+                    localStorage.setItem(`channel_${channelId}_duration`, duration);
+                    localStorage.setItem(`channel_${channelId}_price`, price);
+                }
+            });
+        });
+
+        channelButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const channelId = this.getAttribute('data-channel-id');
+                const duration = localStorage.getItem(`channel_${channelId}_duration`);
+                const price = localStorage.getItem(`channel_${channelId}_price`);
+
+                if (duration && price) {
+                    const baseUrl = this.getAttribute('href');
+                    const url = `${baseUrl}?duration=${duration}&price=${price}`;
+                    window.location.href = url;
+                } else {
+                    alert('Please select a duration first');
+                }
+            });
+        });
+    });
+    </script>
                     </div>
                 </div>
             </div>
