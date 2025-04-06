@@ -24,7 +24,7 @@
 </head>
 <body class="bg-gray-50">
     <div id="app">
-        <nav class="bg-white shadow-lg">
+        <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex">
@@ -36,8 +36,8 @@
                     </div>
 
                     <!-- Mobile menu button -->
-                    <div class="-mr-2 flex items-center sm:hidden">
-                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                    <div class="-mr-2 flex items-center sm:hidden fixed top-4 right-4 z-50">
+                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition duration-150 ease-in-out bg-white shadow-md" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
                             <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -93,7 +93,8 @@
             </div>
 
             <!-- Mobile menu -->
-            <div class="sm:hidden" id="mobile-menu">
+            <div class="sm:hidden fixed inset-0 bg-gray-600 bg-opacity-50 z-40" id="mobile-menu-backdrop" style="display: none;"></div>
+            <div class="sm:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-40 transform transition-transform duration-300 ease-in-out translate-x-full" id="mobile-menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
                     @guest
                         @if (Route::has('login'))
@@ -105,31 +106,56 @@
                         @endif
                     @else
                         @if(Auth::check())
-                            <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-                                <i class="fas fa-wallet"></i>
-                                <span class="ml-1">Wallet</span>
-                            </a>
+                            <div class="flex flex-col space-y-4 px-3 py-2">
+                                <a href="#" class="text-gray-600 hover:text-gray-900 rounded-md text-base font-medium">{{ Auth::user()->name }}</a>
+                                <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 rounded-md text-base font-medium">
+                                    <i class="fas fa-wallet"></i>
+                                    <span class="ml-1">Wallet</span>
+                                </a>
+                                <a href="{{ route('logout') }}" class="text-gray-600 hover:text-gray-900 rounded-md text-base font-medium"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                            </div>
                         @endif
-                        <a href="#" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ Auth::user()->name }}</a>
-                        <a href="{{ route('logout') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
                     @endguest
                 </div>
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mt-16">
             @yield('content')
         </main>
     </div>
 
     <script>
         // Toggle mobile menu
-        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
+        const mobileMenuButton = document.querySelector('[aria-controls="mobile-menu"]');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+        let isMobileMenuOpen = false;
+
+        if (mobileMenuButton && mobileMenu && mobileMenuBackdrop) {
+            mobileMenuButton.addEventListener('click', function() {
+                isMobileMenuOpen = !isMobileMenuOpen;
+                mobileMenuButton.setAttribute('aria-expanded', isMobileMenuOpen);
+                
+                if (isMobileMenuOpen) {
+                    mobileMenu.classList.remove('translate-x-full');
+                    mobileMenuBackdrop.style.display = 'block';
+                } else {
+                    mobileMenu.classList.add('translate-x-full');
+                    mobileMenuBackdrop.style.display = 'none';
+                }
+            });
+
+            mobileMenuBackdrop.addEventListener('click', function() {
+                isMobileMenuOpen = false;
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                mobileMenu.classList.add('translate-x-full');
+                mobileMenuBackdrop.style.display = 'none';
+            });
+        }
     
         // Handle user menu dropdown
         const userMenuButton = document.getElementById('user-menu-button');

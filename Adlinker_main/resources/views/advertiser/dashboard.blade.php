@@ -15,23 +15,23 @@
             </div>
 
                 <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="grid grid-cols-3 gap-6 mb-8">
                         <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
                             <div class="flex flex-col">
-                                <h3 class="text-lg font-medium opacity-90">Active Campaigns</h3>
-                                <p class="text-3xl font-bold mt-2">{{ $activeCampaigns }}</p>
+                                <h3 class="text-base font-medium opacity-90">Active Campaigns</h3>
+                                <p class="text-1xl font-bold mt-2">{{ $activeCampaigns }}</p>
                             </div>
                         </div>
                         <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
                             <div class="flex flex-col">
-                                <h3 class="text-lg font-medium opacity-90">Total Budget</h3>
-                                <p class="text-3xl font-bold mt-2">${{ number_format($totalBudget, 2) }}</p>
+                                <h3 class="text-base font-medium opacity-90">Total Budget</h3>
+                                <p class="text-lg font-bold mt-2">${{ number_format($totalBudget, 2) }}</p>
                             </div>
                         </div>
                         <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
                             <div class="flex flex-col">
-                                <h3 class="text-lg font-medium opacity-90">Total Impressions</h3>
-                                <p class="text-3xl font-bold mt-2">{{ number_format($totalImpressions) }}</p>
+                                <h3 class="text-base font-medium opacity-90">Total Impressions</h3>
+                                <p class="text-lg font-bold mt-2">{{ number_format($totalImpressions) }}</p>
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                                     </div>
                                     <div>
                                         <p class="text-sm font-medium text-gray-500">Channel</p>
-                                        <a href="{{ $campaign->channel_link }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-900">View Channel</a>
+                                        <a href="{{ $campaign->channel_link }}" target="_blank" class="text-xs text-indigo-600 hover:text-indigo-900">View Channel</a>
                                     </div>
                                 </div>
 
@@ -71,8 +71,8 @@
                                     @endif
 
                                     <div class="bg-gray-50 rounded-lg p-4">
-                                        <p class="text-sm font-medium text-gray-700 mb-2">Content</p>
-                                        <p class="text-sm text-gray-600 leading-relaxed">{{ Str::limit($campaign->advertisement_content, 100) }}</p>
+                                        <p class="text-xs font-medium text-gray-700 mb-2">Content</p>
+                                        <p class="text-xs text-gray-600 leading-relaxed line-clamp-3">{{ Str::limit($campaign->advertisement_content, 100) }}</p>
                                     </div>
                                 </div>
 

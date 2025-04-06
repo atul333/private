@@ -4,9 +4,8 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div class="px-6 py-4 border-b border-gray-200">
                 <h1 class="text-xl font-semibold text-gray-800">Create New Campaign</h1>
-                <a href="/{{ Auth::id() }}/advertiser/dashboard" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-150">Go Back</a>
             </div>
             <div class="p-6">
                     @if($errors->any())
