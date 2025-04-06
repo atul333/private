@@ -18,20 +18,20 @@
                     <div class="grid grid-cols-3 gap-6 mb-8">
                         <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
                             <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Active Campaigns</h3>
-                                <p class="text-1xl font-bold mt-2">{{ $activeCampaigns }}</p>
+                                <h3 class="text-sm font-medium opacity-90">Active Campaigns</h3>
+                                <p class="text-lg font-bold mt-2">{{ $activeCampaigns }}</p>
                             </div>
                         </div>
                         <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
                             <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Total Budget</h3>
-                                <p class="text-lg font-bold mt-2">${{ number_format($totalBudget, 2) }}</p>
+                                <h3 class="text-sm font-medium opacity-90">Total Budget</h3>
+                                <p class="text-base font-bold mt-2">${{ number_format($totalBudget, 2) }}</p>
                             </div>
                         </div>
                         <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
                             <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Total Impressions</h3>
-                                <p class="text-lg font-bold mt-2">{{ number_format($totalImpressions) }}</p>
+                                <h3 class="text-sm font-medium opacity-90">Total Impressions</h3>
+                                <p class="text-base font-bold mt-2">{{ number_format($totalImpressions) }}</p>
                             </div>
                         </div>
                     </div>
