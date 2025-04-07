@@ -15,23 +15,23 @@
             </div>
 
                 <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
-                            <div class="flex flex-col">
-                                <h3 class="text-lg font-medium opacity-90">Active Channels</h3>
-                                <p class="text-3xl font-bold mt-2">{{ $activeChannels }}</p>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-blue-500 rounded-lg p-6 text-white">
+                            <div class="text-center">
+                                <h3 class="text-sm font-medium">Active Channels</h3>
+                                <p class="text-xl font-bold mt-2">{{ $activeChannels }}</p>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
-                            <div class="flex flex-col">
-                                <h3 class="text-lg font-medium opacity-90">Total Earnings</h3>
-                                <p class="text-3xl font-bold mt-2">${{ number_format($totalEarnings, 2) }}</p>
+                        <div class="bg-green-500 rounded-lg p-6 text-white">
+                            <div class="text-center">
+                                <h3 class="text-sm font-medium">Total Earnings</h3>
+                                <p class="text-xl font-bold mt-2">${{ number_format($totalEarnings, 2) }}</p>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
-                            <div class="flex flex-col">
-                                <h3 class="text-lg font-medium opacity-90">Total Subscribers</h3>
-                                <p class="text-3xl font-bold mt-2">{{ $channels->sum('subscribers_count') }}</p>
+                        <div class="bg-indigo-500 rounded-lg p-6 text-white">
+                            <div class="text-center">
+                                <h3 class="text-sm font-medium">Total Subscribers</h3>
+                                <p class="text-xl font-bold mt-2">{{ $channels->sum('subscribers_count') }}</p>
                             </div>
                         </div>
                     </div>

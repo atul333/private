@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="container-custom py-6">
     <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+
             <div class="flex items-center">
                         <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,15 +35,15 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @foreach($channels as $channel)
             <div class="w-full">
-                <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                    <div class="p-4">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div class="relative bg-gray-50 p-6 text-gray-800">
                         <div class="flex justify-between items-start space-x-4 mb-3">
                             <div class="flex items-center space-x-3">
                                 @if($channel->logo_path)
                                     <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }}" class="w-12 h-12 rounded-full object-cover">
                                 @endif
                                 <div>
-                                    <h3 class="font-semibold text-gray-900">{{ $channel->name }}</h3>
+                                    <h3 class="font-semibold text-gray-800">{{ $channel->name }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -52,19 +53,19 @@
                         </div>
                         
                         <div class="flex items-center space-x-2 mt-3 mb-4">
-                            <i class="bi bi-people-fill text-gray-600"></i>
+                            <svg class="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
                             <span class="text-sm text-gray-600">{{ number_format($channel->subscribers_count) }} Subscribers</span>
                         </div>
                         
-                        <div class="flex items-center space-x-2 mb-4">
-                            <i class="bi bi-link-45deg text-gray-600"></i>
-                            @if($channel->link)
-                                <a href="{{ $channel->link }}" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 hover:text-blue-800 hover:underline">View Channel</a>
-                                    
-                                </a>
-                            @endif
-                            
-                        </div>
+                    </div>
+                    <div class="p-6 bg-white">
+                        @if($channel->link)
+                            <a href="{{ $channel->link }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mb-4">
+                                View Channel
+                            </a>
+                        @endif
                         
                         <div class="mb-3">
                             <select name="durations[{{ $channel->id }}]" class="w-auto min-w-fit rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-sm channel-duration" data-channel-id="{{ $channel->id }}" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
