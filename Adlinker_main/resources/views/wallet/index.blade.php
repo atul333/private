@@ -34,20 +34,20 @@
         <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl shadow-lg p-6">
                 <div class="text-white">
-                    <h5 class="text-lg font-semibold mb-3">Available Balance</h5>
-                    <h2 class="text-2xl font-bold">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
+                    <h5 class="text-base font-semibold mb-2">Available Balance</h5>
+                    <h2 class="text-xl font-bold">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
                 </div>
             </div>
             <div class="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl shadow-lg p-6">
                 <div class="text-white">
-                    <h5 class="text-lg font-semibold mb-3">Pending Payments</h5>
-                    <h2 class="text-2xl font-bold">${{ number_format($pendingPayments ?? 0.00, 2) }}</h2>
+                    <h5 class="text-base font-semibold mb-2">Pending Payments</h5>
+                    <h2 class="text-xl font-bold">${{ number_format($pendingPayments ?? 0.00, 2) }}</h2>
                 </div>
             </div>
             <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl shadow-lg p-6">
                 <div class="text-white">
-                    <h5 class="text-lg font-semibold mb-3">Payment Done</h5>
-                    <h2 class="text-2xl font-bold">${{ number_format($completedPayments ?? 0.00, 2) }}</h2>
+                    <h5 class="text-base font-semibold mb-2">Payment Done</h5>
+                    <h2 class="text-xl font-bold">${{ number_format($completedPayments ?? 0.00, 2) }}</h2>
                 </div>
             </div>
         </div>
@@ -57,33 +57,21 @@
             </div>
             <div class="p-6">
                 @if(isset($transactions) && count($transactions) > 0)
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
+                    <div class="w-full">
+                        <table class="min-w-full table-fixed divide-y divide-gray-200">
                             <thead>
                                 <tr class="bg-gray-50">
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="w-1/4 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="w-1/2 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th class="w-1/4 px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach($transactions as $transaction)
                                 <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">{{ $transaction->description }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${{ number_format($transaction->amount, 2) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($transaction->type === 'withdrawal')
-                                            <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $transaction->withdrawal && $transaction->withdrawal->status === 'payment done' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                                {{ $transaction->withdrawal ? ucfirst($transaction->withdrawal->status) : 'Pending' }}
-                                            </span>
-                                        @else
-                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                                {{ $transaction->status }}
-                                            </span>
-                                        @endif
-                                    </td>
+                                    <td class="px-4 py-4 text-sm text-gray-600">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-600 break-words">{{ $transaction->description }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-600">${{ number_format($transaction->amount, 2) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
