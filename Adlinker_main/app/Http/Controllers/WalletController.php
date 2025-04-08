@@ -46,10 +46,21 @@ class WalletController extends Controller
         }
     }
 
-    public function withdraw(Request $request)
+    public function showWithdrawForm()
+    {
+        $user = auth()->user();
+        $wallet = Wallet::where('user_id', $user->id)->firstOrFail();
+        
+        return view('wallet.withdraw', [
+            'availableBalance' => $wallet->balance
+        ]);
+    }
+
+    public function processWithdrawal(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:0.01'
+            'amount' => 'required|numeric|min:0.01',
+            'payment_method' => 'required|in:upi,bank_transfer'
         ]);
 
         $user = auth()->user();
@@ -57,7 +68,30 @@ class WalletController extends Controller
 
         try {
             if ($wallet->withdraw($request->amount)) {
-                return redirect()->back()->with('success', 'Withdrawal successful');
+                // Create withdrawal record
+                $withdrawal = new \App\Models\Withdrawal([
+                    'user_id' => $user->id,
+                    'amount' => $request->amount,
+                    'status' => 'pending',
+                    'payment_method' => $request->payment_method,
+                ]);
+
+                // Set payment details based on payment method
+                if ($request->payment_method === 'upi') {
+                    $withdrawal->first_name = $request->first_name_upi;
+                    $withdrawal->upi_id = $request->upi_id;
+                    $withdrawal->mobile_number = $request->mobile_number_upi;
+                } else {
+                    $withdrawal->account_holder_name = $request->account_holder_name;
+                    $withdrawal->account_number = $request->account_number;
+                    $withdrawal->ifsc_code = $request->ifsc_code;
+                    $withdrawal->bank_name = $request->bank_name;
+                    $withdrawal->mobile_number = $request->mobile_number_bank;
+                }
+
+                $withdrawal->save();
+
+                return redirect()->route('publisher.wallet.index', ['id' => $user->id])->with('success', 'Your withdrawal request has been sent successfully. The amount will be credited to your account within 2 business days.');
             }
             return redirect()->back()->with('error', 'Insufficient funds');
         } catch (\Exception $e) {

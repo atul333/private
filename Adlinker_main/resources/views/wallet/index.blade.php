@@ -17,7 +17,7 @@
                         </a>
                         <h1 class="text-3xl font-bold text-gray-800">Wallet Balance</h2>
                     </div>    
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#withdrawFundsModal">Withdraw Funds</button>
+            <a href="{{ route('publisher.wallet.withdraw', ['id' => Auth::user()->id]) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out inline-block">Withdraw Funds</a>
             @else
             <div class="flex items-center">
                         <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">

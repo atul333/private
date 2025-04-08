@@ -8,7 +8,8 @@ Route::middleware(['auth', 'role:publisher'])->group(function () {
     Route::prefix('{id}/publisher')->group(function () {
         Route::get('/wallet', [WalletController::class, 'index'])->name('publisher.wallet.index');
         Route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('publisher.wallet.deposit');
-        Route::post('/wallet/withdraw', [WalletController::class, 'withdraw'])->name('publisher.wallet.withdraw');
+        Route::get('/wallet/withdraw', [WalletController::class, 'showWithdrawForm'])->name('publisher.wallet.withdraw');
+        Route::post('/wallet/withdraw', [WalletController::class, 'processWithdrawal'])->name('publisher.wallet.process-withdrawal');
     })->where('id', auth()->id());
 });
 
