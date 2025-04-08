@@ -35,18 +35,31 @@ class Wallet extends Model
         ]);
     }
 
-    public function withdraw(float $amount, string $description = null): bool
+    public function withdraw(float $amount, string $payment_method = null, string $description = null): bool
     {
         if ($this->balance < $amount) {
             return false;
         }
 
-        return $this->createTransaction([
-            'type' => 'withdrawal',
-            'amount' => -$amount,
-            'status' => 'completed',
-            'description' => $description ?? 'Wallet withdrawal',
-        ]);
+        $this->balance -= $amount;
+        $this->pending_balance += $amount;
+        
+        if ($this->save()) {
+            $transactionDescription = sprintf(
+                'Wallet withdrawal %s - $%.2f',
+                $payment_method ,
+                $amount
+            );
+
+            return $this->transactions()->create([
+                'type' => 'withdrawal',
+                'amount' => -$amount,
+                'status' => 'pending',
+                'description' => $description ?? $transactionDescription,
+            ]) ? true : false;
+        }
+
+        return false;
     }
 
     protected function createTransaction(array $attributes): bool

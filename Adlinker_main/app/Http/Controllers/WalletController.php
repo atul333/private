@@ -17,12 +17,20 @@ class WalletController extends Controller
 
         $transactions = $wallet->transactions()
             ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
+            ->paginate(10);
+
+        $completedPayments = \App\Models\Withdrawal::where('user_id', $user->id)
+            ->where('status', 'payment done')
+            ->sum('amount');
+
+        $pendingPayments = \App\Models\Withdrawal::where('user_id', $user->id)
+            ->where('status', 'pending')
+            ->sum('amount');
 
         return view('wallet.index', [
             'availableBalance' => $wallet->balance,
-            'pendingPayments' => $wallet->pending_balance,
+            'pendingPayments' => abs($pendingPayments),
+            'completedPayments' => abs($completedPayments),
             'transactions' => $transactions
         ]);
     }

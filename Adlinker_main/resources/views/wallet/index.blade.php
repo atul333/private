@@ -31,17 +31,23 @@
                 <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
             @endif
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl shadow-lg p-6">
                 <div class="text-white">
-                    <h5 class="text-xl font-semibold mb-4">Available Balance</h5>
-                    <h2 class="text-4xl font-bold">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
+                    <h5 class="text-lg font-semibold mb-3">Available Balance</h5>
+                    <h2 class="text-2xl font-bold">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
                 </div>
             </div>
             <div class="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl shadow-lg p-6">
                 <div class="text-white">
-                    <h5 class="text-xl font-semibold mb-4">Pending Payments</h5>
-                    <h2 class="text-4xl font-bold">${{ number_format($pendingPayments ?? 0.00, 2) }}</h2>
+                    <h5 class="text-lg font-semibold mb-3">Pending Payments</h5>
+                    <h2 class="text-2xl font-bold">${{ number_format($pendingPayments ?? 0.00, 2) }}</h2>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl shadow-lg p-6">
+                <div class="text-white">
+                    <h5 class="text-lg font-semibold mb-3">Payment Done</h5>
+                    <h2 class="text-2xl font-bold">${{ number_format($completedPayments ?? 0.00, 2) }}</h2>
                 </div>
             </div>
         </div>
@@ -68,14 +74,40 @@
                                     <td class="px-6 py-4 text-sm text-gray-600">{{ $transaction->description }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${{ number_format($transaction->amount, 2) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $transaction->status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                            {{ ucfirst($transaction->status) }}
-                                        </span>
+                                        @if($transaction->type === 'withdrawal')
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $transaction->withdrawal && $transaction->withdrawal->status === 'payment done' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                {{ $transaction->withdrawal ? ucfirst($transaction->withdrawal->status) : 'Pending' }}
+                                            </span>
+                                        @else
+                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                                {{ $transaction->status }}
+                                            </span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="mt-6 px-6 py-4 bg-gray-50 rounded-b-xl border-t border-gray-200">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="w-full sm:w-auto">
+                                    <p class="text-sm text-gray-600">
+                                        Showing
+                                        <span class="font-semibold text-gray-900">{{ $transactions->firstItem() }}</span>
+                                        to
+                                        <span class="font-semibold text-gray-900">{{ $transactions->lastItem() }}</span>
+                                        of
+                                        <span class="font-semibold text-gray-900">{{ $transactions->total() }}</span>
+                                        results
+                                    </p>
+                                </div>
+                                <div class="w-full sm:w-auto flex justify-center">
+                                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                                        {{ $transactions->onEachSide(1)->links() }}
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 @else
                     <p class="text-center text-gray-500">No transactions found.</p>
