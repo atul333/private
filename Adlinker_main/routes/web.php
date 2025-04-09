@@ -1,9 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RazorpayController;
 
 // Include wallet routes
 Route::middleware(['auth'])->group(function () {
+    // Razorpay Routes
+    Route::post('/razorpay/create-order', [RazorpayController::class, 'createOrder'])->name('razorpay.create.order');
+    Route::post('/razorpay/verify-payment', [RazorpayController::class, 'verifyPayment'])->name('razorpay.verify.payment');
     require __DIR__.'/wallet.php';
 });
 use Illuminate\Support\Facades\Auth;

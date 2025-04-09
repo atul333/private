@@ -52,7 +52,7 @@
                                     @foreach($transactions as $transaction)
                                     <tr class="hover:bg-gray-50 transition-colors duration-200">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Payment for campaign on "{{ $transaction->channel_name }}" for {{ $transaction->duration }} days</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">"Payment for campaign on" {{ $transaction->channel_name }} 'for' {{ $transaction->duration }} :days"</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ number_format($transaction->amount, 2) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $transaction->status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">

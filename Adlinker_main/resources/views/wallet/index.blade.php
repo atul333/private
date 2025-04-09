@@ -28,14 +28,14 @@
                         </a>
                         <h1 class="text-3xl font-bold text-gray-800">Wallet Balance</h2>
                     </div>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
+                <a href="{{ route('advertiser.wallet.add-funds-form', ['id' => Auth::user()->id]) }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out inline-block">Add Funds</a>
             @endif
         </div>
         <div class="grid grid-cols-3 gap-6 mb-8">
             <div class="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl shadow-lg p-6">
                 <div class="text-white">
                     <h5 class="text-base font-semibold mb-2">Available Balance</h5>
-                    <h2 class="text-xl font-bold">${{ number_format($availableBalance ?? 0.00, 2) }}</h2>
+                    <h2 class="text-xl font-bold">${{ number_format($availableBalance ?? 0.00 , 2) }} USD</h2>
                 </div>
             </div>
             <div class="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl shadow-lg p-6">
@@ -105,5 +105,7 @@
         </div>
     </div>
 </div>
+
+
 
 @endsection

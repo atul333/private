@@ -25,7 +25,7 @@ class Wallet extends Model
         return $this->hasMany(WalletTransaction::class);
     }
 
-    public function deposit(float $amount, string $description = null): bool
+    public function deposit(float $amount, ?string $description = null): bool
     {
         return $this->createTransaction([
             'type' => 'deposit',
@@ -35,14 +35,17 @@ class Wallet extends Model
         ]);
     }
 
-    public function withdraw(float $amount, string $payment_method = null, string $description = null): bool
+    public function withdraw(float $amount, ?string $payment_method = null, ?string $description = null): bool
     {
-        if ($this->balance < $amount) {
+        // Convert INR to USD for comparison
+        $usdAmount = $amount;
+        
+        if ($this->balance < $usdAmount) {
             return false;
         }
 
-        $this->balance -= $amount;
-        $this->pending_balance += $amount;
+        $this->balance -= $usdAmount;
+        $this->pending_balance += $usdAmount;
         
         if ($this->save()) {
             $transactionDescription = sprintf(
@@ -64,6 +67,9 @@ class Wallet extends Model
 
     protected function createTransaction(array $attributes): bool
     {
+        // Convert INR to USD by dividing by 85
+        $attributes['amount'] = $attributes['amount'] ;
+        
         $transaction = $this->transactions()->create($attributes);
 
         if ($transaction) {

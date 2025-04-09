@@ -19,5 +19,7 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
         Route::get('/wallet', [WalletController::class, 'index'])->name('advertiser.wallet.index');
         Route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('advertiser.wallet.deposit');
         Route::post('/wallet/withdraw', [WalletController::class, 'withdraw'])->name('advertiser.wallet.withdraw');
+        Route::get('/wallet/add-funds', [WalletController::class, 'showAddFundsForm'])->name('advertiser.wallet.add-funds-form');
+        Route::post('/wallet/add-funds', [WalletController::class, 'addFunds'])->name('advertiser.wallet.add-funds');
     })->where('id', auth()->id());
 });

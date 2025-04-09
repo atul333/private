@@ -27,6 +27,7 @@ class WalletController extends Controller
             ->where('status', 'pending')
             ->sum('amount');
 
+        // Convert all amounts from INR to USD
         return view('wallet.index', [
             'availableBalance' => $wallet->balance,
             'pendingPayments' => abs($pendingPayments),
@@ -38,7 +39,7 @@ class WalletController extends Controller
     public function deposit(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:0.01'
+            'amount' => 'required|numeric|min:1' // Minimum 1 INR
         ]);
 
         $user = auth()->user();
@@ -54,6 +55,16 @@ class WalletController extends Controller
         }
     }
 
+    public function showAddFundsForm()
+    {
+        $user = auth()->user();
+        $wallet = Wallet::where('user_id', $user->id)->firstOrFail();
+        
+        return view('wallet.add-funds', [
+            'availableBalance' => $wallet->balance
+        ]);
+    }
+
     public function showWithdrawForm()
     {
         $user = auth()->user();
@@ -64,12 +75,61 @@ class WalletController extends Controller
         ]);
     }
 
-    public function processWithdrawal(Request $request)
+    public function addFunds(Request $request)
     {
         $request->validate([
             'amount' => 'required|numeric|min:0.01',
-            'payment_method' => 'required|in:upi,bank_transfer'
+            'fullName' => 'required|string|max:255',
+            'mobileNumber' => 'required|string|max:20'
         ]);
+
+        $user = auth()->user();
+        $wallet = Wallet::where('user_id', $user->id)->firstOrFail();
+        
+        try {
+            // Amount is in INR, will be converted to USD in deposit method
+            if ($wallet->deposit($request->amount)) {
+                // Create transaction record with INR amount (will be converted to USD in createTransaction)
+                $wallet->transactions()->create([
+                    'amount' => $request->amount,
+                    'type' => 'credit',
+                    'description' => 'Funds added by ' . $request->fullName . ' (INR ' . number_format($request->amount, 2) . ')',
+                    'full_name' => $request->fullName,
+                    'mobile_number' => $request->mobileNumber
+                ]);
+                
+                return redirect()->back()->with('success', 'Funds added successfully');
+            }
+            return redirect()->back()->with('error', 'Failed to add funds');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while processing your payment');
+        }
+    }
+
+    public function processWithdrawal(Request $request)
+    {
+        $rules = [
+            'amount' => 'required|numeric|min:0.01',
+            'payment_method' => 'required|in:upi,bank_transfer'
+        ];
+
+        if ($request->payment_method === 'upi') {
+            $rules = array_merge($rules, [
+                'first_name_upi' => 'required|string|max:255',
+                'upi_id' => 'required|string|max:255',
+                'mobile_number_upi' => 'required|string|max:20'
+            ]);
+        } else {
+            $rules = array_merge($rules, [
+                'account_holder_name' => 'required|string|max:255',
+                'account_number' => 'required|string|max:50',
+                'ifsc_code' => 'required|string|max:20',
+                'bank_name' => 'required|string|max:255',
+                'mobile_number_bank' => 'required|string|max:20'
+            ]);
+        }
+
+        $request->validate($rules);
 
         $user = auth()->user();
         $wallet = Wallet::where('user_id', $user->id)->firstOrFail();
