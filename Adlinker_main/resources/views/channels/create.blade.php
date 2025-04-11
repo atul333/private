@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-    <div class="relative py-3 sm:max-w-xl sm:mx-auto w-full px-4 sm:px-0">
-        <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
-            <div class="max-w-md mx-auto">
+    <div class="container-custom py-3 mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto bg-white shadow rounded-3xl p-6 sm:p-10">
+            <div class="w-full">
             <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
