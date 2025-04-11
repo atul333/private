@@ -49,7 +49,7 @@ class RazorpayController extends Controller
     {
         try {
             // Fetch payment input from frontend
-            $input = $request->only(['razorpay_payment_id', 'razorpay_order_id', 'razorpay_signature']);
+            $input = $request->only(['razorpay_payment_id', 'razorpay_order_id', 'razorpay_signature', 'fullName', 'mobileNumber']);
 
             // Log input data for debugging
             Log::info('Razorpay Payment Verification Input:', $input);
@@ -96,7 +96,9 @@ class RazorpayController extends Controller
                         'type' => 'credit',
                         'status' => 'completed',
                         'payment_id' => $input['razorpay_payment_id'],
-                        'order_id' => $input['razorpay_order_id']
+                        'order_id' => $input['razorpay_order_id'],
+                        'full_name' => $input['fullName'],
+                        'mobile_number' => $input['mobileNumber']
                     ]);
 
                     // Create wallet transaction record for tracking
@@ -106,8 +108,8 @@ class RazorpayController extends Controller
                         'type' => 'credit',
                         'status' => 'completed',
                         'description' => 'Payment via Razorpay (ID: ' . $input['razorpay_payment_id'] . ') - Converted from INR ' . $amount,
-                        'full_name' => $request->input('full_name', $user->name),
-                        'mobile_number' => $request->input('mobile_number', $user->mobile_number ?? '')
+                        'full_name' => $request->input('fullName', $user->name),
+                        'mobile_number' => $request->input('mobileNumber', $user->mobile_number ?? '')
                     ]);
 
                     DB::commit();

@@ -30,7 +30,7 @@ class CampaignController extends Controller
         if (auth()->id() != $user) {
             abort(403, 'Unauthorized action.');
         }
-        $channels = Channel::where('status', 'active')->get();
+        $channels = Channel::where('status', 'active')->paginate(6);
         return view('campaigns.create', compact('channels'));
     }
 

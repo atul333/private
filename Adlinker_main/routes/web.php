@@ -28,6 +28,13 @@ Auth::routes();
 // Include auth routes
 require __DIR__.'/auth.php';
 
+// Policy and Information Routes
+Route::get('/terms', function () { return view('terms'); })->name('terms');
+Route::get('/privacy', function () { return view('privacy'); })->name('privacy');
+Route::get('/refund', function () { return view('refund'); })->name('refund');
+Route::get('/cancellation', function () { return view('cancellation'); })->name('cancellation');
+Route::get('/contact', function () { return view('contact'); })->name('contact');
+
 // Redirect root to home
 Route::get('/', function () {
     if (Auth::check()) {

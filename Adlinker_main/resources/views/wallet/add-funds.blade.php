@@ -39,14 +39,16 @@
                     </div>
                 @endif
 
-                <form id="payment-form" class="space-y-6" onsubmit="return false;">
+                <form id="payment-form" class="space-y-6" onsubmit="return validateForm();">
                     @csrf
 
                     <div>
-                        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500">*</span></label>
                         <div class="mt-1">
-                            <input id="fullName" type="text" name="fullName" value="{{ old('fullName') }}" required autofocus
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm @error('fullName') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror">
+                            <input id="fullName" type="text" name="fullName" value="{{ old('fullName') }}" required
+                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm @error('fullName') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror"
+                                placeholder="Enter your full name">
+                            <p id="fullNameError" class="mt-2 text-sm text-red-600 hidden">Full name is required</p>
                             @error('fullName')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -54,10 +56,10 @@
                     </div>
 
                     <div>
-                        <label for="mobileNumber" class="block text-sm font-medium text-gray-700">Mobile Number</label>
+                        <label for="mobileNumber" class="block text-sm font-medium text-gray-700">Mobile Number <span class="text-red-500">*</span></label>
                         <div class="mt-1">
-                            <input id="mobileNumber" type="tel" name="mobileNumber" value="{{ old('mobileNumber') }}" required pattern="[0-9]{10}" maxlength="10" title="Please enter a valid 10-digit mobile number"
-                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm @error('mobileNumber') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror" placeholder="Enter 10 digit mobile number">
+                            <input id="mobileNumber" type="tel" name="mobileNumber" value="{{ old('mobileNumber') }}" required pattern="[0-9]{10}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm @error('mobileNumber') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror" placeholder="Enter 10 digit mobile number">
+                            <p id="mobileNumberError" class="mt-2 text-sm text-red-600 hidden">Please enter a valid 10-digit mobile number</p>
                             @error('mobileNumber')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -65,7 +67,7 @@
                     </div>
 
                     <div>
-                        <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
+                        <label for="amount" class="block text-sm font-medium text-gray-700">Amount <span class="text-red-500">*</span></label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">$</span>
@@ -73,6 +75,7 @@
                             <input type="number" name="amount" id="amount" step="0.01" min="0.01" value="{{ old('amount') }}" required
                                 class="appearance-none block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm @error('amount') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror"
                                 placeholder="0.00">
+                            <p id="amountError" class="mt-2 text-sm text-red-600 hidden">Please enter a valid amount</p>
                             @error('amount')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -88,8 +91,44 @@
 
                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                 <script>
+                function validateForm() {
+                    let isValid = true;
+                    const fullName = document.getElementById('fullName');
+                    const mobileNumber = document.getElementById('mobileNumber');
+                    const amount = document.getElementById('amount');
+                    const fullNameError = document.getElementById('fullNameError');
+                    const mobileNumberError = document.getElementById('mobileNumberError');
+                    const amountError = document.getElementById('amountError');
+
+                    // Reset error messages
+                    fullNameError.classList.add('hidden');
+                    mobileNumberError.classList.add('hidden');
+                    amountError.classList.add('hidden');
+
+                    // Validate Full Name
+                    if (!fullName.value.trim()) {
+                        fullNameError.classList.remove('hidden');
+                        isValid = false;
+                    }
+
+                    // Validate Mobile Number
+                    if (!mobileNumber.value.trim() || !/^[0-9]{10}$/.test(mobileNumber.value)) {
+                        mobileNumberError.classList.remove('hidden');
+                        isValid = false;
+                    }
+
+                    // Validate Amount
+                    if (!amount.value || parseFloat(amount.value) <= 0) {
+                        amountError.classList.remove('hidden');
+                        isValid = false;
+                    }
+
+                    return isValid;
+                }
+
                 document.getElementById('rzp-button').addEventListener('click', function(e) {
                     e.preventDefault();
+                    if (!validateForm()) return;
                     
                     const form = document.getElementById('payment-form');
                     const formData = new FormData(form);
@@ -128,7 +167,9 @@
                                     body: JSON.stringify({
                                         razorpay_payment_id: response.razorpay_payment_id,
                                         razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_signature: response.razorpay_signature
+                                        razorpay_signature: response.razorpay_signature,
+                                        fullName: document.getElementById('fullName').value,
+                                        mobileNumber: document.getElementById('mobileNumber').value
                                     })
                                 })
                                 .then(response => {

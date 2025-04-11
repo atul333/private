@@ -14,7 +14,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <span class="text-2xl font-bold text-blue-600">AdLinker</span>
+                    <span class="text-2xl font-bold text-blue-600">SocialAdLinker</span>
                 </div>
                 <div class="flex items-center space-x-4">
                     @auth
@@ -190,8 +190,50 @@
     <!-- Footer -->
     <footer class="bg-gray-900">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <p class="text-base text-gray-400">&copy; {{ date('Y') }} AdLinker. All rights reserved.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info & Contact -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Contact Us</h3>
+                    <div class="text-gray-400 space-y-2">
+                        <p><i class="fas fa-envelope mr-2"></i>socialadlinker@gmail.com</p>
+                        <p><i class="fas fa-phone mr-2"></i>+91 8329707239</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Yashraj meadows, sector 20, Airoli, Navi mumbai, 400708</p>
+                    </div>
+                </div>
+
+                <!-- Policies Column 1 -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="text-gray-400 space-y-2">
+                        <li><a href="/terms" class="hover:text-white transition duration-150">Terms & Conditions</a></li>
+                        <li><a href="/privacy" class="hover:text-white transition duration-150">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policies Column 2 -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Policies</h3>
+                    <ul class="text-gray-400 space-y-2">
+                        <li><a href="/refund" class="hover:text-white transition duration-150">Refund Policy</a>
+                            <p class="text-sm text-gray-500 mt-1">7-day refund window for unused credits</p>
+                        </li>
+                        <li><a href="/cancellation" class="hover:text-white transition duration-150">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Links -->
+                <div>
+                    <h3 class="text-white text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150"><i class="fab fa-telegram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150"><i class="fab fa-linkedin text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-center text-base text-gray-400">&copy; {{ date('Y') }} AdLinker. All rights reserved.</p>
             </div>
         </div>
     </footer>

@@ -121,6 +121,9 @@
                             </div>
                         @endforelse
                     </div>
+                    <div class="mt-6">
+                        {{ $campaigns->links() }}
+                    </div>
                 </div>
             </div>
         </div>

@@ -19,6 +19,13 @@
                
             </div>
             <div class="p-6">
+                    <div class="mb-6 flex justify-end">
+                        <select id="sortSubscribers" class="rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <option value="default">Sort by Subscribers</option>
+                            <option value="asc">Lowest to Highest</option>
+                            <option value="desc">Highest to Lowest</option>
+                        </select>
+                    </div>
                     @if($errors->any())
                         <div class="alert alert-danger">
                             <ul class="mb-0">
@@ -121,7 +128,8 @@
         @endforeach
     </div>
 
-    <div class="d-flex justify-content-start mt-4">
+    <div class="d-flex justify-content-center mt-8">
+        {{ $channels->links() }}
     </div>
     
 </form>
@@ -136,6 +144,28 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const durationSelects = document.querySelectorAll('.channel-duration');
+    const sortSelect = document.getElementById('sortSubscribers');
+    const channelGrid = document.querySelector('.grid');
+
+    sortSelect.addEventListener('change', function() {
+        const channels = Array.from(channelGrid.children);
+        const sortOrder = this.value;
+
+        if (sortOrder !== 'default') {
+            channels.sort((a, b) => {
+                const subscribersTextA = a.querySelector('.text-sm.text-gray-600').textContent;
+                const subscribersTextB = b.querySelector('.text-sm.text-gray-600').textContent;
+                
+                const subscribersA = parseInt(subscribersTextA.replace(/[^0-9]/g, ''));
+                const subscribersB = parseInt(subscribersTextB.replace(/[^0-9]/g, ''));
+                
+                return sortOrder === 'asc' ? subscribersA - subscribersB : subscribersB - subscribersA;
+            });
+
+            channelGrid.innerHTML = '';
+            channels.forEach(channel => channelGrid.appendChild(channel));
+        }
+    });
 });
 </script>
 @endpush

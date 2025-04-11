@@ -23,7 +23,7 @@ class DashboardController extends Controller
                 WHEN status = 'pending' THEN 4
                 ELSE 5
             END")
-            ->get();
+            ->paginate(6);
         $activeCampaigns = $campaigns->where('status', 'active')->count();
         $totalBudget = $campaigns->sum('budget');
         $totalImpressions = $campaigns->sum(function($campaign) {
