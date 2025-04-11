@@ -52,14 +52,14 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                                     <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-2">
                                         <div class="text-center">
-                                            <i class="fas fa-clock text-xl text-indigo-500"></i>
+                                            <i class="fas fa-clock text-lg text-indigo-500"></i>
                                             <h5 class="text-sm font-medium text-gray-900">Duration</h5>
                                             <p class="text-base text-indigo-600">{{ request('duration') }} Days</p>
                                         </div>
                                     </div>
                                     <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-2">
                                         <div class="text-center">
-                                            <i class="fas fa-tag text-xl text-indigo-500"></i>
+                                            <i class="fas fa-tag text-lg text-indigo-500"></i>
                                             <h5 class="text-sm font-medium text-gray-900">Price</h5>
                                             <p class="text-base text-indigo-600">${{ request('price') }}</p>
                                         </div>

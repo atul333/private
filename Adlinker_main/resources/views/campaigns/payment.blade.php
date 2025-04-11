@@ -13,7 +13,7 @@
                     <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
                         <div class="text-center space-y-2">
                             <h3 class="text-lg font-medium opacity-90">Payment Details</h3>
-                            <p class="text-xl">Campaign Duration: {{ $campaign->duration }} Days</p>
+                            <p class="text-lg">Campaign Duration: {{ $campaign->duration }} Days</p>
                             <p class="text-3xl font-bold mt-2">Amount: ${{ number_format($campaign->price, 2) }}</p>
                         </div>
                     </div>

@@ -5,7 +5,7 @@
     <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600">
-                <h2 class="text-xl font-semibold text-white">Add Funds</h2>
+                <h2 class="text-lg font-semibold text-white">Add Funds</h2>
             </div>
 
             <div class="p-6">

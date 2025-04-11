@@ -34,7 +34,7 @@
             </div>
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h2 class="text-xl font-semibold text-gray-800">Transaction History</h2>
+                    <h2 class="text-lg font-semibold text-gray-800">Transaction History</h2>
                 </div>
                 <div class="p-6">
                     @if(isset($transactions) && count($transactions) > 0)

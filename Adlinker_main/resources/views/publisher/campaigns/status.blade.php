@@ -12,7 +12,7 @@
                             </svg>
                             Back
                         </a>
-                        <h1 class="text-xl font-semibold text-gray-800">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
+                        <h1 class="text-lg font-semibold text-gray-800">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
                     </div>
 
               

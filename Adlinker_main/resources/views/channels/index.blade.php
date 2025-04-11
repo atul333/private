@@ -17,7 +17,7 @@
                                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                                     <div class="p-6">
                                         <div class="flex items-center justify-between mb-4">
-                                            <h3 class="text-xl font-semibold text-gray-800">{{ $channel->name }}</h3>
+                                            <h3 class="text-lg font-semibold text-gray-800">{{ $channel->name }}</h3>
                                             <span class="px-3 py-1 rounded-full text-sm font-medium {{ $channel->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
                                                 {{ ucfirst($channel->status) }}
                                             </span>
