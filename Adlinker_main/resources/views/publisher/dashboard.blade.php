@@ -18,19 +18,19 @@
                     <div class="grid grid-cols-3 gap-4">
                         <div class="bg-blue-500 rounded-lg p-6 text-white">
                             <div class="text-center">
-                                <h3 class="text-base font-medium">Active Channels</h3>
+                                <h3 class="text-[0.65rem] font-medium">Active Channels</h3>
                                 <p class="text-base font-bold mt-2">{{ $activeChannels }}</p>
                             </div>
                         </div>
                         <div class="bg-green-500 rounded-lg p-6 text-white">
                             <div class="text-center">
-                                <h3 class="text-base font-medium">Total Earnings</h3>
+                                <h3 class="text-[0.65rem] font-medium">Total Earnings</h3>
                                 <p class="text-base font-bold mt-2">${{ number_format($totalEarnings, 2) }}</p>
                             </div>
                         </div>
                         <div class="bg-indigo-500 rounded-lg p-6 text-white">
                             <div class="text-center">
-                                <h3 class="text-base font-medium">Total Subscribers</h3>
+                                <h3 class="text-[0.65rem] font-medium">Total Subscribers</h3>
                                 <p class="text-base font-bold mt-2">{{ $channels->sum('subscribers_count') }}</p>
                             </div>
                         </div>
@@ -69,21 +69,21 @@
                                         
                                         <div class="border-t border-gray-100 pt-4">
                                             <div class="flex items-center justify-between mb-4">
-                                                <span class="text-sm text-gray-500">Earnings</span>
+                                                <span class="text-[0.65rem] text-gray-500">Earnings</span>
                                                 <span class="text-sm font-semibold text-green-600">${{ number_format($channel->earnings ?? 0, 2) }}</span>
                                             </div>
                                             
                                             <div class="flex items-center justify-between space-x-3">
                                                 <div class="flex space-x-2">
-                                                    <a href="{{ route('channels.show', ['user' => Auth::id(), 'channel' => $channel]) }}" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    <a href="{{ route('channels.show', ['user' => Auth::id(), 'channel' => $channel]) }}" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-[0.65rem] font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                         View
                                                     </a>
-                                                    <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                    <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-[0.65rem] font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                         Edit
                                                     </a>
                                                 </div>
                                                 <a href="{{ route('publisher.channel.campaigns', ['user' => Auth::id(), 'channel' => $channel]) }}" 
-                                                   class="inline-flex items-center px-3 py-1.5 rounded-md {{ $channel->campaigns->count() > 0 ? 'bg-blue-100 text-blue-sm hover:bg-blue-200' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                                                   class="inline-flex items-center px-3 py-1.5 rounded-md {{ $channel->campaigns->count() > 0 ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
                                                     Ad Details
                                                     @if($channel->campaigns->count() > 0)
                                                         <span class="ml-2 px-2 py-0.5 text-[0.65rem] rounded-full bg-blue-200">{{ $channel->campaigns->count() }}</span>

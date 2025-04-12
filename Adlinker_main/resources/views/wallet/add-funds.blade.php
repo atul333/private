@@ -172,23 +172,56 @@
                                         mobileNumber: document.getElementById('mobileNumber').value
                                     })
                                 })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Payment verification failed');
-                                    }
-                                    return response.json();
-                                })
+                                .then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
                                         window.location.href = '{{ Auth::user()->role === "publisher" ? route("publisher.wallet.index") : "/" . Auth::user()->id . "/advertiser/wallet" }}';
                                     } else {
-                                        throw new Error(data.message || 'Payment verification failed');
+                                        // Remove any existing error messages
+                                        const existingErrors = document.querySelectorAll('.error-message');
+                                        existingErrors.forEach(error => error.remove());
+                                        
+                                        // Create new error message
+                                        const errorDiv = document.createElement('div');
+                                        errorDiv.className = 'mb-4 p-4 rounded-md bg-red-50 border border-red-200 error-message';
+                                        errorDiv.innerHTML = `
+                                            <div class="flex">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <p class="text-sm font-medium text-red-800">${data.error || data.message || 'Payment verification failed. Please try again or contact support.'}</p>
+                                                </div>
+                                            </div>
+                                        `;
+                                        const form = document.getElementById('payment-form');
+                                        form.insertBefore(errorDiv, form.firstChild);
+                                        
+                                        // Reset the form state
+                                        document.getElementById('rzp-button').disabled = false;
                                     }
                                 })
                                 .catch(error => {
                                     console.error('Payment verification error:', error);
-                                    alert(error.message || 'An error occurred during payment verification. Please contact support if the issue persists.');
-                                    window.location.reload();
+                                    // Display error in the UI
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'mb-4 p-4 rounded-md bg-red-50 border border-red-200';
+                                    errorDiv.innerHTML = `
+                                        <div class="flex">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-red-800">An error occurred during payment verification. Please try again or contact support.</p>
+                                            </div>
+                                        </div>
+                                    `;
+                                    const form = document.getElementById('payment-form');
+                                    form.insertBefore(errorDiv, form.firstChild);
                                 });
                             },
                             prefill: {

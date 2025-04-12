@@ -67,61 +67,92 @@ class RazorpayController extends Controller
                 'razorpay_signature' => $input['razorpay_signature'],
             ];
 
-            $this->razorpay->utility->verifyPaymentSignature($attributes);
+            try {
+                $this->razorpay->utility->verifyPaymentSignature($attributes);
+            } catch (\Exception $e) {
+                Log::error('Signature verification failed: ' . $e->getMessage());
+                return response()->json(['error' => 'Invalid payment signature'], 400);
+            }
 
             // Payment verified successfully
             Log::info('Payment verification successful for Payment ID: ' . $input['razorpay_payment_id']);
 
-            // Get payment details from Razorpay
-            $payment = $this->razorpay->payment->fetch($input['razorpay_payment_id']);
+            try {
+                // Get payment details from Razorpay
+                $payment = $this->razorpay->payment->fetch($input['razorpay_payment_id']);
+                if ($payment->status !== 'captured') {
+                    Log::error('Payment not captured. Status: ' . $payment->status);
+                    return response()->json(['error' => 'Payment not captured'], 400);
+                }
+            } catch (\Exception $e) {
+                Log::error('Failed to fetch payment details: ' . $e->getMessage());
+                return response()->json(['error' => 'Failed to verify payment status'], 500);
+            }
+
             $amount = $payment->amount / 100; // Convert from paise to rupees
 
             // Get user's wallet
             $user = auth()->user();
-            $wallet = \App\Models\Wallet::where('user_id', $user->id)->firstOrFail();
+            try {
+                $wallet = \App\Models\Wallet::where('user_id', $user->id)->firstOrFail();
+            } catch (\Exception $e) {
+                Log::error('Wallet not found for user: ' . $user->id);
+                return response()->json(['error' => 'Wallet not found'], 404);
+            }
 
             DB::beginTransaction();
             try {
                 // Update wallet balance directly
-                $usdAmount = $amount/85 ;
+                $usdAmount = $amount/85;
+                $oldBalance = $wallet->balance;
                 $wallet->balance += $usdAmount;
-                if ($wallet->save()) {
-                        // Create transaction record
-                    // Convert INR to USD (1 USD = 85 INR)
-                   
-                    
-                    Transaction::create([
-                        'user_id' => $user->id,
-                        'amount' => $usdAmount,
-                        'type' => 'credit',
-                        'status' => 'completed',
-                        'payment_id' => $input['razorpay_payment_id'],
-                        'order_id' => $input['razorpay_order_id'],
-                        'full_name' => $input['fullName'],
-                        'mobile_number' => $input['mobileNumber']
-                    ]);
-
-                    // Create wallet transaction record for tracking
-                    WalletTransaction::create([
-                        'wallet_id' => $wallet->id,
-                        'amount' => $usdAmount,
-                        'type' => 'credit',
-                        'status' => 'completed',
-                        'description' => 'Payment via Razorpay (ID: ' . $input['razorpay_payment_id'] . ') - Converted from INR ' . $amount,
-                        'full_name' => $request->input('fullName', $user->name),
-                        'mobile_number' => $request->input('mobileNumber', $user->mobile_number ?? '')
-                    ]);
-
-                    DB::commit();
-                    return response()->json(['success' => 'Payment verified and funds added successfully'], 200);
+                
+                if (!$wallet->save()) {
+                    throw new \Exception('Failed to update wallet balance');
                 }
 
-                DB::rollBack();
-                return response()->json(['error' => 'Failed to add funds to wallet'], 400);
+                // Create transaction record
+                $transaction = Transaction::create([
+                    'user_id' => $user->id,
+                    'amount' => $usdAmount,
+                    'type' => 'credit',
+                    'status' => 'completed',
+                    'payment_id' => $input['razorpay_payment_id'],
+                    'order_id' => $input['razorpay_order_id'],
+                    'full_name' => $input['fullName'],
+                    'mobile_number' => $input['mobileNumber']
+                ]);
+
+                if (!$transaction) {
+                    throw new \Exception('Failed to create transaction record');
+                }
+
+                // Create wallet transaction record for tracking
+                $walletTransaction = WalletTransaction::create([
+                    'wallet_id' => $wallet->id,
+                    'amount' => $usdAmount,
+                    'type' => 'credit',
+                    'status' => 'completed',
+                    'description' => 'Payment via Razorpay (ID: ' . $input['razorpay_payment_id'] . ') - Converted from INR ' . $amount,
+                    
+                ]);
+
+                if (!$walletTransaction) {
+                    throw new \Exception('Failed to create wallet transaction record');
+                }
+
+                DB::commit();
+                Log::info('Payment processed successfully. User ID: ' . $user->id . ', Amount: USD ' . $usdAmount . ', New Balance: ' . $wallet->balance);
+                return response()->json([
+                    'success' => 'Payment verified and funds added successfully',
+                    'amount_added' => $usdAmount,
+                    'new_balance' => $wallet->balance
+                ], 200);
+
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Transaction Creation Error: ' . $e->getMessage());
-                return response()->json(['error' => 'Failed to process transaction'], 500);
+                Log::error('Transaction Creation Error: ' . $e->getMessage() . '\nStack trace: ' . $e->getTraceAsString());
+                return response()->json(['error' => 'Failed to process transaction: ' . $e->getMessage()], 500);
             }
 
         } catch (\Razorpay\Api\Errors\SignatureVerificationError $e) {
