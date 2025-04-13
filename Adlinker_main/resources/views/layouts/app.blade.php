@@ -30,17 +30,15 @@
     <div id="app">
         <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
+                <div class="flex justify-between h-12">
                     <div class="flex">
                         <div class="flex-shrink-0 flex items-center">
-                            <a class="text-2xl font-extrabold text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out" href="{{ url('/') }}">
-                                SocialAdLinker
-                            </a>
+                            <a href="{{ url('/') }}" class="text-indigo-600 text-lg font-bold">SocialAdLinker</a>
                         </div>
                     </div>
 
                     <!-- Mobile menu button -->
-                    <div class="-mr-2 flex items-center sm:hidden fixed top-4 right-4 z-50">
+                    <div class="-mr-2 flex items-center sm:hidden">
                         <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition duration-150 ease-in-out bg-white shadow-md" aria-controls="mobile-menu" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
                             <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -57,10 +55,16 @@
                             @guest
                             @else
                                 @if(Auth::check())
-                                    <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                                        <i class="fas fa-wallet"></i>
-                                        <span class="ml-1">Wallet</span>
-                                    </a>
+                                    <div class="relative group">
+                                        @php
+                                            $wallet = \App\Models\Wallet::where('user_id', Auth::id())->first();
+                                            $balance = $wallet ? number_format($wallet->balance, 2) : '0.00';
+                                        @endphp
+                                        <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-2 bg-white/80 backdrop-blur-sm hover:bg-white/90 text-gray-700 px-2 py-1 rounded-xl shadow-lg border border-gray-100/50 transition-all duration-300 hover:shadow-xl hover:scale-105 group">
+                                            <i class="fas fa-wallet text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 group-hover:from-blue-600 group-hover:to-indigo-700 transition-colors duration-300"></i>
+                                            <span class="font-semibold text-sm bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">${{ $balance }}</span>
+                                        </a>
+                                    </div>
                                 @endif
                                 
                                 <div class="ml-3 relative group">
@@ -103,9 +107,13 @@
                         @if(Auth::check())
                             <div class="flex flex-col space-y-4 px-3 py-2">
                                 <a href="#" class="text-gray-600 hover:text-gray-900 rounded-md text-base font-medium">{{ Auth::user()->name }}</a>
-                                <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 rounded-md text-base font-medium">
-                                    <i class="fas fa-wallet"></i>
-                                    <span class="ml-1">Wallet</span>
+                                <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-2 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg shadow-sm border border-gray-200 transition-colors duration-200">
+                                    <i class="fas fa-wallet text-blue-500"></i>
+                                    @php
+                                        $wallet = \App\Models\Wallet::where('user_id', Auth::id())->first();
+                                        $balance = $wallet ? number_format($wallet->balance, 2) : '0.00';
+                                    @endphp
+                                    <span class="font-medium">${{ $balance }}</span>
                                 </a>
                                 <a href="{{ route('logout') }}" class="text-gray-600 hover:text-gray-900 rounded-md text-base font-medium"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -118,7 +126,7 @@
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mt-16">
+        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mt-2">
             @yield('content')
         </main>
     </div>

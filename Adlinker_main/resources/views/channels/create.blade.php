@@ -10,9 +10,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
                             Back
-                        </a>
-                        <h1 class="text-2xl font-semibold text-gray-800">Create New Channel</h1>
+                            <h1 class="text-lg font-semibold text-gray-800">Create New Channel</h1>
                 
+                        </a>
+                        
 
            
 

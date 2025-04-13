@@ -15,9 +15,16 @@ class DashboardController extends Controller
             return redirect('/' . $currentUser->id . '/publisher/dashboard');
         }
         
-        $channels = Channel::where('publisher_id', $currentUser->publisher->id)->get();
-        $activeChannels = $channels->where('status', 'active')->count();
-        $totalEarnings = $channels->sum('earnings');
+        $channels = Channel::where('publisher_id', $currentUser->publisher->id)->paginate(6);
+        $activeChannels = Channel::where('publisher_id', $currentUser->publisher->id)
+            ->where('status', 'active')
+            ->count();
+        $totalEarnings = Channel::where('publisher_id', $currentUser->publisher->id)
+            ->with('campaigns')
+            ->get()
+            ->sum(function($channel) {
+                return $channel->campaigns->where('status', 'completed')->sum('price');
+            });
 
         return view('publisher.dashboard', compact('channels', 'activeChannels', 'totalEarnings'));
     }

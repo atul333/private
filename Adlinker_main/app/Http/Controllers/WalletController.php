@@ -17,7 +17,7 @@ class WalletController extends Controller
 
         $transactions = $wallet->transactions()
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(5);
 
         $completedPayments = \App\Models\Withdrawal::where('user_id', $user->id)
             ->where('status', 'payment done')
