@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-4">
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+  <div class="container-custom py-4">
     <div class="max-w-7xl mx-auto px-4">
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-400">
-            <div class="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-400 flex justify-between items-center">
+            <div class="px-4 py-1 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 flex justify-between items-center">
                 <h1 class="text-sm font-semibold text-gray-800">{{ __('Publisher Dashboard') }}</h1>
                 <div>
                     <a href="{{ route('channels.create', ['user' => Auth::id()]) }}" class="inline-flex items-center px-1 py-1 bg-gradient-to-r from-indigo-600 to-indigo-700 border border-transparent rounded-lg shadow-sm text-[0.65rem] font-medium text-white hover:from-indigo-700 hover:to-indigo-800 transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -112,5 +113,6 @@
             </div>
         </div>
     </div>
+  </div>
 </div>
 @endsection

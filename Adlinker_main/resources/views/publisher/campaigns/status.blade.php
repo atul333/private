@@ -4,15 +4,15 @@
 <div class="container-custom py-6">
     <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+            <div class="px-4 py-1 bg-gray-50 border-b border-gray-300 flex justify-between items-center">
             <div class="flex items-center">
-                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 text-sm flex items-center text-gray-900 hover:text-gray-900">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
                             Back
                         </a>
-                        <h1 class="text-lg font-semibold text-gray-800">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
+                        <h1 class="text-sm font-semibold text-gray-900">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
                     </div>
 
               
@@ -37,7 +37,7 @@
                                     </span>
                                 </div>
 
-                                <div class="p-6 space-y-4">
+                                <div class="p-1 space-y-2">
                                     <div class="space-y-2">
                                         <div class="flex justify-between items-start gap-2">
                                             <p class="text-xs text-gray-900 line-clamp-2 flex-grow">{{ $campaign->advertisement_content }}</p>
