@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+<div class="flex min-h-full flex-col justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full mx-auto space-y-2">
         <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">{{ __('Create your account') }}</h2>
+            <h2 class="mt-4 text-center text-3xl font-extrabold text-gray-900">{{ __('Create your account') }}</h2>
             <p class="mt-2 text-center text-sm text-gray-600">{{ __('Join our platform today') }}</p>
         </div>
-        <div class="mt-8 bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10">
+        <div class="mt-2 bg-white py-4 px-4 shadow-xl sm:rounded-lg sm:px-10">
 
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
-                        <div class="space-y-6">
+                        <div class="space-y-3">
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700">{{ __('Name') }}</label>
                                 <div class="mt-1">
@@ -64,12 +64,18 @@
                                 @enderror
                             </div>
 
-                        <div class="mt-6">
+                        <div class="mt-4">
                                 <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     {{ __('Create Account') }}
                                 </button>
                             </div>
                     </form>
+                    <div class="mt-3 text-center">
+                        <p class="text-sm text-gray-600">
+                            {{ __('Already have an account?') }}
+                            <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">{{ __('Login here') }}</a>
+                        </p>
+                    </div>
                         </div>
                     </form>
                 </div>

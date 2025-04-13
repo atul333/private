@@ -9,6 +9,10 @@
 
     <title>{{ config('app.name', 'SocialAdLinker') }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -51,13 +55,6 @@
 
                         <!-- Authentication Links -->
                             @guest
-                                @if (Route::has('login') && !Request::is('login'))
-                                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ __('Login') }}</a>
-                                @endif
-
-                                @if (Route::has('register') && !Request::is('register'))
-                                    <a href="{{ route('register') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{{ __('Register') }}</a>
-                                @endif
                             @else
                                 @if(Auth::check())
                                     <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
@@ -101,9 +98,7 @@
                             <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ __('Login') }}</a>
                         @endif
 
-                        @if (Route::has('register') && !Request::is('register'))
-                            <a href="{{ route('register') }}" class="text-gray-600 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">{{ __('Register') }}</a>
-                        @endif
+
                     @else
                         @if(Auth::check())
                             <div class="flex flex-col space-y-4 px-3 py-2">

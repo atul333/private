@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+<div class="flex items-center justify-center bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-4">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">{{ __('Reset Password') }}</h2>
             <p class="mt-2 text-center text-sm text-gray-600">{{ __('Enter your new password') }}</p>
         </div>
-        <div class="mt-8 bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10">
+        <div class="mt-4 bg-white py-6 px-4 shadow-xl sm:rounded-lg sm:px-10">
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 

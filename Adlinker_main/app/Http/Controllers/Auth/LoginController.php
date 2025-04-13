@@ -76,6 +76,17 @@ class LoginController extends Controller
 
         $this->incrementLoginAttempts($request);
 
+        // Check if user exists with the given email and role
+        $user = \App\Models\User::where('email', $request->email)
+            ->where('role', $request->role)
+            ->first();
+
+        if ($user) {
+            throw ValidationException::withMessages([
+                'password' => ['The password is incorrect.'],
+            ]);
+        }
+
         throw ValidationException::withMessages([
             'role' => ['The selected role is invalid for this user.'],
         ]);
