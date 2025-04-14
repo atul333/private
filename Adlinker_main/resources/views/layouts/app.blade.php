@@ -26,7 +26,7 @@
     <!-- Scripts -->
     @vite(['resources/js/app.js', 'resources/js/countdown.js','resources/sass/app.scss'])
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden">
     <div id="app">
         <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -126,7 +126,7 @@
             </div>
         </nav>
 
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 mt-2">
+        <main class="max-w-7xl mx-auto py-2 sm:px-6 lg:px-8 mt-1">
             @yield('content')
         </main>
     </div>
