@@ -1,30 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-6">
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="px-4 py-1 bg-gray-50 border-b border-gray-300">
-                <div class="flex justify-between items-center">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
+    <div class="container-custom py-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
+                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
                     <div class="flex items-center">
-                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
-                            Back
+                            <span>Back</span>
                         </a>
-                        <h1 class="text-sm font-semibold text-gray-800">Edit Channel</h1>
+                        <h1 class="ml-4 text-xl font-bold text-white">Edit Channel</h1>
                     </div>
                 </div>
-            </div>
 
-                <div class="p-1 space-y-6">
+                <div class="p-6 space-y-6">
                     <form method="POST" action="{{ route('channels.update', ['user' => Auth::id(), 'channel' => $channel]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-                        <div class="p-1 space-y-6">
-                            <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="space-y-6">
+                            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                 <label for="name" class="block text-sm font-medium text-gray-900">Channel Name</label>
                                 <input type="text" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('name') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="name" name="name" value="{{ old('name', $channel->name) }}" required>
                                 @error('name')
@@ -32,7 +31,7 @@
                                 @enderror
                             </div>
 
-                        <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                 <label for="description" class="block text-sm font-medium text-gray-900">Description</label>
                                 <textarea class="mt-1 block text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('description') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="description" name="description" rows="3" required>{{ old('description', $channel->description) }}</textarea>
                                 @error('description')
@@ -40,7 +39,7 @@
                                 @enderror
                             </div>
 
-                        <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                 <label for="logo" class="block text-sm font-medium text-gray-900">Logo</label>
                                 @if($channel->logo_path)
                                     <div class="mt-2">
@@ -55,7 +54,7 @@
                                 @enderror
                             </div>
 
-                        <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                 <label for="subscribers_count" class="block text-sm font-medium text-gray-900">Subscribers Count</label>
                                 <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('subscribers_count') border-red-300 text-red-900 @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count', $channel->subscribers_count) }}" required min="0">
                                 @error('subscribers_count')
@@ -66,7 +65,7 @@
                         <div class="space-y-3">
                                 <h2 class="text-lg font-medium text-gray-900">Pricing Options</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-                                    <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                                    <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                         <label for="price_1_day" class="block text-sm font-medium text-gray-900">Price (1 Day)</label>
                                         <div class="mt-1 relative rounded-md shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -79,7 +78,7 @@
                                         @enderror
                                     </div>
 
-                        <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                         <label for="price_2_days" class="block text-sm font-medium text-gray-900">Price (2 Days)</label>
                                         <div class="mt-1 relative rounded-md shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -92,7 +91,7 @@
                                         @enderror
                                     </div>
 
-                        <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                         <label for="price_3_days" class="block text-sm font-medium text-gray-900">Price (3 Days)</label>
                                         <div class="mt-1 relative rounded-md shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -105,7 +104,7 @@
                                         @enderror
                                     </div>
 
-                        <div class="bg-gray-50 rounded-lg p-1 space-y-2">
+                        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
                                         <label for="price_7_days" class="block text-sm font-medium text-gray-900">Price (7 Days)</label>
                                         <div class="mt-1 relative rounded-md shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -135,7 +134,7 @@
 
                         <div class="d-grid">
                             <div class="mt-6">
-                                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
                                     Update Channel
                                 </button>
                             </div>
