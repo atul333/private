@@ -1,26 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-6">
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-
-            <div class="flex items-center">
-                        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
+    <div class="container-custom py-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20">
+                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
                             Back
                         </a>
-                        <h1 class="text-2xl font-semibold text-gray-800">Create New Campaign</h1>
+                        <h1 class="text-lg font-bold text-white">Create New Campaign</h1>
                     </div>
 
                
             </div>
             <div class="p-6">
                     <div class="mb-6 flex justify-end">
-                        <select id="sortSubscribers" class="rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <select id="sortSubscribers" class="rounded-md border-[#4895EF]/30 shadow-sm focus:border-[#4361EE] focus:ring focus:ring-[#4361EE]/20 focus:ring-opacity-50 bg-white/90">
                             <option value="default">Sort by Subscribers</option>
                             <option value="asc">Lowest to Highest</option>
                             <option value="desc">Highest to Lowest</option>
@@ -42,8 +42,8 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @foreach($channels as $channel)
             <div class="w-full">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                    <div class="relative bg-gray-50 p-6 text-gray-800">
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50">
+                    <div class="relative p-6 text-gray-800">
                         <div class="flex justify-between items-start space-x-4 mb-3">
                             <div class="flex items-center space-x-3">
                                 @if($channel->logo_path)

@@ -1,34 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-6">
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                <h1 class="text-2xl font-semibold text-gray-800">{{ __('Advertiser Dashboard') }}</h1>
-                <div>
-                    <a href="/{{ Auth::id() }}/campaigns/create" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Create New Campaign
-                    </a>
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6">
+    <div class="container-custom py-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
+                <div class="px-6 py-4 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">{{ __('Advertiser Dashboard') }}</h1>
+                        <p class="mt-1 text-sm text-white/90">{{ __('Manage your advertising campaigns') }}</p>
+                    </div>
+                    <div>
+                        <a href="/{{ Auth::id() }}/campaigns/create" class="inline-flex items-center px-4 py-2 border border-white/20 rounded-md shadow-sm text-sm font-medium text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F72585] backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-0.5">
+                            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Create New Campaign
+                        </a>
+                    </div>
                 </div>
-            </div>
 
                 <div class="p-6">
                     <div class="grid grid-cols-3 gap-6 mb-8">
-                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+                        <div class="bg-gradient-to-br from-[#4CC9F0] to-[#4895EF] rounded-xl p-6 text-white shadow-lg transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-white/10 backdrop-blur-sm">
                             <div class="flex flex-col">
                                 <h3 class="text-sm font-medium opacity-90">Active Campaigns</h3>
                                 <p class="text-lg font-bold mt-2">{{ $activeCampaigns }}</p>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+                        <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-6 text-white shadow-lg transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-white/10 backdrop-blur-sm">
                             <div class="flex flex-col">
                                 <h3 class="text-sm font-medium opacity-90">Total Budget</h3>
                                 <p class="text-base font-bold mt-2">${{ number_format($totalBudget, 2) }}</p>
                             </div>
                         </div>
-                        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
+                        <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-6 text-white shadow-lg transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-white/10 backdrop-blur-sm">
                             <div class="flex flex-col">
                                 <h3 class="text-sm font-medium opacity-90">Total Impressions</h3>
                                 <p class="text-base font-bold mt-2">{{ number_format($totalImpressions) }}</p>
@@ -38,7 +42,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                         @forelse($campaigns as $campaign)
-                            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                            <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
                                 <div class="relative">
                                     <div class="absolute top-4 right-4">
                                         <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $campaign->status === 'active' ? ($campaign->post_link ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">
@@ -101,12 +105,12 @@
 
                                             <div class="flex items-center justify-between space-x-3">
                                                 <a href="{{ $campaign->channel_link }}" target="_blank" 
-                                                   class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                   class="inline-flex items-center px-3 py-1.5 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white/90 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F72585] backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-0.5">
                                                     View Channel
                                                 </a>
                                                 @if($campaign->post_link)
                                                     <a href="{{ $campaign->post_link }}" target="_blank" 
-                                                       class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                       class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-sm font-medium text-white bg-gradient-to-r from-[#F72585] to-[#B5179E] hover:from-[#B5179E] hover:to-[#F72585] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F72585] transform hover:-translate-y-0.5 transition-all duration-300">
                                                         View Post
                                                     </a>
                                                 @endif

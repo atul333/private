@@ -1,40 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-6">
-    <div class="max-w-3xl mx-auto">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                <div class="flex justify-between items-center">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
+    <div class="container-custom py-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
+                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
                     <div class="flex items-center">
-                        <a href="javascript:history.back()" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
+                        <a href="javascript:history.back()" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
-                            Back
+                            <span>Back</span>
                         </a>
-                        <h1 class="text-2xl font-semibold text-gray-800">Wallet Balance</h1>
+                        <h1 class="ml-4 text-xl font-bold text-white">Wallet Balance</h1>
                     </div>
-                    <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
+                    <button class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border border-transparent rounded-lg shadow-lg text-sm font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white shadow-lg">
+                <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="flex flex-col">
                         <h3 class="text-lg font-medium opacity-90">Available Balance</h3>
                         <p class="text-3xl font-bold mt-2">${{ number_format($availableBalance ?? 0.00, 2) }}</p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+                <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="flex flex-col">
                         <h3 class="text-lg font-medium opacity-90">Pending Payments</h3>
                         <p class="text-3xl font-bold mt-2">${{ number_format($pendingPayments ?? 0.00, 2) }}</p>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h2 class="text-lg font-semibold text-gray-800">Transaction History</h2>
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30">
+                <div class="px-6 py-4 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border-b border-[#7209B7]/20">
+                    <h2 class="text-lg font-semibold text-white">Transaction History</h2>
                 </div>
                 <div class="p-6">
                     @if(isset($transactions) && count($transactions) > 0)
@@ -82,9 +82,9 @@
 <!-- Add Funds Modal -->
 <div class="modal fade" id="addFundsModal" tabindex="-1" aria-labelledby="addFundsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-lg shadow-xl border-0">
-            <div class="px-6 py-4 bg-gray-50 border-b border-gray-200 rounded-t-lg flex justify-between items-center">
-                <h3 class="text-lg font-medium text-gray-900" id="addFundsModalLabel">Add Funds to Wallet</h3>
+        <div class="modal-content rounded-lg shadow-xl border-0 bg-white/95 backdrop-blur-sm">
+            <div class="px-6 py-4 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 rounded-t-lg flex justify-between items-center">
+                <h3 class="text-lg font-medium text-white" id="addFundsModalLabel">Add Funds to Wallet</h3>
                 <button type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none" data-bs-dismiss="modal" aria-label="Close">
                     <span class="sr-only">Close</span>
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +107,7 @@
                 </div>
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg flex justify-end space-x-3">
                     <button type="button" class="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="inline-flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add Funds</button>
+                    <button type="submit" class="inline-flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">Add Funds</button>
                 </div>
             </form>
         </div>
