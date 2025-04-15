@@ -1,114 +1,174 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
-    <div class="container-custom py-4">
-        <div class="max-w-3xl mx-auto">
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl h-[80vh] flex flex-col">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
+    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+        <!-- Header Section -->
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+            <div class="flex items-center">
+                <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span>Back</span>
+                </a>
+                <h1 class="ml-4 text-xl font-bold text-white">Edit Channel</h1>
+            </div>
+        </div>
 
-                <!-- Sticky Header -->
-                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center sticky top-0 z-10">
-                    <div class="flex items-center">
-                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
-                            <span>Back</span>
-                        </a>
-                        <h1 class="ml-4 text-xl font-bold text-white">Edit Channel</h1>
+        <!-- Scrollable Content Section -->
+        <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+            <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
+                <form method="POST" action="{{ route('channels.update', ['user' => Auth::id(), 'channel' => $channel]) }}" enctype="multipart/form-data" class="p-6 space-y-6">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                        <div class="relative space-y-2">
+                            <label for="name" class="block text-sm font-semibold text-gray-900">Channel Name</label>
+                            <input type="text" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('name') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="name" name="name" value="{{ old('name', $channel->name) }}" required>
+                            @error('name')
+                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <!-- Scrollable Content -->
-                <div class="p-6 space-y-6 overflow-y-auto flex-1">
-                    <form method="POST" action="{{ route('channels.update', ['user' => Auth::id(), 'channel' => $channel]) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                        <div class="relative space-y-2">
+                            <label for="link" class="block text-sm font-semibold text-gray-900">Channel Link</label>
+                            <input type="url" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('link') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="link" name="link" value="{{ old('link', $channel->link) }}" required placeholder="https://t.me/yourchannel">
+                            @error('link')
+                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                        <div class="space-y-6">
-                            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
-                                <label for="name" class="block text-sm font-medium text-gray-900">Channel Name</label>
-                                <input type="text" class="mt-1 text-sm block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('name') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="name" name="name" value="{{ old('name', $channel->name) }}" required>
-                                @error('name')
-                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                        <div class="relative space-y-2">
+                            <label for="description" class="block text-sm font-semibold text-gray-900">Channel Description</label>
+                            <textarea class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('description') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="description" name="description" rows="3" required>{{ old('description', $channel->description) }}</textarea>
+                            @error('description')
+                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
-                                <label for="description" class="block text-sm font-medium text-gray-900">Description</label>
-                                <textarea class="mt-1 block text-sm w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('description') border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500 @enderror" id="description" name="description" rows="3" required>{{ old('description', $channel->description) }}</textarea>
-                                @error('description')
-                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
-                                <label for="logo" class="block text-sm font-medium text-gray-900">Logo</label>
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                        <div class="relative space-y-2">
+                            <label for="logo" class="block text-sm font-semibold text-gray-900">Channel Logo</label>
+                            <div class="flex items-center space-x-4">
                                 @if($channel->logo_path)
-                                    <div class="mt-2">
-                                        <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Channel Logo" class="h-20 w-20 rounded-full object-cover border border-indigo-900 ring-4 ring-indigo-50">
-                                    </div>
+                                    <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Current Logo" class="h-12 w-12 rounded-full object-cover border border-[#4895EF]/30">
                                 @endif
-                                <div class="mt-2">
-                                    <input type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('logo') border-red-300 text-red-900 @enderror" id="logo" name="logo">
-                                </div>
-                                @error('logo')
-                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                                @enderror
+                                <input type="file" class="mt-1 block w-full px-4 py-3 text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#4CC9F0]/10 file:text-[#4361EE] hover:file:bg-[#4CC9F0]/20 transition duration-200" id="logo" name="logo" accept="image/*">
                             </div>
+                            @error('logo')
+                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                            <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
-                                <label for="subscribers_count" class="block text-sm font-medium text-gray-900">Subscribers Count</label>
-                                <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('subscribers_count') border-red-300 text-red-900 @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count', $channel->subscribers_count) }}" required min="0">
-                                @error('subscribers_count')
-                                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                        <div class="relative space-y-2">
+                            <label for="subscribers_count" class="block text-sm font-semibold text-gray-900">Subscribers Count</label>
+                            <input type="number" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('subscribers_count') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count', $channel->subscribers_count) }}" required min="0">
+                            @error('subscribers_count')
+                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
-                            <div class="space-y-3">
-                                <h2 class="text-lg font-medium text-gray-900">Pricing Options</h2>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-1">
-                                    @foreach(['1_day', '2_days', '3_days', '7_days'] as $day)
-                                    <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-2 shadow-md hover:shadow-lg transition-all duration-300 border border-[#4895EF]/20">
-                                        <label for="price_{{ $day }}" class="block text-sm font-medium text-gray-900">Price ({{ str_replace('_', ' ', ucfirst($day)) }})</label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500 sm:text-sm">$</span>
+                    <div class="pt-8">
+                        <div class="relative">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-10"></div>
+                            <div class="relative bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-[#4895EF]/20">
+                                <h3 class="text-xl font-bold text-gray-900 mb-6">Pricing Options</h3>
+                                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div class="relative group">
+                                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                                        <div class="relative space-y-2">
+                                            <label for="price_1_day" class="block text-sm font-semibold text-gray-900">Price for 1 Day ($)</label>
+                                            <div class="relative rounded-lg shadow-sm">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                                </div>
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day', $channel->price_1_day) }}" required min="0">
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('price_' . $day) border-red-300 text-red-900 @enderror" id="price_{{ $day }}" name="price_{{ $day }}" value="{{ old('price_' . $day, $channel->{'price_' . $day}) }}" min="0">
+                                            @error('price_1_day')
+                                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                                            @enderror
                                         </div>
-                                        @error('price_' . $day)
-                                            <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                                        @enderror
                                     </div>
-                                    @endforeach
-                                </div>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="status" class="form-label font-medium text-gray-900">Status</label>
-                                <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
-                                    <option value="active" {{ old('status', $channel->status) === 'active' ? 'selected' : '' }}>Active</option>
-                                    <option value="inactive" {{ old('status', $channel->status) === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                                </select>
-                                @error('status')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                                    <div class="relative group">
+                                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                                        <div class="relative space-y-2">
+                                            <label for="price_2_days" class="block text-sm font-semibold text-gray-900">Price for 2 Days ($)</label>
+                                            <div class="relative rounded-lg shadow-sm">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                                </div>
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days', $channel->price_2_days) }}" required min="0">
+                                            </div>
+                                            @error('price_2_days')
+                                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
 
-                            <div class="d-grid">
-                                <div class="mt-6">
-                                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                                        Update Channel
-                                    </button>
+                                    <div class="relative group">
+                                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                                        <div class="relative space-y-2">
+                                            <label for="price_3_days" class="block text-sm font-semibold text-gray-900">Price for 3 Days ($)</label>
+                                            <div class="relative rounded-lg shadow-sm">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                                </div>
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days', $channel->price_3_days) }}" required min="0">
+                                            </div>
+                                            @error('price_3_days')
+                                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="relative group">
+                                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                                        <div class="relative space-y-2">
+                                            <label for="price_7_days" class="block text-sm font-semibold text-gray-900">Price for 7 Days ($)</label>
+                                            <div class="relative rounded-lg shadow-sm">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">$</span>
+                                                </div>
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days', $channel->price_7_days) }}" required min="0">
+                                            </div>
+                                            @error('price_7_days')
+                                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
+                    <div class="pt-8">
+                        <div class="relative group">
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-25"></div>
+                            <button type="submit" class="relative w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#F72585] to-[#7209B7] hover:from-[#B5179E] hover:to-[#560BAD] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                                Update Channel
+                                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

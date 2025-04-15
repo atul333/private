@@ -1,35 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
-    <div class="container-custom py-4 mx-auto w-full px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl h-[80vh] flex flex-col">
-            <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
-                            <span>Back</span>
-                        </a>
-                        <h1 class="ml-4 text-xl font-bold text-white">Create New Channel</h1>
-                    </div>
-                </div>
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
+    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+        <!-- Header Section -->
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+            <div class="flex items-center">
+                <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span>Back</span>
+                </a>
+                <h1 class="ml-4 text-xl font-bold text-white">Create New Channel</h1>
             </div>
+        </div>
                         
 
            
 
-                <div class="relative p-6 overflow-y-auto flex-1">
-                    <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data" class="space-y-6">
+         <!-- Scrollable Content Section -->
+         <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+             <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
+                 <form method="POST" action="{{ route('channels.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data" class="p-6 space-y-6">
                         @csrf
 
                         <div class="relative group">
                             <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                             <div class="relative space-y-2">
                                 <label for="name" class="block text-sm font-semibold text-gray-900">Channel Name</label>
-                                <input type="text" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('name') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                                <div class="relative">
+                                    <input type="text" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('name') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                                    <div class="absolute inset-0 rounded-lg pointer-events-none border border-[#4895EF]/30 transition-colors duration-200"></div>
+                                </div>
                                 @error('name')
                                     <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                                 @enderror

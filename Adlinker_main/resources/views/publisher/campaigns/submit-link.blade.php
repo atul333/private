@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
+<div class="min-h-screen bg-gradient-to-br from-[#CDB4DB] to-[#BDE0FE] py-6 flex flex-col justify-center sm:py-12">
     <div class="container-custom py-4">
         <div class="max-w-3xl mx-auto">
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20">
-                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#CDB4DB]/20 transform transition-all duration-300 hover:shadow-2xl">
+                <!-- Header Section -->
+                <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#CDB4DB]/20 flex justify-between items-center shrink-0">
                     <div class="flex items-center">
                         <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,12 +16,10 @@
                         </a>
                         <h1 class="text-lg font-bold text-white">{{ __('Submit Post Link') }}</h1>
                     </div>
+                </div>
 
-                
-                
-            </div>
-
-            <div class="p-6">
+                <!-- Scrollable Content Area -->
+                <div class="p-6 max-h-[75vh] overflow-y-auto">
                 <form method="POST" action="{{ route('publisher.campaign.submit-link', ['campaign' => $campaign->id]) }}" class="space-y-6">
                     @csrf
 

@@ -1,52 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
-    <div class="container-custom py-4">
-        <div class="max-w-md mx-auto">
-            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
-                <div class="px-6 py-4 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
-                    <div class="flex items-center">
-                        <a href="{{ Auth::user()->role === 'publisher' ? route('publisher.wallet.index') : '/' . Auth::user()->id . '/advertiser/wallet' }}" class="flex items-center text-white/90 hover:text-white transition-colors duration-200 mr-4">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
-                            <span>Back</span>
-                        </a>
-                        <h2 class="text-lg font-bold text-white">Add Funds</h2>
-                    </div>
-                </div>
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
+    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+        <!-- Header Section -->
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+            <div class="flex items-center">
+                <a href="{{ Auth::user()->role === 'publisher' ? route('publisher.wallet.index') : '/' . Auth::user()->id . '/advertiser/wallet' }}" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span>Back</span>
+                </a>
+                <h1 class="ml-4 text-xl font-bold text-white">Add Funds</h1>
+            </div>
+        </div>
 
-            <div class="p-6">
-                @if (session('success'))
-                    <div class="mb-4 p-4 rounded-md bg-green-50 border border-green-200">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+         <!-- Scrollable Content Section -->
+         <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+             <div class="max-w-md mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
+                 <div class="p-6">
+                     @if (session('success'))
+                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                         <strong class="font-bold">Success!</strong>
+                         <span class="block sm:inline">{{ session('success') }}</span>
+                     </div>
+                     @endif
 
-                @if (session('error'))
-                    <div class="mb-4 p-4 rounded-md bg-red-50 border border-red-200">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                     @if (session('error'))
+                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                         <strong class="font-bold">Error!</strong>
+                         <span class="block sm:inline">{{ session('error') }}</span>
+                     </div>
+                     @endif
 
                 <form id="payment-form" class="space-y-6" onsubmit="return validateForm();">
                     @csrf
@@ -76,14 +62,17 @@
                     </div>
 
                     <div>
-                        <label for="amount" class="block text-sm font-medium text-gray-700">Amount <span class="text-red-500">*</span></label>
+                        <label for="amount" class="block text-sm font-medium text-gray-700">Amount (USD) <span class="text-red-500">*</span></label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">$</span>
                             </div>
-                            <input type="number" name="amount" id="amount" step="0.01" min="0.01" value="{{ old('amount') }}" required
-                                class="appearance-none block w-full pl-7 pr-12 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm @error('amount') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror"
+                            <input type="number" name="amount" id="amount" step="0.01" min="1" value="{{ old('amount') }}" required
+                                class="appearance-none block w-full pl-7 pr-12 py-2 border border-[#4895EF]/30 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#4361EE] focus:border-[#4361EE] transition-all duration-200 sm:text-sm @error('amount') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror"
                                 placeholder="0.00">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">USD</span>
+                            </div>
                             <p id="amountError" class="mt-2 text-sm text-red-600 hidden">Please enter a valid amount</p>
                             @error('amount')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -91,6 +80,17 @@
                         </div>
                     </div>
 
+                    <div class="flex justify-between space-x-4 mb-4">
+                        <button type="button" onclick="document.getElementById('amount').value='100'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            $100
+                        </button>
+                        <button type="button" onclick="document.getElementById('amount').value='500'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            $500
+                        </button>
+                        <button type="button" onclick="document.getElementById('amount').value='1000'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            $1000
+                        </button>
+                    </div>
                     <div>
                         <button type="button" id="rzp-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
                             Add Funds

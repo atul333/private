@@ -5,7 +5,7 @@
     <div class="container-custom py-4">
         <div class="max-w-md mx-auto">
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
-                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20">
+                <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20">
                     <h2 class="text-xl font-bold text-white text-center">{{ __('Create your account') }}</h2>
                     <p class="mt-1 text-center text-sm text-white/90">{{ __('Join our platform today') }}</p>
                 </div>
