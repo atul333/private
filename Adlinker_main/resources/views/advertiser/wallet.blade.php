@@ -7,17 +7,16 @@
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
                 <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
                     <div class="flex items-center">
-                        <a href="javascript:history.back()" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                             </svg>
-                            <span>Back</span>
+                            Back
                         </a>
-                        <h1 class="ml-4 text-xl font-bold text-white">Wallet Balance</h1>
+                        <h1 class="text-lg font-bold text-white">{{ __('Wallet Balance') }}</h1>
                     </div>
                     <button class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border border-transparent rounded-lg shadow-lg text-sm font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
                 </div>
-            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="flex flex-col">
@@ -32,30 +31,30 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30">
-                <div class="px-6 py-4 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border-b border-[#7209B7]/20">
-                    <h2 class="text-lg font-semibold text-white">Transaction History</h2>
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 transform transition-all duration-300 hover:shadow-xl">
+                <div class="px-6 py-4 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20">
+                    <h2 class="text-lg font-semibold text-white">{{ __('Transaction History') }}</h2>
                 </div>
-                <div class="p-6">
+                <div class="p-6 overflow-y-auto max-h-[50vh]">
                     @if(isset($transactions) && count($transactions) > 0)
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
+                            <table class="min-w-full divide-y divide-[#4895EF]/10">
+                                <thead class="bg-gradient-to-r from-[#4895EF]/5 to-[#4CC9F0]/5">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-[#3A0CA3] uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-[#3A0CA3] uppercase tracking-wider">Description</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-[#3A0CA3] uppercase tracking-wider">Amount</th>
+                                        <th class="px-6 py-4 text-left text-xs font-semibold text-[#3A0CA3] uppercase tracking-wider">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody class="bg-white/50 backdrop-blur-sm divide-y divide-[#4895EF]/10">
                                     @foreach($transactions as $transaction)
-                                    <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">"Payment for campaign on" {{ $transaction->channel_name }} 'for' {{ $transaction->duration }} :days"</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ number_format($transaction->amount, 2) }}</td>
+                                    <tr class="hover:bg-[#4CC9F0]/5 transition-all duration-200">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#3A0CA3]/80">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-[#3A0CA3]">Payment for campaign on {{ $transaction->channel_name }} for {{ $transaction->duration }} days</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#3A0CA3]/80">${{ number_format($transaction->amount, 2) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $transaction->status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $transaction->status === 'completed' ? 'bg-gradient-to-r from-green-100 to-green-50 text-green-800' : 'bg-gradient-to-r from-yellow-100 to-yellow-50 text-yellow-800' }} shadow-sm">
                                                 {{ ucfirst($transaction->status) }}
                                             </span>
                                         </td>
@@ -82,7 +81,7 @@
 <!-- Add Funds Modal -->
 <div class="modal fade" id="addFundsModal" tabindex="-1" aria-labelledby="addFundsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content rounded-lg shadow-xl border-0 bg-white/95 backdrop-blur-sm">
+        <div class="modal-content rounded-lg shadow-xl border border-[#4895EF]/20 bg-white/95 backdrop-blur-sm transform transition-all duration-300 hover:shadow-2xl">
             <div class="px-6 py-4 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 rounded-t-lg flex justify-between items-center">
                 <h3 class="text-lg font-medium text-white" id="addFundsModalLabel">Add Funds to Wallet</h3>
                 <button type="button" class="text-gray-400 hover:text-gray-500 focus:outline-none" data-bs-dismiss="modal" aria-label="Close">

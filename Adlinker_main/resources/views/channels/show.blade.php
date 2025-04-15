@@ -5,7 +5,8 @@
     <div class="container-custom py-4">
         <div class="max-w-3xl mx-auto">
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
-                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
+                {{-- Header --}}
+                <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center sticky top-0 z-10">
                     <div class="flex items-center">
                         <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,9 +23,9 @@
                         Edit Channel
                     </a>
                 </div>
-            </div>
 
-                <div class="p-6 space-y-6">
+                {{-- Scrollable Content --}}
+                <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
                     @if($channel->logo_path)
                     <div class="flex justify-center">
                         <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="Channel Logo" class="h-24 w-24 rounded-full border-2 border-[#4895EF] object-cover ring-4 ring-[#4361EE]/20 transform hover:scale-105 transition-all duration-300">

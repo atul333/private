@@ -1,12 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-12">
-    <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600">
-                <h2 class="text-lg font-semibold text-white">Add Funds</h2>
-            </div>
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-6 flex flex-col justify-center sm:py-12">
+    <div class="container-custom py-4">
+        <div class="max-w-md mx-auto">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
+                <div class="px-6 py-4 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <a href="{{ Auth::user()->role === 'publisher' ? route('publisher.wallet.index') : '/' . Auth::user()->id . '/advertiser/wallet' }}" class="flex items-center text-white/90 hover:text-white transition-colors duration-200 mr-4">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            <span>Back</span>
+                        </a>
+                        <h2 class="text-lg font-bold text-white">Add Funds</h2>
+                    </div>
+                </div>
 
             <div class="p-6">
                 @if (session('success'))
@@ -83,7 +92,7 @@
                     </div>
 
                     <div>
-                        <button type="button" id="rzp-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <button type="button" id="rzp-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
                             Add Funds
                         </button>
                     </div>

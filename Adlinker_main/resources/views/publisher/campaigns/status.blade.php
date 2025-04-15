@@ -5,6 +5,8 @@
     <div class="container-custom py-4">
         <div class="max-w-7xl mx-auto">
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20">
+                
+                <!-- Header -->
                 <div class="px-4 py-3 bg-gradient-to-r from-[#F72585] to-[#B5179E] border-b border-[#7209B7]/20 flex justify-between items-center">
                     <div class="flex items-center">
                         <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
@@ -17,9 +19,11 @@
                     </div>
                 </div>
 
-                <div class="p-6">
+                <!-- Scrollable Content Area -->
+                <div class="p-6 max-h-[75vh] overflow-y-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @forelse($campaigns as $campaign)
+                            <!-- Individual Campaign Card -->
                             <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-1">
                                 <div class="relative bg-gradient-to-br from-[#4CC9F0]/10 to-[#3A0CA3]/10 p-4">
                                     @if($campaign->advertisement_image)
@@ -41,8 +45,7 @@
                                         <div class="flex justify-between items-start gap-2">
                                             <p class="text-xs text-gray-900 line-clamp-2 flex-grow">{{ $campaign->advertisement_content }}</p>
                                             <button onclick="copyContent('{{ $campaign->advertisement_content }}', '{{ asset('/storage/' . $campaign->advertisement_image) }}')"
-
-                                                    class="inline-flex items-center px-2 py-1 text-[0.65rem] font-medium text-[#3A0CA3] bg-[#4361EE]/10 rounded hover:bg-[#4361EE]/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE] transition-all duration-300">
+                                                class="inline-flex items-center px-2 py-1 text-[0.65rem] font-medium text-[#3A0CA3] bg-[#4361EE]/10 rounded hover:bg-[#4361EE]/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE] transition-all duration-300">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
                                                 </svg>
@@ -97,6 +100,7 @@
                         @endforelse
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -105,34 +109,15 @@
 @push('scripts')
 <script>
 function copyContent(content, imageUrl) {
-    console.log('Copy operation started');
-    
-    // Disable the button during operation
     const button = event.currentTarget;
     button.disabled = true;
-    console.log('Button disabled');
-    
-    // Save original button state
     const originalText = button.innerHTML;
     const originalClasses = button.className;
-    console.log('Original button state saved');
-    
-    // Copy to clipboard
-    console.log('Attempting to copy content:', content);
     navigator.clipboard.writeText(content)
         .then(() => {
-            console.log('Content successfully copied to clipboard');
-            // Show success state
-            button.innerHTML = `
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Copied!`;
+            button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Copied!`;
             button.classList.remove('bg-blue-100', 'text-blue-700');
             button.classList.add('bg-green-100', 'text-green-700');
-            console.log('Button updated to success state');
-            
-            // Download image if URL is provided
             if (imageUrl) {
                 const link = document.createElement('a');
                 link.href = imageUrl;
@@ -141,42 +126,23 @@ function copyContent(content, imageUrl) {
                 link.click();
                 document.body.removeChild(link);
             }
-            
-            // Reset button state after delay
             setTimeout(() => {
-                console.log('Resetting button state');
                 button.disabled = false;
                 button.innerHTML = originalText;
                 button.className = originalClasses;
-                console.log('Button state reset completed');
             }, 2000);
         })
-        .catch(err => {
-            console.error('Clipboard operation failed:', err);
-            // Show error state
-            button.innerHTML = `
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-                Failed!`;
+        .catch(() => {
+            button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Failed!`;
             button.classList.remove('bg-blue-100', 'text-blue-700');
             button.classList.add('bg-red-100', 'text-red-700');
-            console.log('Button updated to error state');
-            
-            // Reset button state after delay
             setTimeout(() => {
-                console.log('Resetting button state after error');
                 button.disabled = false;
                 button.innerHTML = originalText;
                 button.className = originalClasses;
-                console.log('Button state reset completed');
             }, 2000);
         });
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Any additional initialization code can go here
-});
 </script>
 @endpush
 

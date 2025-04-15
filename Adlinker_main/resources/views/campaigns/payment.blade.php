@@ -11,7 +11,7 @@
 
             <div class="p-6">
                 <div class="space-y-6">
-                    <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] rounded-xl p-6 text-black shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                         <div class="text-center space-y-2">
                             <h3 class="text-lg font-medium opacity-90">Payment Details</h3>
                             <p class="text-lg">Campaign Duration: {{ $campaign->duration }} Days</p>
@@ -19,7 +19,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                    <div class="bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] rounded-xl p-6 text-black shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                         <div class="text-center space-y-2">
                             <h3 class="text-lg font-medium opacity-90">Wallet Balance</h3>
                             <p class="text-3xl font-bold">${{ number_format($wallet->balance ?? 0.00, 2) }}</p>
