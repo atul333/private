@@ -36,7 +36,7 @@
                 <div class="bg-gradient-to-br from-[#4CC9F0] to-[#4895EF] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Available Balance</h3>
-                        <p class="text-lg font-bold mt-2">${{ number_format($availableBalance ?? 0.00, 2) }} USD</p>
+                        <p class="text-lg font-bold mt-2">${{ number_format($availableBalance ?? 0.00, 2) }}</p>
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
@@ -45,10 +45,11 @@
                         <p class="text-lg font-bold mt-2">${{ number_format($pendingPayments ?? 0.00, 2) }}</p>
                     </div>
                 </div>
-                        <div class="flex-1 min-w-[250px] bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                            <div class="text-white">
-                                <h5 class="text-base font-semibold mb-2">Payment Done</h5>
-                                <h2 class="text-base font-bold">${{ number_format($completedPayments ?? 0.00, 2) }}</h2>
+                <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                    <div class="text-center">
+                        <h3 class="text-sm font-medium opacity-90">Payment Done</h3>
+                        <p class="text-lg font-bold mt-2">${{ number_format($completedPayments ?? 0.00, 2) }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,5 +111,8 @@
             </div>
         </div>
     </div>
-</div>
+
+           
+        </div>
+    </div>
 @endsection

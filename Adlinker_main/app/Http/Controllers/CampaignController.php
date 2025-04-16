@@ -117,7 +117,7 @@ class CampaignController extends Controller
 
         try {
             // Deduct amount from wallet
-            if (!$wallet->withdraw($campaign->price, 'Payment for Campaign on ' . $campaign->channel_name, 'for '  . $campaign->duration, 'days')) {
+            if (!$wallet->withdraw($campaign->price, 'Payment for Campaign #' . $campaign->channel_name)) {
                 throw new \Exception('Failed to process wallet transaction');
             }
 

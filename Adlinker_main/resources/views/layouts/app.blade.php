@@ -26,7 +26,7 @@
     <!-- Scripts -->
     @vite(['resources/js/app.js', 'resources/js/countdown.js','resources/sass/app.scss'])
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col overflow-hidden">
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden">
     @php
         $balance = '0.00';
         if(Auth::check()) {
@@ -34,7 +34,7 @@
             $balance = $wallet ? number_format($wallet->balance, 2) : '0.00';
         }
     @endphp
-    <div id="app">
+    <div id="app" class="flex flex-col h-full overflow-auto">
         <nav class="bg-white/80 backdrop-blur-sm shadow-sm fixed top-0 left-0 right-0 z-50 transition-all duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
@@ -120,9 +120,16 @@
             <div class="sm:hidden h-0"></div>
         </nav>
 
-        <main class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8 mt-16 flex-1 overflow-hidden">
+        <main class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8 mt-16 flex-1 overflow-auto">
             @yield('content')
         </main>
+
+        <!-- Footer Section -->
+        <footer class="mt-auto py-4 px-6 bg-gradient-to-r from-[#3A0CA3]/10 to-[#4361EE]/10 border-t border-[#7209B7]/20">
+            <div class="text-center text-sm text-gray-600">
+                © 2025 AdLinker. All rights reserved.
+            </div>
+        </footer>
     </div>
 
     <script>
@@ -203,5 +210,7 @@
         });
     }
 </script>
+
+
 </body>
 </html>

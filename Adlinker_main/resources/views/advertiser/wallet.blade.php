@@ -81,6 +81,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Footer Section -->
+    <div class="mt-auto py-4 px-6 bg-gradient-to-r from-[#3A0CA3]/10 to-[#4361EE]/10 border-t border-[#7209B7]/20">
+      <div class="text-center text-sm text-gray-600">
+        © 2025 AdLinker. All rights reserved.
+      </div>
+    </div>
   </div>
 </div>
 

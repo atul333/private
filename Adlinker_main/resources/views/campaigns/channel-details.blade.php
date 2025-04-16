@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-  <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
-    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-      <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform transition-all duration-300 hover:shadow-xl relative">
+  <div class="flex-1 flex flex-col h-screen overflow-hidden">
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-hidden">
+      <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform transition-all duration-300 hover:shadow-xl relative flex-1 flex flex-col">
 
                 
                 <!-- Header Section -->
