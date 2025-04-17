@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#CDB4DB] to-[#BDE0FE] flex flex-col">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
   <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
     <!-- Header Section -->
     <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#CDB4DB]/20 flex justify-between items-center shrink-0">
@@ -21,7 +21,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @forelse($campaigns as $campaign)
                             <!-- Individual Campaign Card -->
-                            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-1">
+                            <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-1.5 group">
                                 <div class="relative bg-gradient-to-br from-[#4CC9F0]/10 to-[#3A0CA3]/10 p-4">
                                     @if($campaign->advertisement_image)
                                         <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" 
@@ -41,7 +41,7 @@
                                     <div class="space-y-2">
                                         <div class="flex justify-between items-start gap-2">
                                             <p class="text-xs text-gray-900 line-clamp-2 flex-grow">{{ $campaign->advertisement_content }}</p>
-                                            <button onclick="copyContent('{{ $campaign->advertisement_content }}', '{{ asset('/storage/' . $campaign->advertisement_image) }}')"
+                                            <button onclick="copyAndDownload('{{ $campaign->advertisement_content }}', '{{ asset('/storage/' . $campaign->advertisement_image) }}', this)"
                                                 class="inline-flex items-center px-2 py-1 text-[0.65rem] font-medium text-[#3A0CA3] bg-[#4361EE]/10 rounded hover:bg-[#4361EE]/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE] transition-all duration-300">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
@@ -96,6 +96,10 @@
                             </div>
                         @endforelse
                     </div>
+                    <!-- Pagination -->
+                    <div class="mt-6">
+                        {{ $campaigns->links('pagination::tailwind') }}
+                    </div>
                 </div>
 
             </div>
@@ -105,40 +109,46 @@
 
 @push('scripts')
 <script>
-function copyContent(content, imageUrl) {
-    const button = event.currentTarget;
+async function copyAndDownload(content, imageUrl, button) {
     button.disabled = true;
     const originalText = button.innerHTML;
     const originalClasses = button.className;
-    navigator.clipboard.writeText(content)
-        .then(() => {
-            button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Copied!`;
-            button.classList.remove('bg-blue-100', 'text-blue-700');
-            button.classList.add('bg-green-100', 'text-green-700');
-            if (imageUrl) {
-                const link = document.createElement('a');
-                link.href = imageUrl;
-                link.download = 'campaign-image' + imageUrl.substring(imageUrl.lastIndexOf('.'));
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-            setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = originalText;
-                button.className = originalClasses;
-            }, 2000);
-        })
-        .catch(() => {
-            button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Failed!`;
-            button.classList.remove('bg-blue-100', 'text-blue-700');
-            button.classList.add('bg-red-100', 'text-red-700');
-            setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = originalText;
-                button.className = originalClasses;
-            }, 2000);
-        });
+
+    try {
+        // Copy content
+        await navigator.clipboard.writeText(content);
+        
+        // Download image if URL exists
+        if (imageUrl) {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'campaign-image' + imageUrl.substring(imageUrl.lastIndexOf('.'));
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+        }
+
+        // Show success feedback
+        button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Done!`;
+        button.classList.remove('bg-[#4361EE]/10', 'text-[#3A0CA3]');
+        button.classList.add('bg-emerald-100', 'text-emerald-700');
+    } catch (error) {
+        // Show error feedback
+        button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Failed!`;
+        button.classList.remove('bg-[#4361EE]/10', 'text-[#3A0CA3]');
+        button.classList.add('bg-red-100', 'text-red-700');
+    }
+
+    // Reset button after delay
+    setTimeout(() => {
+        button.disabled = false;
+        button.innerHTML = originalText;
+        button.className = originalClasses;
+    }, 2000);
 }
 </script>
 @endpush

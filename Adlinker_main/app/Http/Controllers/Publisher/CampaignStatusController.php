@@ -22,7 +22,7 @@ class CampaignStatusController extends Controller
                                 WHEN status = 'submitted' THEN 2
                                 WHEN status = 'completed' THEN 3
                                 ELSE 4 END")
-                            ->get();
+                            ->paginate(6);
 
         return view('publisher.campaigns.status', compact('channel', 'campaigns'));
     }

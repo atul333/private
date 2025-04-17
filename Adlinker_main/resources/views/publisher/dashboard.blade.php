@@ -1,3 +1,7 @@
+@php
+use App\Models\Channel;
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -28,13 +32,13 @@
         <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
           <div class="text-center">
             <h3 class="text-sm font-medium opacity-90">Total Earnings</h3>
-            <p class="text-lg font-bold mt-2">${{ number_format($channels->sum(function($channel) { return $channel->campaigns->where('status', 'completed')->sum('price'); }), 2) }}</p>
+            <p class="text-lg font-bold mt-2">${{ number_format($totalEarnings, 2) }}</p>
           </div>
         </div>
         <div class="bg-gradient-to-br from-[#3A0CA3] to-[#4361EE] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
           <div class="text-center">
             <h3 class="text-sm font-medium opacity-90">Total Subscribers</h3>
-            <p class="text-sm font-bold mt-2">{{ $channels->sum('subscribers_count') }}</p>
+            <p class="text-sm font-bold mt-2">{{ Channel::where('publisher_id', Auth::user()->publisher->id)->sum('subscribers_count') }}</p>
           </div>
         </div>
         
