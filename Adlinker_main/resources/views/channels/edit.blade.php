@@ -10,7 +10,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    <span>Back</span>
+                    <span></span>
                 </a>
                 <h1 class="ml-4 text-xl font-bold text-white">Edit Channel</h1>
             </div>
@@ -78,6 +78,20 @@
                             <label for="subscribers_count" class="block text-sm font-semibold text-gray-900">Subscribers Count</label>
                             <input type="number" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('subscribers_count') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count', $channel->subscribers_count) }}" required min="0">
                             @error('subscribers_count')
+                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
+                        <div class="relative space-y-2">
+                            <label for="status" class="block text-sm font-semibold text-gray-900">Channel Status</label>
+                            <select class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('status') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="status" name="status" required>
+                                <option value="active" {{ old('status', $channel->status) === 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ old('status', $channel->status) === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                            @error('status')
                                 <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                             @enderror
                         </div>

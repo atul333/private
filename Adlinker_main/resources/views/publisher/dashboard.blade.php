@@ -23,22 +23,22 @@ use App\Models\Channel;
     <div class="bg-white/5 backdrop-blur-sm px-4 py-3 border-b border-[#7209B7]/10 shrink-0">
       <div class="grid grid-cols-3 gap-4">
         <!-- Metrics cards -->
-        <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+        <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Active Channels</h3>
+            <h3 class="text-sm font-medium">Active Channels</h3>
             <p class="text-lg font-bold mt-2">{{ $activeChannels }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+        <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Total Earnings</h3>
+            <h3 class="text-sm font-medium">Total Earnings</h3>
             <p class="text-lg font-bold mt-2">${{ number_format($totalEarnings, 2) }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#3A0CA3] to-[#4361EE] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+        <div class="bg-gradient-to-br from-[#3A0CA3]/20 to-[#4361EE]/20 rounded-xl p-4 text-[#3A0CA3] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#3A0CA3]/30 hover:border-[#3A0CA3]/50">
           <div class="text-center">
             <h3 class="text-sm font-medium opacity-90">Total Subscribers</h3>
-            <p class="text-sm font-bold mt-2">{{ Channel::where('publisher_id', Auth::user()->publisher->id)->sum('subscribers_count') }}</p>
+            <p class="text-lg font-bold mt-2">{{ Channel::where('publisher_id', Auth::user()->publisher->id)->sum('subscribers_count') }}</p>
           </div>
         </div>
         

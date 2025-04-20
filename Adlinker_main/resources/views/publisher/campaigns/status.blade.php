@@ -10,7 +10,7 @@
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
-          Back
+          
         </a>
         <h1 class="text-lg font-bold text-white">{{ __('Campaign Status for') }} {{ $channel->name }}</h1>
       </div>
@@ -21,37 +21,53 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @forelse($campaigns as $campaign)
                             <!-- Individual Campaign Card -->
-                            <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-1.5 group">
-                                <div class="relative bg-gradient-to-br from-[#4CC9F0]/10 to-[#3A0CA3]/10 p-4">
-                                    @if($campaign->advertisement_image)
-                                        <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" 
-                                             alt="Advertisement Image" 
-                                             class="w-full h-32 object-contain rounded-lg">
-                                    @else
-                                        <div class="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <span class="text-gray-400">No Image</span>
+                            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-2 hover:scale-[1.02] group relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/50 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500">
+                                <!-- Advertisement Section -->
+                                <div class="relative bg-gradient-to-br from-[#4CC9F0]/10 to-[#3A0CA3]/10 p-6 group-hover:from-[#4CC9F0]/20 group-hover:to-[#3A0CA3]/20 transition-colors duration-500">
+                                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-md group-hover:shadow-lg transition-all duration-500 border border-white/20 group-hover:border-white/40">
+                                        <div class="advertisement-content space-y-2">
+                                            @if($campaign->advertisement_image)
+                                                <div class="relative">
+                                                    <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" 
+                                                         alt="Advertisement Image" 
+                                                         class="w-full h-32 object-contain rounded-lg">
+                                                    <button onclick="downloadImage('{{ asset('storage/' . $campaign->advertisement_image) }}', '{{ basename($campaign->advertisement_image) }}')"
+                                                            class="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white/90 transition-all duration-300 shadow-sm hover:shadow group/download">
+                                                        <svg class="w-4 h-4 text-gray-600 group-hover/download:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <div class="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                    <span class="text-gray-400">No Image</span>
+                                                </div>
+                                            @endif
+                                            <div class="advertisement-details mt-2">
+                                                <div class="flex justify-between items-start gap-2">
+                                                    <p class="text-xs text-gray-900 line-clamp-2 flex-grow">{{ $campaign->advertisement_content }}</p>
+                                                    <button onclick="copyToClipboard('{{ $campaign->advertisement_content }}', this)" class="ml-2 p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100/80 backdrop-blur-sm transition-all duration-300 hover:shadow-md" title="Copy content">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                               
+                                            </div>
                                         </div>
-                                    @endif
-                                    <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-[0.65rem] font-semibold {{ $campaign->status === 'active' ? 'bg-[#4CC9F0]/20 text-[#3A0CA3] border border-[#4CC9F0]' : ($campaign->status === 'pending' ? 'bg-[#F72585]/20 text-[#B5179E] border border-[#F72585]' : 'bg-red-100 text-red-800 border border-red-300') }}">
-                                        {{ ucfirst($campaign->status) }}
-                                    </span>
+                                        </div>
+                                        <span class="absolute top-4 right-4 px-3 py-1 rounded-full text-[0.65rem] font-semibold {{ $campaign->status === 'active' ? 'bg-[#4CC9F0]/20 text-[#3A0CA3] border border-[#4CC9F0]' : ($campaign->status === 'pending' ? 'bg-[#F72585]/20 text-[#B5179E] border border-[#F72585]' : 'bg-red-100 text-red-800 border border-red-300') }}">
+                                            {{ ucfirst($campaign->status) }}
+                                        </span>
                                 </div>
 
                                 <div class="p-1 space-y-2">
                                     <div class="space-y-2">
-                                        <div class="flex justify-between items-start gap-2">
-                                            <p class="text-xs text-gray-900 line-clamp-2 flex-grow">{{ $campaign->advertisement_content }}</p>
-                                            <button onclick="copyAndDownload('{{ $campaign->advertisement_content }}', '{{ asset('/storage/' . $campaign->advertisement_image) }}', this)"
-                                                class="inline-flex items-center px-2 py-1 text-[0.65rem] font-medium text-[#3A0CA3] bg-[#4361EE]/10 rounded hover:bg-[#4361EE]/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE] transition-all duration-300">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                                                </svg>
-                                                Copy & Download
-                                            </button>
-                                        </div>
-                                        <div class="flex justify-between items-center text-xs text-gray-500">
-                                            <span>{{ $campaign->duration }} days</span>
-                                            <span>${{ number_format($campaign->price, 2) }}</span>
+                                        <div class="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-500 border border-[#4895EF]/20 hover:border-[#4361EE]/40 transform hover:-translate-y-1 group/inner">
+                                            <div class="flex justify-between items-center text-xs text-gray-600/90 mt-2 group-hover:text-gray-700/90 transition-colors duration-300">
+                                                <span class="font-medium">{{ $campaign->duration }} days</span>
+                                                <span class="font-medium">${{ number_format($campaign->price, 2) }}</span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -107,50 +123,48 @@
     </div>
 </div>
 
-@push('scripts')
-<script>
-async function copyAndDownload(content, imageUrl, button) {
-    button.disabled = true;
-    const originalText = button.innerHTML;
-    const originalClasses = button.className;
 
-    try {
-        // Copy content
-        await navigator.clipboard.writeText(content);
-        
-        // Download image if URL exists
-        if (imageUrl) {
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'campaign-image' + imageUrl.substring(imageUrl.lastIndexOf('.'));
-            document.body.appendChild(link);
-            link.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(link);
-        }
-
-        // Show success feedback
-        button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Done!`;
-        button.classList.remove('bg-[#4361EE]/10', 'text-[#3A0CA3]');
-        button.classList.add('bg-emerald-100', 'text-emerald-700');
-    } catch (error) {
-        // Show error feedback
-        button.innerHTML = `<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Failed!`;
-        button.classList.remove('bg-[#4361EE]/10', 'text-[#3A0CA3]');
-        button.classList.add('bg-red-100', 'text-red-700');
-    }
-
-    // Reset button after delay
-    setTimeout(() => {
-        button.disabled = false;
-        button.innerHTML = originalText;
-        button.className = originalClasses;
-    }, 2000);
-}
-</script>
-@endpush
 
 @endsection
+
+<script>
+function copyToClipboard(text, button) {
+    navigator.clipboard.writeText(text).then(() => {
+        const originalSvg = button.innerHTML;
+        button.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+        button.classList.remove('text-gray-500');
+        button.classList.add('text-green-500');
+        
+        setTimeout(() => {
+            button.innerHTML = originalSvg;
+            button.classList.remove('text-green-500');
+            button.classList.add('text-gray-500');
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        button.classList.remove('text-gray-500');
+        button.classList.add('text-red-500');
+        
+        setTimeout(() => {
+            button.classList.remove('text-red-500');
+            button.classList.add('text-gray-500');
+        }, 2000);
+    });
+}
+
+function downloadImage(imageUrl, fileName) {
+    fetch(imageUrl)
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        })
+        .catch(error => console.error('Error downloading image:', error));
+}
+</script>

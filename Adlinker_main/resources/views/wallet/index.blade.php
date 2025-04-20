@@ -11,7 +11,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    <span>Back</span>
+                    <span></span>
                 </a>
                 <h1 class="ml-4 text-xl font-bold text-white">Wallet Balance</h1>
             </div>    
@@ -33,19 +33,19 @@
         <!-- Fixed Metrics Section -->
         <div class="bg-white/5 backdrop-blur-sm px-4 py-3 border-b border-[#7209B7]/10 shrink-0">
             <div class="grid grid-cols-3 gap-6">
-                <div class="bg-gradient-to-br from-[#4CC9F0] to-[#4895EF] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Available Balance</h3>
                         <p class="text-lg font-bold mt-2">${{ number_format($availableBalance ?? 0.00, 2) }}</p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Pending Payments</h3>
                         <p class="text-lg font-bold mt-2">${{ number_format($pendingPayments ?? 0.00, 2) }}</p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Payment Done</h3>
                         <p class="text-lg font-bold mt-2">${{ number_format($completedPayments ?? 0.00, 2) }}</p>
