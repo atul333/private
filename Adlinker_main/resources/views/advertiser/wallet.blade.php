@@ -4,15 +4,15 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
   <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
     <!-- Header Section -->
-    <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+    <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
       <div class="flex items-center">
-        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
+        <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-black/90 hover:text-black transition-colors duration-200">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
           
         </a>
-        <h1 class="text-lg font-bold text-white">{{ __('Wallet Balance') }}</h1>
+        <h1 class="text-lg font-bold text-black">{{ __('Wallet Balance') }}</h1>
       </div>
       <button class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border border-transparent rounded-lg shadow-lg text-sm font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]" data-bs-toggle="modal" data-bs-target="#addFundsModal">Add Funds</button>
     </div>

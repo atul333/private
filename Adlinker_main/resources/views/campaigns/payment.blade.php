@@ -4,15 +4,15 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
             <div class="flex items-center">
-                <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-black/90 hover:text-black transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
                     
                 </a>
-                <h1 class="text-lg font-bold text-white">Campaign Payment</h1>
+                <h1 class="text-lg font-bold text-black">Campaign Payment</h1>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
         <div class="flex-1 overflow-y-auto p-6 min-h-0">
             <div class="max-w-3xl mx-auto space-y-6">
                 <!-- Payment Details Card -->
-                <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <div class="bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] rounded-xl p-6 text-black shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="text-center space-y-2">
                         <h3 class="text-lg font-medium opacity-90">Payment Details</h3>
                         <p class="text-lg">Campaign Duration: {{ $campaign->duration }} Days</p>
@@ -29,7 +29,7 @@
                 </div>
 
                 <!-- Wallet Balance Card -->
-                <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <div class="bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] rounded-xl p-6 text-black shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="text-center space-y-2">
                         <h3 class="text-lg font-medium opacity-90">Wallet Balance</h3>
                         <p class="text-3xl font-bold">${{ number_format($wallet->balance ?? 0.00, 2) }}</p>

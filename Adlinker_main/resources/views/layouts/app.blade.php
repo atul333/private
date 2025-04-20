@@ -82,10 +82,9 @@
                             @else
                                 @if(Auth::check())
                                     <div class="relative group">
-    
-                                        <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-2 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-700 px-4 py-2 rounded-lg shadow-md border border-gray-100/50 transition-all duration-300 hover:shadow-lg hover:scale-105 group">
-                                            <i class="fas fa-wallet text-blue-600 group-hover:text-blue-700 transition-colors duration-300"></i>
-                                            <span class="font-semibold text-gray-700">${{ $balance }}</span>
+                                        <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
+                                            <i class="fas fa-wallet text-blue-500 text-sm"></i>
+                                            <span class="text-sm font-medium">${{ $balance }}</span>
                                         </a>
                                     </div>
                                 @endif

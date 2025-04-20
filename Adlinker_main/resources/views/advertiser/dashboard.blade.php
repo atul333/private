@@ -1,14 +1,14 @@
 @extends('layouts.app') 
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-  <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5">
+  <div class="flex flex-col">
     <!-- Header Section -->
-    <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
-      <h1 class="text-lg font-bold text-white">{{ __('Advertiser Dashboard') }}</h1>
+    <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center">
+      <h1 class="text-lg font-bold text-black">{{ __('Advertiser Dashboard') }}</h1>
       <div>
-        <a href="/{{ Auth::id() }}/campaigns/create" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border border-transparent rounded-lg shadow-lg text-sm font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-          <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        <a href="/{{ Auth::id() }}/campaigns/create" class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border border-transparent rounded-lg shadow text-xs font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+          <svg class="-ml-0.5 mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
           Create New Campaign
         </a>
       </div>
@@ -17,29 +17,29 @@
     <!-- Fixed Metrics Section -->
     <div class="bg-white/5 backdrop-blur-sm px-4 py-3 border-b border-[#7209B7]/10 shrink-0">
       <div class="grid grid-cols-3 gap-4">
-        <div class="bg-gradient-to-br from-[#7209B7] to-[#560BAD] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+        <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
           <div class="text-center">
             <h3 class="text-sm font-medium opacity-90">Active Campaigns</h3>
             <p class="text-lg font-bold mt-2">{{ $activeCampaigns }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#F72585] to-[#B5179E] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+        <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Total Budget</h3>
-            <p class="text-lg font-bold mt-2">${{ number_format($totalBudget, 2) }}</p>
+            <h3 class="text-sm font-medium opacity-90">Total Spent</h3>
+            <p class="text-lg font-bold mt-2">${{ number_format($totalSpent, 2) }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#3A0CA3] to-[#4361EE] rounded-xl p-4 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+        <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Total Impressions</h3>
-            <p class="text-lg font-bold mt-2">{{ number_format($totalImpressions) }}</p>
+            <h3 class="text-sm font-medium opacity-90">Completed Campaigns</h3>
+            <p class="text-lg font-bold mt-2">{{ $completedCampaigns }}</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Scrollable Content Section -->
-    <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+    <!-- Content Section -->
+    <div class="px-4 py-4">
       <!-- Campaign Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         @forelse($campaigns as $campaign)
@@ -91,9 +91,9 @@
 
             <!-- Action Buttons -->
             <div class="mt-4 flex justify-between items-center">
-              <a href="{{ $campaign->channel_link }}" target="_blank" class="px-4 py-2 text-sm text-white rounded-lg bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transition shadow-lg">View Channel</a>
+              <a href="{{ $campaign->channel_link }}" target="_blank" class="px-3 py-1.5 text-xs font-medium text-white/90 rounded-lg bg-gradient-to-r from-[#3A0CA3]/80 to-[#4361EE]/80 hover:from-[#3F37C9]/90 hover:to-[#4895EF]/90 transition-all duration-300 shadow-sm hover:shadow">View Channel</a>
               @if($campaign->post_link)
-                <a href="{{ $campaign->post_link }}" target="_blank" class="px-3 py-2 text-sm text-white rounded-lg bg-gradient-to-r from-[#F72585] to-[#B5179E] hover:from-[#B5179E] hover:to-[#F72585] transition shadow">View Post</a>
+                <a href="{{ $campaign->post_link }}" target="_blank" class="px-3 py-1.5 text-xs font-medium text-white/90 rounded-lg bg-gradient-to-r from-[#F72585] to-[#B5179E] hover:from-[#B5179E] hover:to-[#F72585] transition-all duration-300 shadow-sm hover:shadow">View Post</a>
               @endif
             </div>
           </div>

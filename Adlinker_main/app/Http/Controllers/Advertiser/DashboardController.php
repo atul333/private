@@ -15,6 +15,16 @@ class DashboardController extends Controller
             return redirect('/' . $currentUser->id . '/advertiser/dashboard');
         }
         
+        // Get all campaigns for total metrics
+        $allCampaigns = Campaign::where('advertiser_id', $currentUser->id)->get();
+        $activeCampaigns = $allCampaigns->where('status', 'active')->count();
+        $completedCampaigns = $allCampaigns->where('status', 'completed')->count();
+        $totalSpent = $allCampaigns->where('status', 'completed')->sum('price');
+        $totalImpressions = $allCampaigns->sum(function($campaign) {
+            return $campaign->ads()->sum('impressions');
+        });
+
+        // Get paginated campaigns for display
         $campaigns = Campaign::where('advertiser_id', $currentUser->id)
             ->orderByRaw("CASE 
                 WHEN status = 'active' AND post_link IS NULL THEN 1
@@ -24,12 +34,7 @@ class DashboardController extends Controller
                 ELSE 5
             END")
             ->paginate(6);
-        $activeCampaigns = $campaigns->where('status', 'active')->count();
-        $totalBudget = $campaigns->sum('budget');
-        $totalImpressions = $campaigns->sum(function($campaign) {
-            return $campaign->ads()->sum('impressions');
-        });
 
-        return view('advertiser.dashboard', compact('campaigns', 'activeCampaigns', 'totalBudget', 'totalImpressions'));
+        return view('advertiser.dashboard', compact('campaigns', 'activeCampaigns', 'completedCampaigns', 'totalSpent', 'totalImpressions'));
     }
 }

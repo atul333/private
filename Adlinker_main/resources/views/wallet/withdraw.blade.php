@@ -6,15 +6,15 @@
 
 
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
             <div class="flex items-center">
-                <a href="{{ route('publisher.wallet.index', ['id' => Auth::user()->id]) }}" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                <a href="{{ route('publisher.wallet.index', ['id' => Auth::user()->id]) }}" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
                     <span></span>
                 </a>
-                <h1 class="ml-4 text-lg font-bold text-white">Withdraw Funds</h1>
+                <h1 class="text-lg font-bold text-black">Withdraw Funds</h1>
             </div>
             <div class="text-right">
                 <p class="text-sm text-white/90">Available Balance</p>

@@ -4,15 +4,15 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
             <div class="flex items-center">
-                <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
                     <span></span>
                 </a>
-                <h1 class="ml-4 text-xl font-bold text-white">Edit Channel</h1>
+                <h1 class="text-lg font-bold text-black">Edit Channel</h1>
             </div>
         </div>
 

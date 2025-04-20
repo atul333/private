@@ -2,31 +2,24 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+    <div class="flex flex-col h-screen">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#fb8500] to-[#ffb703] border-b border-[#7209B7]/20 flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center">
             <div class="flex items-center">
-                <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-white/90 hover:text-white transition-colors duration-200">
+                <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="btn-back mr-4 text-sm flex items-center text-black/90 hover:text-black transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    
                 </a>
-                <h1 class="text-lg font-bold text-white">Create New Campaign</h1>
+                <h1 class="text-lg font-bold text-black">All Channels</h1>
             </div>
         </div>
 
-        <!-- Scrollable Content Area -->
-        <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
-            <div class="max-w-3xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
+        <!-- Main Content Area -->
+        <div class="flex-1 p-4">
+            <div class="max-w-7xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
                 <div class="p-6">
-                    <div class="mb-6 flex justify-end">
-                        <select id="sortSubscribers" class="rounded-md border-[#4895EF]/30 shadow-sm focus:border-[#4361EE] focus:ring focus:ring-[#4361EE]/20 focus:ring-opacity-50 bg-white/90">
-                            <option value="default">Sort by Subscribers</option>
-                            <option value="asc">Lowest to Highest</option>
-                            <option value="desc">Highest to Lowest</option>
-                        </select>
-                    </div>
+                  
 
                     @if($errors->any())
                         <div class="alert alert-danger">
@@ -41,8 +34,9 @@
                     <form method="POST" action="{{ route('campaigns.store', ['user' => Auth::id()]) }}" enctype="multipart/form-data">
                         @csrf
 
-                        <h6 class="mb-3 fs-5">Select Channels</h6>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <h6 class="mb-3 fs-5"></h6>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto
+">
                             @foreach($channels as $channel)
                                 <div class="w-full">
                                     <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50">
@@ -141,33 +135,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const durationSelects = document.querySelectorAll('.channel-duration');
-    const sortSelect = document.getElementById('sortSubscribers');
-    const channelGrid = document.querySelector('.grid');
-
-    sortSelect.addEventListener('change', function() {
-        const channels = Array.from(channelGrid.children);
-        const sortOrder = this.value;
-
-        if (sortOrder !== 'default') {
-            channels.sort((a, b) => {
-                const subscribersTextA = a.querySelector('.text-sm.text-gray-600').textContent;
-                const subscribersTextB = b.querySelector('.text-sm.text-gray-600').textContent;
-
-                const subscribersA = parseInt(subscribersTextA.replace(/[^0-9]/g, ''));
-                const subscribersB = parseInt(subscribersTextB.replace(/[^0-9]/g, ''));
-
-                return sortOrder === 'asc' ? subscribersA - subscribersB : subscribersB - subscribersA;
-            });
-
-            channelGrid.innerHTML = '';
-            channels.forEach(channel => channelGrid.appendChild(channel));
-        }
-    });
-});
-</script>
-@endpush
