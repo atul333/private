@@ -62,6 +62,9 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
     Route::get('/{user}/campaigns/{campaign}/payment', [App\Http\Controllers\CampaignController::class, 'processPayment'])->name('campaigns.payment.process');
 Route::get('/{user}/campaigns/{campaign}/payment/create', [App\Http\Controllers\CampaignController::class, 'processPayment'])->name('campaigns.payment.create');
 
+// Campaign Refund API Route
+Route::post('/api/campaigns/{campaign}/refund', [App\Http\Controllers\Api\CampaignRefundController::class, 'refund'])->name('api.campaigns.refund');
+
     // Redirect /id/campaigns/channel/{channel} to user-specific channel details
     Route::get('/id/campaigns/channel/{channel}', function($channel) {
         return redirect('/' . Auth::id() . '/campaigns/channel/' . $channel);

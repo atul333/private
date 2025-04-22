@@ -76,6 +76,17 @@
               @endif
 
               @if($campaign->status === 'active')
+                @if(!$campaign->post_submitted_at)
+                  <div class="countdown-container rounded-lg bg-red-50 p-3 mb-2">
+                    <div class="submission-countdown-timer text-xs" 
+                         data-campaign-id="{{ $campaign->id }}"
+                         data-created-at="{{ $campaign->created_at->toISOString() }}">
+                      <div class="countdown-text text-red-600 font-semibold">
+                        Time Left to Submit Post: <span class="submission-time">Loading...</span>
+                      </div>
+                    </div>
+                  </div>
+                @endif
                 <p><span class="font-semibold">Campaign Timer:</span>
                   <span class="countdown-timer text-gray-600" 
                     data-campaign-id="{{ $campaign->id }}" 
@@ -113,3 +124,35 @@
   </div>
 </div>
 @endsection
+
+<script>
+function updateSubmissionCountdown(element) {
+    const campaignId = element.dataset.campaignId;
+    const createdAt = new Date(element.dataset.createdAt);
+    const deadline = new Date(createdAt.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from creation
+    const now = new Date();
+    const timeLeft = deadline - now;
+
+    if (timeLeft <= 0) {
+        element.querySelector('.submission-time').textContent = 'Submission deadline passed';
+        return;
+    }
+
+    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    element.querySelector('.submission-time').textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function initializeSubmissionCountdowns() {
+    const submissionTimers = document.querySelectorAll('.submission-countdown-timer');
+    submissionTimers.forEach(timer => {
+        updateSubmissionCountdown(timer);
+        setInterval(() => updateSubmissionCountdown(timer), 1000);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initializeSubmissionCountdowns);
+</script>

@@ -21,7 +21,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @forelse($campaigns as $campaign)
                             <!-- Individual Campaign Card -->
-                            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-2 hover:scale-[1.02] group relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/50 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500">
+                            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 border border-[#4895EF]/30 hover:border-[#4361EE]/50 transform hover:-translate-y-2 hover:scale-[1.02] group relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/50 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500 before:pointer-events-none">
                                 <!-- Advertisement Section -->
                                 <div class="relative bg-gradient-to-br from-[#4CC9F0]/10 to-[#3A0CA3]/10 p-6 group-hover:from-[#4CC9F0]/20 group-hover:to-[#3A0CA3]/20 transition-colors duration-500">
                                     <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-md group-hover:shadow-lg transition-all duration-500 border border-white/20 group-hover:border-white/40">
@@ -92,6 +92,17 @@
                                         @endif
 
                                         @if($campaign->status === 'active')
+                                            @if(!$campaign->post_submitted_at)
+                                                <div class="countdown-container rounded-lg bg-red-50 p-3 mb-2">
+                                                    <div class="submission-countdown-timer text-xs" 
+                                                         data-campaign-id="{{ $campaign->id }}"
+                                                         data-created-at="{{ $campaign->created_at->toISOString() }}">
+                                                        <div class="countdown-text text-red-600 font-semibold">
+                                                            Time Left to Submit Post: <span class="submission-time">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <div class="countdown-container rounded-lg bg-gray-50 p-3">
                                                 <div class="countdown-timer text-xs" data-campaign-id="{{ $campaign->id }}" 
                                                      data-duration="{{ $campaign->duration }}"
@@ -128,6 +139,60 @@
 @endsection
 
 <script>
+function updateSubmissionCountdown(element) {
+    const campaignId = element.dataset.campaignId;
+    const createdAt = new Date(element.dataset.createdAt);
+    const deadline = new Date(createdAt.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from creation
+    const now = new Date();
+    const timeLeft = deadline - now;
+
+    if (timeLeft <= 0) {
+        element.querySelector('.submission-time').textContent = 'Submission deadline passed';
+        const submitButton = document.querySelector(`#submitLinkBtn-${campaignId}`);
+        if (submitButton) {
+            submitButton.classList.remove('bg-[#4361EE]/10', 'text-[#3A0CA3]', 'hover:bg-[#4361EE]/20');
+            submitButton.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+            submitButton.setAttribute('disabled', 'disabled');
+            submitButton.removeAttribute('href');
+            
+            // Process refund when submission deadline passes
+            fetch(`/api/campaigns/${campaignId}/refund`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Refund processed successfully');
+                } else {
+                    console.error('Failed to process refund:', data.message);
+                }
+            })
+            .catch(error => console.error('Error processing refund:', error));
+        return;
+    }
+
+    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    element.querySelector('.submission-time').textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function initializeSubmissionCountdowns() {
+    const submissionTimers = document.querySelectorAll('.submission-countdown-timer');
+    submissionTimers.forEach(timer => {
+        updateSubmissionCountdown(timer);
+        setInterval(() => updateSubmissionCountdown(timer), 1000);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initializeSubmissionCountdowns);
+
 function copyToClipboard(text, button) {
     navigator.clipboard.writeText(text).then(() => {
         const originalSvg = button.innerHTML;
