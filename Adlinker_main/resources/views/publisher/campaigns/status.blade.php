@@ -154,24 +154,7 @@ function updateSubmissionCountdown(element) {
             submitButton.classList.add('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
             submitButton.setAttribute('disabled', 'disabled');
             submitButton.removeAttribute('href');
-            
-            // Process refund when submission deadline passes
-            fetch(`/api/campaigns/${campaignId}/refund`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Refund processed successfully');
-                } else {
-                    console.error('Failed to process refund:', data.message);
-                }
-            })
-            .catch(error => console.error('Error processing refund:', error));
+        }
         return;
     }
 
