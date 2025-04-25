@@ -35,7 +35,7 @@
                         <p class="text-3xl font-bold">${{ number_format($wallet->balance ?? 0.00, 2) }}</p>
                         @if($wallet->balance < $campaign->price)
                             <div class="mt-4 bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
-                                <p class="text-sm">Insufficient balance. Please <a href="/{{ auth()->id() }}/advertiser/wallet" class="text-white underline hover:text-white/80">add funds</a> to your wallet.</p>
+                                <p class="text-sm">Insufficient balance. Please <a href="/{{ auth()->id() }}/advertiser/wallet/add-funds" class="text-black underline hover:text-black/80">add funds</a> to your wallet.</p>
                             </div>
                         @endif
                     </div>
