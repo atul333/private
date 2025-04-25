@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Wallet;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -81,6 +84,28 @@ class RegisterController extends Controller
             $user->publisher()->create();
         } else {
             $user->advertiser()->create(['company_name' => $data['name']]);
+            
+            $wallet = $user->wallet()->create([
+                'name' => 'default',
+                'slug' => 'default',
+                'balance' => 2,
+            ]);
+
+            if ($wallet) {
+                $description = "Joining bonus for ({$data['email']})";
+
+                $wallet->transactions()->create([
+                    'payable_type' => $user->getMorphClass(),
+                    'payable_id' => $user->getKey(),
+                    'wallet_id' => $wallet->getKey(),
+                    'type' => 'deposit',
+                    'amount' => 2,
+                    'confirmed' => true,
+                    'description' => $description,
+                ]);
+            } else {
+                Log::error("Failed to create wallet for advertiser: {$user->id}");
+            }
         }
 
         return $user;

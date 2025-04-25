@@ -8,10 +8,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPasswordNotification;
+use Bavix\Wallet\Traits\HasWallet;
+use Bavix\Wallet\Interfaces\Wallet as WalletInterface;
+use App\Models\Wallet;
 
-class User extends Authenticatable
+class User extends Authenticatable implements WalletInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasWallet;
 
     /**
      * The attributes that are mass assignable.
@@ -68,5 +71,13 @@ class User extends Authenticatable
     public function advertiser()
     {
         return $this->hasOne(Advertiser::class);
+    }
+
+    /**
+     * Get the wallet associated with the user.
+     */
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
     }
 }
