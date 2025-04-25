@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CampaignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-use App\Http\Controllers\Api\CampaignController;
-Route::post('/campaigns/{id}/complete', [CampaignController::class, 'complete']);
+// Campaign routes
+Route::middleware(['web', 'auth:sanctum'])->group(function () {
+    Route::post('/campaigns/{id}/complete', [CampaignController::class, 'complete']);
+    Route::post('/campaigns/{id}/expire', [CampaignController::class, 'expire']);
+});

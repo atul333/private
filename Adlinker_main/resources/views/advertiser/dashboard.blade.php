@@ -127,14 +127,89 @@
 
 <script>
 function updateSubmissionCountdown(element) {
+    // Check if campaign is already expired
+    if (element.dataset.status === 'expired') {
+        element.querySelector('.submission-time').textContent = 'Campaign Expired';
+        return;
+    }
+
     const campaignId = element.dataset.campaignId;
     const createdAt = new Date(element.dataset.createdAt);
-    const deadline = new Date(createdAt.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from creation
+    const deadline = new Date(createdAt.getTime() + (2 * 60 * 1000)); // 24 hours from creation
     const now = new Date();
     const timeLeft = deadline - now;
 
     if (timeLeft <= 0) {
         element.querySelector('.submission-time').textContent = 'Submission deadline passed';
+        
+        // Call the expire endpoint
+        fetch(`/api/campaigns/${campaignId}/expire`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    throw new Error('Please log in to continue');
+                }
+                if (response.status === 403) {
+                    throw new Error('You are not authorized to expire this campaign');
+                }
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Failed to expire campaign');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                if (data.status === 'expired') {
+                    element.dataset.status = 'expired';
+                    element.querySelector('.submission-time').textContent = 'Campaign Expired';
+                    
+                    // Show refund success message
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'text-green-600 text-sm mt-2';
+                    successDiv.textContent = `Campaign expired. $${data.refunded_amount} has been refunded to your wallet.`;
+                    element.appendChild(successDiv);
+                    
+                    // Remove any error messages
+                    const errorMsg = element.querySelector('.error-message');
+                    if (errorMsg) errorMsg.remove();
+                    
+                    // Stop the countdown interval
+                    if (element.dataset.countdownInterval) {
+                        clearInterval(parseInt(element.dataset.countdownInterval));
+                    }
+                    
+                    // Reload immediately
+                    window.location.reload();
+                }
+            } else {
+                console.error('Campaign expiration failed:', data.message);
+                showError(element, data.message || 'Failed to expire campaign');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError(element, error.message);
+            if (error.message.includes('not authorized')) {
+                // If unauthorized, stop trying to expire
+                element.dataset.status = 'unauthorized';
+                // Stop the countdown interval
+                if (element.dataset.countdownInterval) {
+                    clearInterval(parseInt(element.dataset.countdownInterval));
+                }
+            }
+        });
+        
         return;
     }
 
@@ -146,11 +221,28 @@ function updateSubmissionCountdown(element) {
         `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+// Helper function to show error messages
+function showError(element, message) {
+    // Remove any existing error message
+    const existingError = element.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Create and append new error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message text-red-600 text-sm mt-2';
+    errorDiv.textContent = message;
+    element.appendChild(errorDiv);
+}
+
 function initializeSubmissionCountdowns() {
     const submissionTimers = document.querySelectorAll('.submission-countdown-timer');
     submissionTimers.forEach(timer => {
+        timer.dataset.status = timer.dataset.status || 'active';
         updateSubmissionCountdown(timer);
-        setInterval(() => updateSubmissionCountdown(timer), 1000);
+        const intervalId = setInterval(() => updateSubmissionCountdown(timer), 1000);
+        timer.dataset.countdownInterval = intervalId;
     });
 }
 

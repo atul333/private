@@ -57,6 +57,10 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
     Route::put('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'update'])->name('campaigns.update');
     Route::delete('/{user}/campaigns/{campaign}', [App\Http\Controllers\CampaignController::class, 'destroy'])->name('campaigns.destroy');
     Route::get('/{user}/campaigns/channel/{channel}', [App\Http\Controllers\CampaignController::class, 'showChannelDetails'])->name('campaigns.channel.details');
+    
+    // Add campaign expire route here
+    Route::post('/{user}/advertiser/campaigns/{campaign}/expire', [App\Http\Controllers\Api\CampaignController::class, 'expire'])
+        ->name('advertiser.campaigns.expire');
 
     // Simple Payment Route
     Route::get('/{user}/campaigns/{campaign}/payment', [App\Http\Controllers\CampaignController::class, 'processPayment'])->name('campaigns.payment.process');

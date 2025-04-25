@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Wallet extends Model
 {
@@ -48,17 +50,11 @@ class Wallet extends Model
         $this->pending_balance += $usdAmount;
         
         if ($this->save()) {
-            $transactionDescription = sprintf(
-                'Wallet withdrawal %s - $%.2f',
-                $payment_method ,
-                $amount
-            );
-
             return $this->transactions()->create([
                 'type' => 'withdrawal',
                 'amount' => -$amount,
                 'status' => 'pending',
-                'description' => $description ?? $transactionDescription,
+                'description' => $description ?? $payment_method,
             ]) ? true : false;
         }
 
@@ -67,16 +63,39 @@ class Wallet extends Model
 
     protected function createTransaction(array $attributes): bool
     {
-        // Convert INR to USD by dividing by 85
-        $attributes['amount'] = $attributes['amount'] ;
-        
-        $transaction = $this->transactions()->create($attributes);
+        try {
+            DB::beginTransaction();
+            
+            // Create the transaction
+            $transaction = $this->transactions()->create([
+                'type' => $attributes['type'],
+                'amount' => $attributes['amount'],
+                'status' => $attributes['status'],
+                'description' => $attributes['description']
+            ]);
 
-        if ($transaction) {
-            $this->balance += $attributes['amount'];
-            return $this->save();
+            if ($transaction) {
+                // Update wallet balance
+                $this->balance += $attributes['amount'];
+                $saved = $this->save();
+                
+                if ($saved) {
+                    DB::commit();
+                    return true;
+                }
+            }
+            
+            DB::rollBack();
+            return false;
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Wallet transaction failed', [
+                'error' => $e->getMessage(),
+                'wallet_id' => $this->id,
+                'attributes' => $attributes
+            ]);
+            return false;
         }
-
-        return false;
     }
 }
