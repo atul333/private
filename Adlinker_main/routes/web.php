@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RazorpayController;
+use App\Http\Controllers\ChatController;
 
 // Include wallet routes
 Route::middleware(['auth'])->group(function () {
@@ -9,6 +10,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/razorpay/create-order', [RazorpayController::class, 'createOrder'])->name('razorpay.create.order');
     Route::post('/razorpay/verify-payment', [RazorpayController::class, 'verifyPayment'])->name('razorpay.verify.payment');
     require __DIR__.'/wallet.php';
+
+    // Chat routes
+    Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::post('/chat/mark-as-read', [ChatController::class, 'markAsRead'])->name('chat.mark-as-read');
 });
 use Illuminate\Support\Facades\Auth;
 

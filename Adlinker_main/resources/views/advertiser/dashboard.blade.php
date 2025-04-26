@@ -38,6 +38,66 @@
       </div>
     </div>
 
+    <!-- Filter Section -->
+    <div class="px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
+      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-2 overflow-x-auto whitespace-nowrap">
+        <!-- Status Filter -->
+        <select name="status" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[120px] flex-shrink-0">
+          <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Statuses</option>
+          <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+          <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+          <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+          <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+        </select>
+
+        <!-- Price Range Filter -->
+        <select name="price_range" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[130px] flex-shrink-0">
+          <option value="" {{ !request('price_range') ? 'selected' : '' }}>All Prices</option>
+          <option value="0-50" {{ request('price_range') == '0-50' ? 'selected' : '' }}>Under $50</option>
+          <option value="50-100" {{ request('price_range') == '50-100' ? 'selected' : '' }}>$50 - $100</option>
+          <option value="100-200" {{ request('price_range') == '100-200' ? 'selected' : '' }}>$100 - $200</option>
+          <option value="200+" {{ request('price_range') == '200+' ? 'selected' : '' }}>$200+</option>
+        </select>
+
+        <!-- Duration Filter -->
+        <select name="duration" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[130px] flex-shrink-0">
+          <option value="" {{ !request('duration') ? 'selected' : '' }}>All Durations</option>
+          <option value="7" {{ request('duration') == '7' ? 'selected' : '' }}>7 Days</option>
+          <option value="14" {{ request('duration') == '14' ? 'selected' : '' }}>14 Days</option>
+          <option value="30" {{ request('duration') == '30' ? 'selected' : '' }}>30 Days</option>
+        </select>
+
+        <!-- Sort By -->
+        <select name="sort" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[140px] flex-shrink-0">
+          <option value="newest" {{ request('sort') == 'newest' || !request('sort') ? 'selected' : '' }}>Newest First</option>
+          <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
+          <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price (High to Low)</option>
+          <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Price (Low to High)</option>
+          <option value="duration-high" {{ request('sort') == 'duration-high' ? 'selected' : '' }}>Duration (High to Low)</option>
+          <option value="duration-low" {{ request('sort') == 'duration-low' ? 'selected' : '' }}>Duration (Low to High)</option>
+        </select>
+
+        <!-- Search Input -->
+        <input 
+          type="text" 
+          name="search" 
+          value="{{ request('search') }}" 
+          placeholder="Search channels..." 
+          class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-3 min-w-[200px] flex-shrink-0"
+        >
+
+        <!-- Filter Button -->
+        <button type="submit" class="text-sm bg-[#4361EE] hover:bg-[#3A0CA3] text-white font-medium py-2 px-3 sm:px-4 rounded-lg transition-colors flex-shrink-0">
+          Apply Filters
+        </button>
+
+        <!-- Reset Button -->
+        <a href="{{ url()->current() }}" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 sm:px-4 rounded-lg transition-colors flex-shrink-0">
+          Reset
+        </a>
+      </form>
+    </div>
+
     <!-- Content Section -->
     <div class="px-4 py-4">
       <!-- Campaign Cards -->
@@ -246,5 +306,90 @@ function initializeSubmissionCountdowns() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', initializeSubmissionCountdowns);
+function updateCampaignTimer(element) {
+    const campaignId = element.dataset.campaignId;
+    const duration = parseInt(element.dataset.duration) * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+    const startDate = element.dataset.start ? new Date(element.dataset.start) : null;
+    const submitted = element.dataset.submitted === 'true';
+    
+    if (!submitted || !startDate) {
+        element.querySelector('.countdown-text').textContent = 'Waiting for link submission...';
+        return;
+    }
+
+    const now = new Date();
+    const timeLeft = duration - (now - startDate);
+
+    if (timeLeft <= 0) {
+        element.querySelector('.countdown-text').textContent = 'Campaign Ended';
+        
+        // Call the complete endpoint
+        fetch(`/api/campaigns/${campaignId}/complete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to complete campaign');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Update the status badge
+                const statusBadge = element.closest('.bg-white').querySelector('[class*="bg-"][class*="text-"]');
+                if (statusBadge) {
+                    statusBadge.className = 'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800';
+                    statusBadge.textContent = 'Completed';
+                }
+                
+                // Show success message
+                const successDiv = document.createElement('div');
+                successDiv.className = 'text-green-600 text-sm mt-2';
+                successDiv.textContent = `Campaign completed. Publisher has been paid $${data.amount_paid}.`;
+                element.appendChild(successDiv);
+                
+                // Reload the page after a short delay
+                setTimeout(() => window.location.reload(), 2000);
+            }
+        })
+        .catch(error => {
+            console.error('Error completing campaign:', error);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'text-red-600 text-sm mt-2';
+            errorDiv.textContent = 'Failed to complete campaign. Please refresh the page.';
+            element.appendChild(errorDiv);
+        });
+        
+        return;
+    }
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    element.querySelector('.countdown-text').textContent = 
+        `${days}d ${hours}h ${minutes}m ${seconds}s remaining`;
+}
+
+// Initialize campaign timers
+function initializeCampaignTimers() {
+    const campaignTimers = document.querySelectorAll('.countdown-timer');
+    campaignTimers.forEach(timer => {
+        updateCampaignTimer(timer);
+        setInterval(() => updateCampaignTimer(timer), 1000);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSubmissionCountdowns();
+    initializeCampaignTimers();
+});
 </script>
