@@ -40,6 +40,7 @@ Route::get('/privacy', function () { return view('privacy'); })->name('privacy')
 Route::get('/refund', function () { return view('refund'); })->name('refund');
 Route::get('/cancellation', function () { return view('cancellation'); })->name('cancellation');
 Route::get('/contact', function () { return view('contact'); })->name('contact');
+Route::get('/faq', function () { return view('faq'); })->name('faq');
 
 // Redirect root to home
 Route::get('/', function () {

@@ -215,7 +215,7 @@
 function updateSubmissionCountdown(element) {
     const campaignId = element.dataset.campaignId;
     const createdAt = new Date(element.dataset.createdAt);
-    const deadline = new Date(createdAt.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from creation
+    const deadline = new Date(createdAt.getTime() + (2 * 60 * 1000)); // 24 hours from creation
     const now = new Date();
     const timeLeft = deadline - now;
 
@@ -228,6 +228,25 @@ function updateSubmissionCountdown(element) {
             submitButton.setAttribute('disabled', 'disabled');
             submitButton.removeAttribute('href');
         }
+        // Update campaign status to expired
+        fetch(`/api/campaigns/${campaignId}/expire`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const statusBadge = document.querySelector(`[data-id="${campaignId}"] .inline-flex`);
+                if (statusBadge) {
+                    statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800';
+                    statusBadge.textContent = 'Expired';
+                }
+            }
+        })
+        .catch(error => console.error('Error updating campaign status:', error));
         return;
     }
 
@@ -239,11 +258,62 @@ function updateSubmissionCountdown(element) {
         `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+function updateCampaignStatus(campaignId) {
+    fetch(`/api/campaigns/${campaignId}/complete`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI to show completed status
+            const campaignCard = document.querySelector(`[data-id="${campaignId}"]`);
+            if (campaignCard) {
+                const statusBadge = campaignCard.querySelector('.inline-flex');
+                if (statusBadge) {
+                    statusBadge.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800';
+                    statusBadge.textContent = 'Completed';
+                }
+            }
+        }
+    })
+    .catch(error => console.error('Error updating campaign status:', error));
+}
+
+function checkAndUpdateCampaignStatus(element) {
+    const campaignId = element.dataset.campaignId;
+    const start = new Date(element.dataset.start);
+    const duration = parseInt(element.dataset.duration);
+    const now = new Date();
+    const endTime = new Date(start.getTime() + (duration * 24 * 60 * 60 * 1000));
+
+    if (now >= endTime && element.dataset.submitted === 'true') {
+        updateCampaignStatus(campaignId);
+        return true;
+    }
+    return false;
+}
+
 function initializeSubmissionCountdowns() {
     const submissionTimers = document.querySelectorAll('.submission-countdown-timer');
     submissionTimers.forEach(timer => {
         updateSubmissionCountdown(timer);
         setInterval(() => updateSubmissionCountdown(timer), 1000);
+    });
+
+    // Initialize campaign completion check
+    const countdownTimers = document.querySelectorAll('.countdown-timer');
+    countdownTimers.forEach(timer => {
+        if (timer.dataset.submitted === 'true') {
+            const checkInterval = setInterval(() => {
+                if (checkAndUpdateCampaignStatus(timer)) {
+                    clearInterval(checkInterval);
+                }
+            }, 1000);
+        }
     });
 }
 

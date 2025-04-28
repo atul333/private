@@ -39,60 +39,43 @@
     </div>
 
     <!-- Filter Section -->
-    <div class="px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
-      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-2 overflow-x-auto whitespace-nowrap">
-        <!-- Status Filter -->
-        <select name="status" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[120px] flex-shrink-0">
-          <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Statuses</option>
-          <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
-          <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-          <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-          <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
-        </select>
-
-        <!-- Price Range Filter -->
-        <select name="price_range" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[130px] flex-shrink-0">
-          <option value="" {{ !request('price_range') ? 'selected' : '' }}>All Prices</option>
-          <option value="0-50" {{ request('price_range') == '0-50' ? 'selected' : '' }}>Under $50</option>
-          <option value="50-100" {{ request('price_range') == '50-100' ? 'selected' : '' }}>$50 - $100</option>
-          <option value="100-200" {{ request('price_range') == '100-200' ? 'selected' : '' }}>$100 - $200</option>
-          <option value="200+" {{ request('price_range') == '200+' ? 'selected' : '' }}>$200+</option>
-        </select>
-
-        <!-- Duration Filter -->
-        <select name="duration" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[130px] flex-shrink-0">
-          <option value="" {{ !request('duration') ? 'selected' : '' }}>All Durations</option>
-          <option value="7" {{ request('duration') == '7' ? 'selected' : '' }}>7 Days</option>
-          <option value="14" {{ request('duration') == '14' ? 'selected' : '' }}>14 Days</option>
-          <option value="30" {{ request('duration') == '30' ? 'selected' : '' }}>30 Days</option>
-        </select>
-
-        <!-- Sort By -->
-        <select name="sort" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[140px] flex-shrink-0">
-          <option value="newest" {{ request('sort') == 'newest' || !request('sort') ? 'selected' : '' }}>Newest First</option>
-          <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
-          <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price (High to Low)</option>
-          <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Price (Low to High)</option>
-          <option value="duration-high" {{ request('sort') == 'duration-high' ? 'selected' : '' }}>Duration (High to Low)</option>
-          <option value="duration-low" {{ request('sort') == 'duration-low' ? 'selected' : '' }}>Duration (Low to High)</option>
-        </select>
-
-        <!-- Search Input -->
-        <input 
-          type="text" 
-          name="search" 
-          value="{{ request('search') }}" 
-          placeholder="Search channels..." 
-          class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-3 min-w-[200px] flex-shrink-0"
-        >
-
-        <!-- Filter Button -->
-        <button type="submit" class="text-sm bg-[#4361EE] hover:bg-[#3A0CA3] text-white font-medium py-2 px-3 sm:px-4 rounded-lg transition-colors flex-shrink-0">
-          Apply Filters
+    <div class="px-4 py-2.5 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
+      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-3 flex-wrap">
+        <div class="relative">
+          <select name="status" class="appearance-none pl-8 pr-3 py-1.5 bg-white/80 rounded-lg border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#4361EE] text-sm hover:bg-white transition-colors min-w-[130px]">
+            <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Statuses</option>
+            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+            <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+          </select>
+          <svg class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+        
+        <div class="relative">
+          <select name="sort" class="appearance-none pl-8 pr-3 py-1.5 bg-white/80 rounded-lg border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#4361EE] text-sm hover:bg-white transition-colors min-w-[160px]">
+            <option value="newest" {{ request('sort') == 'newest' || !request('sort') ? 'selected' : '' }}>Newest First</option>
+            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
+            <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price (High to Low)</option>
+            <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Price (Low to High)</option>
+            <option value="duration-high" {{ request('sort') == 'duration-high' ? 'selected' : '' }}>Duration (High to Low)</option>
+            <option value="duration-low" {{ request('sort') == 'duration-low' ? 'selected' : '' }}>Duration (Low to High)</option>
+          </select>
+          <svg class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+        </div>
+    
+        <div class="relative flex-1 min-w-[200px]">
+          <input type="text" name="search" value="{{ request('search') }}" placeholder="Search channels..." class="pl-8 pr-3 w-full py-1.5 bg-white/80 rounded-lg border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#4361EE] text-sm hover:bg-white transition-colors">
+          <svg class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+    
+        <button type="submit" class="shrink-0 text-sm bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white font-medium py-1.5 px-4 rounded-lg hover:from-[#3F37C9] hover:to-[#4895EF] transition-all duration-300 shadow-sm hover:shadow inline-flex items-center">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"></path></svg>
+          Apply
         </button>
-
-        <!-- Reset Button -->
-        <a href="{{ url()->current() }}" class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-3 sm:px-4 rounded-lg transition-colors flex-shrink-0">
+    
+        <a href="{{ url()->current() }}" class="shrink-0 text-sm bg-gray-100 text-gray-700 font-medium py-1.5 px-4 rounded-lg hover:bg-gray-200 transition-colors inline-flex items-center">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           Reset
         </a>
       </form>
@@ -176,8 +159,34 @@
 
       <!-- Pagination -->
       <div class="mt-6">
-        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-[#4895EF]/30 p-4">
-          {{ $campaigns->links('pagination::tailwind') }}
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/50 backdrop-blur-sm rounded-lg px-6 py-4 border border-[#4895EF]/10">
+          <p class="text-sm text-gray-600">
+            Showing <span class="font-medium text-gray-900">{{ $campaigns->firstItem() ?? 0 }}</span> to
+            <span class="font-medium text-gray-900">{{ $campaigns->lastItem() ?? 0 }}</span> of
+            <span class="font-medium text-gray-900">{{ $campaigns->total() }}</span> results
+          </p>
+
+          <div class="flex items-center gap-2">
+            @if ($campaigns->onFirstPage())
+              <span class="px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed">
+                Previous
+              </span>
+            @else
+              <a href="{{ $campaigns->previousPageUrl() }}" class="px-4 py-2 text-sm text-gray-600 bg-white rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
+                Previous
+              </a>
+            @endif
+
+            @if ($campaigns->hasMorePages())
+              <a href="{{ $campaigns->nextPageUrl() }}" class="px-4 py-2 text-sm text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] rounded-lg hover:from-[#3F37C9] hover:to-[#4895EF] transition-all duration-200 shadow-sm hover:shadow">
+                Next
+              </a>
+            @else
+              <span class="px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed">
+                Next
+              </span>
+            @endif
+          </div>
         </div>
       </div>
     </div>

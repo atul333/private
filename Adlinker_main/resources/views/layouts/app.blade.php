@@ -40,7 +40,7 @@
                 <div class="flex justify-between h-16">
                     <div class="flex">
                         <div class="flex-shrink-0 flex items-center">
-                            <a href="{{ url('/') }}" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition duration-300">SocialAdLinker</a>
+                            <a href="{{ url('/') }}" class="text-lg font-bold text-blue-600 hover:text-blue-700 transition duration-300">SocialAdLinker</a>
                         </div>
                     </div>
 
@@ -51,9 +51,14 @@
                                 <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200">{{ __('Login') }}</a>
                             @endif
                         @else
-                            <button onclick="toggleChat()" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
-                                <i class="fas fa-envelope"></i>
-                            </button>
+                            @if (!Request::is('login') && !Request::is('register'))
+                                <button onclick="toggleChat()" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                                <a href="/faq" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                                    <i class="fas fa-question-circle"></i>
+                                </a>
+                            @endif
                             @if(Auth::check())
                                 <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1 bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm border border-gray-200 transition-all duration-200">
                                     <i class="fas fa-wallet text-blue-500"></i>
@@ -84,6 +89,10 @@
                                     <i class="fas fa-envelope text-blue-500 text-sm"></i>
                                     <span class="text-sm font-medium">Contact</span>
                                 </button>
+                                <a href="/faq" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
+                                    <i class="fas fa-question-circle text-blue-500 text-sm"></i>
+                                    <span class="text-sm font-medium">FAQ</span>
+                                </a>
                             @endif
 
                         <!-- Authentication Links -->
@@ -91,9 +100,9 @@
                             @else
                                 @if(Auth::check())
                                     <div class="relative group">
-                                        <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
+                                        <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1 bg-white hover:bg-gray-50 text-gray-700 px-2 py-1.5 rounded-lg shadow-sm border border-gray-200 transition-all duration-200">
                                             <i class="fas fa-wallet text-blue-500 text-sm"></i>
-                                            <span class="text-sm font-medium">${{ $balance }}</span>
+                                            <span class="font-medium text-sm">${{ $balance }}</span>
                                         </a>
                                     </div>
                                 @endif
