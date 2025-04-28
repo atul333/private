@@ -135,7 +135,7 @@ class WalletController extends Controller
         $wallet = Wallet::where('user_id', $user->id)->firstOrFail();
 
         try {
-            if ($wallet->withdraw($request->amount, $request->payment_method)) {
+            if ($wallet->withdraw($request->amount, $request->payment_method, 'Withdrawal completed for ' . $user->name . ' with ' . $request->payment_method)) {
                 // Create withdrawal record
                 $withdrawal = new \App\Models\Withdrawal([
                     'user_id' => $user->id,

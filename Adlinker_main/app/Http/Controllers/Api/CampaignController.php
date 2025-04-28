@@ -26,7 +26,7 @@ class CampaignController extends Controller
             if ($campaign->status !== 'active' && $campaign->status !== 'ended') {
                 return response()->json(['message' => 'Campaign is not eligible for completion'], Response::HTTP_BAD_REQUEST);
             }
-            
+
             $publisher = User::findOrFail($campaign->publisher_id);
             $wallet = Wallet::firstOrCreate(['user_id' => $publisher->id], ['balance' => 0]);
             
@@ -101,5 +101,25 @@ class CampaignController extends Controller
                 'message' => 'Failed to expire campaign: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function completeAllEnded()
+    {
+        $now = now();
+        $campaigns = \App\Models\Campaign::where('status', 'active')
+            ->whereRaw('TIMESTAMPDIFF(SECOND, post_submitted_at, ?) >= duration * 24 * 60 * 60', [$now])
+            ->get();
+
+        foreach ($campaigns as $campaign) {
+            DB::transaction(function () use ($campaign) {
+                $publisher = \App\Models\User::find($campaign->publisher_id);
+                $wallet = \App\Models\Wallet::firstOrCreate(['user_id' => $publisher->id], ['balance' => 0]);
+                if ($wallet->deposit($campaign->price, "Payout for Campaign #{$campaign->id}")) {
+                    $campaign->status = 'completed';
+                    $campaign->save();
+                }
+            });
+        }
+        return response()->json(['success' => true, 'completed' => $campaigns->count()]);
     }
 }

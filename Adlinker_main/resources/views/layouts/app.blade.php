@@ -79,10 +79,12 @@
                     <!-- Desktop menu -->
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
                         <div class="flex space-x-4">
-                            <button onclick="toggleChat()" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
-                                <i class="fas fa-envelope text-blue-500 text-sm"></i>
-                                <span class="text-sm font-medium">Contact</span>
-                            </button>
+                            @if (!Request::is('login') && !Request::is('register'))
+                                <button onclick="toggleChat()" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
+                                    <i class="fas fa-envelope text-blue-500 text-sm"></i>
+                                    <span class="text-sm font-medium">Contact</span>
+                                </button>
+                            @endif
 
                         <!-- Authentication Links -->
                             @guest
