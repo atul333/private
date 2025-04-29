@@ -69,7 +69,7 @@
                             </div>
                             <input type="number" name="amount" id="amount" step="0.01" min="1" value="{{ old('amount') }}" required
                                 class="appearance-none block w-full pl-7 pr-12 py-2 border border-[#4895EF]/30 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#4361EE] focus:border-[#4361EE] transition-all duration-200 sm:text-sm @error('amount') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror"
-                                placeholder="0.00">
+                                placeholder="1.00" oninput="if(this.value < 1) this.setCustomValidity('Amount must be at least $1'); else this.setCustomValidity('');">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">USD</span>
                             </div>
@@ -127,8 +127,9 @@
                     }
 
                     // Validate Amount
-                    if (!amount.value || parseFloat(amount.value) <= 0) {
+                    if (!amount.value || parseFloat(amount.value) < 1) {
                         amountError.classList.remove('hidden');
+                        document.getElementById('amountError').textContent = 'Please enter an amount of $1 or more';
                         isValid = false;
                     }
 
@@ -164,7 +165,7 @@
                             amount: data.amount,
                             currency: data.currency,
                             order_id: data.order_id,
-                            name: 'SocialAdLinker',
+                            name: '{{ Auth::user()->name }}',
                             description: 'Add Funds to Wallet ($' + usdAmount.toFixed(2) + ' USD = ₹' + inrAmount.toFixed(2) + ' INR)',
                             handler: function(response) {
                                 fetch('{{ route("razorpay.verify.payment") }}', {

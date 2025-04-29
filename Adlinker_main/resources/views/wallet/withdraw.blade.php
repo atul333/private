@@ -2,11 +2,9 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
-
-
+    <div class="flex flex-col h-full">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="{{ route('publisher.wallet.index', ['id' => Auth::user()->id]) }}" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,16 +14,11 @@
                 </a>
                 <h1 class="text-lg font-bold text-black">Withdraw Funds</h1>
             </div>
-            <div class="text-right">
-                <p class="text-sm text-white/90">Available Balance</p>
-                <p class="text-xl font-bold text-white">${{ number_format($availableBalance, 2) }}</p>
-            </div>
+           
         </div>
 
-        
-
-        <!-- Scrollable Content -->
-        <div class="flex-1 overflow-y-auto p-6 min-h-0">
+        <!-- Content -->
+        <div class="flex-1 p-6">
             <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50">
                     <form action="{{ route('publisher.wallet.process-withdrawal', ['id' => Auth::user()->id]) }}" method="POST">
                         @csrf
@@ -61,9 +54,19 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-500 sm:text-sm">$</span>
                                     </div>
-                                    <input type="number" name="amount" id="amount" step="0.01" min="1" required
+                                    <input type="number" name="amount" id="amount" step="0.01" min="10" required
                                            class="block w-full pl-7 pr-12 py-2 rounded-md border-gray-300 focus:ring-[#4361EE] focus:border-[#4361EE]"
-                                           placeholder="0.00">
+                                           placeholder="0.00"
+                                           oninput="calculateFees(this.value)">
+                                </div>
+
+                                <div id="feeDetails" class="mt-4 p-4 bg-blue-50 rounded-lg hidden">
+                                    <div class="space-y-2 text-sm">
+                                        <p>Withdrawal Amount: $<span id="withdrawalAmount">0.00</span></p>
+                                        <p>Tax : $<span id="taxAmount">0.00</span></p>
+                                        <p>Platform Fee : $<span id="platformFee">0.00</span></p>
+                                        <p class="font-semibold text-base">You will receive: $<span id="finalAmount">0.00</span></p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -183,7 +186,29 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function calculateFees(amount) {
+    const feeDetails = document.getElementById('feeDetails');
+    if (amount >= 10) {
+        const withdrawalAmount = parseFloat(amount);
+        const taxRate = 0.03;
+        const platformFeeRate = 0.07;
+        
+        const taxAmount = withdrawalAmount * taxRate;
+        const platformFee = withdrawalAmount * platformFeeRate;
+        const finalAmount = withdrawalAmount - taxAmount - platformFee;
+        
+        document.getElementById('withdrawalAmount').textContent = withdrawalAmount.toFixed(2);
+        document.getElementById('taxAmount').textContent = taxAmount.toFixed(2);
+        document.getElementById('platformFee').textContent = platformFee.toFixed(2);
+        document.getElementById('finalAmount').textContent = finalAmount.toFixed(2);
+        
+        feeDetails.classList.remove('hidden');
+    } else {
+        feeDetails.classList.add('hidden');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
         const upiFields = document.getElementById('upi_fields');
         const bankFields = document.getElementById('bank_fields');
         const upiRadio = document.getElementById('payment_upi');

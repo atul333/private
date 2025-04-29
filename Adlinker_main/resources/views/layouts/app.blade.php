@@ -52,12 +52,7 @@
                             @endif
                         @else
                             @if (!Request::is('login') && !Request::is('register'))
-                                <button onclick="toggleChat()" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
-                                    <i class="fas fa-envelope"></i>
-                                </button>
-                                <a href="/faq" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
-                                    <i class="fas fa-question-circle"></i>
-                                </a>
+                                <!-- Removed FAQ button -->
                             @endif
                             @if(Auth::check())
                                 <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1 bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm border border-gray-200 transition-all duration-200">
@@ -85,14 +80,8 @@
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
                         <div class="flex space-x-4">
                             @if (!Request::is('login') && !Request::is('register'))
-                                <button onclick="toggleChat()" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
-                                    <i class="fas fa-envelope text-blue-500 text-sm"></i>
-                                    <span class="text-sm font-medium">Contact</span>
-                                </button>
-                                <a href="/faq" class="flex items-center space-x-1.5 bg-white/95 hover:bg-white text-gray-700 px-3 py-1.5 rounded-md shadow-sm border border-gray-200/80 transition-all duration-200 hover:shadow group">
-                                    <i class="fas fa-question-circle text-blue-500 text-sm"></i>
-                                    <span class="text-sm font-medium">FAQ</span>
-                                </a>
+                             
+                                <!-- Removed FAQ button and link -->
                             @endif
 
                         <!-- Authentication Links -->
@@ -141,38 +130,190 @@
             @yield('content')
         </main>
 
-        <!-- Chat Window -->
-        <div id="chat-window" class="hidden fixed bottom-4 right-4 w-80 bg-white rounded-lg shadow-xl z-50">
-            <div class="flex items-center justify-between p-4 border-b">
-                <h3 class="text-lg font-semibold text-gray-800">Support Chat</h3>
-                <button onclick="toggleChat()" class="text-gray-500 hover:text-gray-700">
+        <!-- Help & Support Button -->
+        <div class="fixed bottom-20 right-5 z-50">
+        <button onclick="toggleFAQ()" class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                <i class="fab fa-telegram-plane"></i>
+                <span class="font-medium">Help & Support</span>
+            </a>
+        </div>
+
+         
+
+        <!-- Footer Section -->
+        <footer class="bg-white/80 backdrop-blur-sm shadow-sm py-4 px-4 sm:px-6 lg:px-8 mt-auto">
+            <div class="max-w-7xl mx-auto text-center text-sm text-gray-600">
+                © {{ date('Y') }} SocialAdLinker. All rights reserved.
+            </div>
+        </footer>
+
+        <!-- FAQ Window -->
+        <div id="faq-window" class="hidden fixed bottom-32 right-5 w-80 bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl z-50 transform transition-all duration-300 ease-in-out max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] bg-clip-text text-transparent">Frequently Asked Questions</h3>
+                <button onclick="toggleFAQ()" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="chat-messages" class="p-4 h-96 overflow-y-auto space-y-4">
-                <!-- Messages will be inserted here -->
-            </div>
-            <div class="p-4 border-t">
-                <form id="chat-form" class="flex space-x-2">
-                    @csrf
-                    <input type="text" id="message-input" name="message" class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="Type your message..." required>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
+            <div class="p-4 h-[400px] overflow-y-auto space-y-4 custom-scrollbar">
+                <div class="space-y-3">
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">What is AdLinker?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>AdLinker is a platform that connects advertisers with publishers to facilitate effective advertising campaigns on Telegram channels. We provide a seamless marketplace for Telegram advertising, helping businesses reach their target audience and channel owners monetize their content.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">How do I get started?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>Sign up as either an advertiser or publisher, complete your profile, and start using our platform. Advertisers can create campaigns and browse channels, while publishers can list their channels and start receiving ad requests.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">How does payment work?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>We use secure payment processing through RazorPay. Advertisers can add funds to their wallet using various payment methods, and publishers receive automatic payments for successful ad placements through our platform.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">What types of ads are supported?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>AdLinker supports various ad formats suitable for Telegram channels, including text posts, media posts (images/videos), and pinned messages. Each format can be customized to meet your campaign objectives.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">How are ad prices determined?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>Ad prices are set by channel owners based on factors like subscriber count, engagement rates, and content niche. We provide pricing guidelines to ensure fair market rates while allowing flexibility for premium placements.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">How do I track ad performance?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>Our platform provides detailed analytics including views. You can track campaign performance in real-time through your dashboard and generate comprehensive reports.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>You can target your ads based on channel categories, audience demographics, language, and geographic location. Our platform helps match your ads with channels that best reach your target audience.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">How long does ad approval take?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>Ad approval typically takes 24 hours. Publishers review ads to ensure they meet channel guidelines. Once approved, ads are scheduled according to your campaign settings.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">Is there a minimum budget requirement?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>There's no strict minimum budget requirement. You can start advertising with any amount, though effectiveness may vary based on your target channels and campaign goals.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-lg overflow-hidden bg-white/50 hover:bg-white/80 transition-colors duration-200 shadow-sm">
+                        <button class="w-full px-4 py-3 text-left flex justify-between items-center group" onclick="toggleAnswer(this)">
+                            <span class="font-medium text-gray-800 group-hover:text-[#4361EE] transition-colors duration-200">How do you ensure ad quality?</span>
+                            <i class="fas fa-chevron-down text-gray-400 group-hover:text-[#4361EE] transform transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden px-4 py-3 text-gray-600 border-t border-gray-50">
+                            <p>We have content guidelines and review processes to ensure ads meet quality standards. Publishers can also review and approve ads before posting, maintaining their channel's integrity.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center space-y-3 border-t border-gray-100 pt-4">
+                    <p class="text-gray-600">Still have questions?</p>
+                    <a href="https://t.me/AdLinkerSupportBot" target="_blank" class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                        <i class="fab fa-telegram-plane mr-2"></i>
+                        <span class="font-medium">Contact Support</span>
+                    </a>
+                </div>
             </div>
         </div>
+
+      
+
+
+       
 
         <!-- Footer Section -->
         <footer class="mt-auto py-4 px-6 bg-gradient-to-r from-[#3A0CA3]/10 to-[#4361EE]/10 border-t border-[#7209B7]/20">
             <div class="text-center text-sm text-gray-600">
-                © 2025 AdLinker. All rights reserved.
+                
             </div>
         </footer>
     </div>
 
     <script>
-        // Mobile menu removed - using inline navigation
+    function toggleFAQ() {
+        const faqWindow = document.getElementById('faq-window');
+        faqWindow.classList.toggle('hidden');
+        faqWindow.classList.toggle('translate-y-4');
+        faqWindow.classList.toggle('opacity-0');
+        
+        if (!faqWindow.classList.contains('hidden')) {
+            setTimeout(() => {
+                faqWindow.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+        }
+    }
+
+    function toggleAnswer(button) {
+        const answer = button.nextElementSibling;
+        const icon = button.querySelector('.fa-chevron-down');
+        const allAnswers = document.querySelectorAll('.faq-answer');
+        const allIcons = document.querySelectorAll('.fa-chevron-down');
+        
+        // Close other answers
+        allAnswers.forEach(item => {
+            if (item !== answer && !item.classList.contains('hidden')) {
+                item.classList.add('hidden');
+            }
+        });
+        
+        allIcons.forEach(item => {
+            if (item !== icon && item.classList.contains('rotate-180')) {
+                item.classList.remove('rotate-180');
+            }
+        });
+
+        // Toggle current answer
+        answer.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+    }
+
+    function toggleChat() {
+        const faqModal = document.getElementById('faq-modal');
+        const chatWindow = document.getElementById('chat-window');
+        faqModal.classList.add('hidden');
+        chatWindow.classList.toggle('hidden');
+    }
+
+    // Mobile menu removed - using inline navigation
     
         // Handle user menu dropdown
         const userMenuButton = document.getElementById('user-menu-button');
@@ -251,8 +392,32 @@
 
     // Chat functionality
     function toggleChat() {
+        const faqModal = document.getElementById('faq-modal');
         const chatWindow = document.getElementById('chat-window');
-        chatWindow.classList.toggle('hidden');
+        
+        // If FAQ modal is hidden, show it first
+        if (faqModal.classList.contains('hidden')) {
+            faqModal.classList.remove('hidden');
+            chatWindow.classList.add('hidden');
+        } else {
+            // If FAQ modal is visible and user clicks contact support
+            faqModal.classList.add('hidden');
+            chatWindow.classList.toggle('hidden');
+        }
+        if (!chatWindow.classList.contains('hidden')) {
+            loadMessages();
+            markMessagesAsRead();
+        }
+    }
+        
+        // If FAQ modal is hidden, show it first
+        if (faqModal.classList.contains('hidden')) {
+            faqModal.classList.remove('hidden');
+            chatWindow.classList.add('hidden');
+        } else {
+            // If FAQ modal is visible and user clicks contact support
+            faqModal.classList.add('hidden');
+            chatWindow.classList.toggle('hidden');
         if (!chatWindow.classList.contains('hidden')) {
             loadMessages();
             markMessagesAsRead();
