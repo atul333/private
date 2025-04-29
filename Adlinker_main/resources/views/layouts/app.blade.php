@@ -132,7 +132,7 @@
 
         <!-- Help & Support Button -->
         <div class="fixed bottom-20 right-5 z-50">
-        <button onclick="toggleFAQ()" class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+        <button onclick="toggleFAQ()" class="flex items-center space-x-2 px-2 py-1 bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                 <i class="fab fa-telegram-plane"></i>
                 <span class="font-medium">Help & Support</span>
             </a>
@@ -141,7 +141,7 @@
          
 
         <!-- Footer Section -->
-        <footer class="bg-white/80 backdrop-blur-sm shadow-sm py-4 px-4 sm:px-6 lg:px-8 mt-auto">
+        <footer class="bg-white/80 backdrop-blur-sm bottom-20 shadow-sm py-4 px-4 sm:px-6 lg:px-8 mt-auto">
             <div class="max-w-7xl mx-auto text-center text-sm text-gray-600">
                 © {{ date('Y') }} SocialAdLinker. All rights reserved.
             </div>

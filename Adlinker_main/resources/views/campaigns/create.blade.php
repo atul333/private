@@ -125,7 +125,7 @@
                                 <div class="w-full channel-card" 
                                      data-name="{{ strtolower($channel->name) }}"
                                      data-subscribers="{{ $channel->subscribers_count }}">
-                                    <div class="bg-gradient-to-br from-white to-blue-50/50 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group border-2 border-blue-300">
+                                    <div class="bg-gradient-to-br from-white to-blue-50/50 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group border-2 border-gray-300">
                                         <!-- Card Header with Channel Info -->
                                         <div class="p-4 bg-white/90">
                                             <div class="flex items-center mb-3">
@@ -146,7 +146,7 @@
                                             <p class="text-xs sm:text-sm text-gray-600 mb-3 hidden sm:block">{{ Str::limit($channel->description, 100) }}</p>
                                             
                                             <!-- Subscriber Count -->
-                                            <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100/60 text-blue-700 border border-blue-200">
+                                            <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100/60 text-blue-700 border border-gray-200">
                                                 <svg class="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
@@ -168,7 +168,7 @@
                                         
                                         <!-- Duration Selector Section -->
                                         <div class="p-3 bg-gradient-to-r from-indigo-50/30 to-blue-50/30">
-                                            <select name="durations[{{ $channel->id }}]" class="w-full rounded-md text-xs sm:text-sm border-2 border-blue-300/50 shadow-sm focus:ring-blue-500 focus:border-blue-500 channel-duration bg-blue-50/20" data-channel-id="{{ $channel->id }}" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
+                                            <select name="durations[{{ $channel->id }}]" class="w-full rounded-md text-xs sm:text-sm border-2 border-gray-300/50 shadow-sm focus:ring-blue-500 focus:border-blue-500 channel-duration bg-blue-50/20" data-channel-id="{{ $channel->id }}" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
                                                 <option value="">Select Duration</option>
                                                 <option value="1">1 Day (${{ number_format($channel->price_1_day, 2) }})</option>
                                                 <option value="2">2 Days (${{ number_format($channel->price_2_days, 2) }})</option>
