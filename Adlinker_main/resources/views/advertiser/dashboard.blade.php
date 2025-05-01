@@ -204,7 +204,7 @@ function updateSubmissionCountdown(element) {
 
     const campaignId = element.dataset.campaignId;
     const createdAt = new Date(element.dataset.createdAt);
-    const deadline = new Date(createdAt.getTime() + (2 * 60 * 1000)); // 24 hours from creation
+    const deadline = new Date(createdAt.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from creation
     const now = new Date();
     const timeLeft = deadline - now;
 
