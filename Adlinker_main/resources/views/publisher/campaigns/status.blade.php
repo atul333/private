@@ -103,13 +103,15 @@
               <!-- Text Content with Copy Button -->
               <div class="flex items-start space-x-2 mb-4">
                 <div class="flex-1">
-                  <p class="text-sm text-gray-700">{{ $campaign->advertisement_content }}</p>
+                  <p class="text-sm text-gray-700 whitespace-pre-wrap break-words">{{ $campaign->advertisement_content }}</p>
                 </div>
                 <button 
-                  onclick="copyToClipboard('{{ $campaign->advertisement_content }}', this)" 
-                  class="flex-shrink-0 p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
-                  title="Copy content"
+                      data-content="{{ htmlspecialchars($campaign->advertisement_content, ENT_QUOTES, 'UTF-8') }}"
+                      onclick="copyToClipboard(this.getAttribute('data-content'), this)"
+                      class="flex-shrink-0 p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
+                     title="Copy content"
                 >
+
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
                   </svg>
