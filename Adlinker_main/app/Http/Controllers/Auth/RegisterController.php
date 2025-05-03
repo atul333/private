@@ -88,22 +88,10 @@ class RegisterController extends Controller
             $wallet = $user->wallet()->create([
                 'name' => 'default',
                 'slug' => 'default',
-                'balance' => 2,
+                'balance' => 0,
             ]);
 
-            if ($wallet) {
-                $description = "Joining bonus for ({$data['email']})";
-
-                $wallet->transactions()->create([
-                    'payable_type' => $user->getMorphClass(),
-                    'payable_id' => $user->getKey(),
-                    'wallet_id' => $wallet->getKey(),
-                    'type' => 'deposit',
-                    'amount' => 2,
-                    'confirmed' => true,
-                    'description' => $description,
-                ]);
-            } else {
+            if (!$wallet) {
                 Log::error("Failed to create wallet for advertiser: {$user->id}");
             }
         }
