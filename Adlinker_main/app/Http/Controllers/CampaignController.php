@@ -74,7 +74,7 @@ class CampaignController extends Controller
             'price' => $price,
             'advertisement_image' => $imagePath,
             'advertisement_content' => $validated['advertisement_content'],
-            'status' => 'pending'
+            'status' => 'expired'
         ]);
 
         return redirect()->route('campaigns.payment.create', ['user' => auth()->id(), 'campaign' => $campaign->id]);

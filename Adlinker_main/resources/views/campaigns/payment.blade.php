@@ -34,8 +34,14 @@
                         <h3 class="text-lg font-medium opacity-90">Wallet Balance</h3>
                         <p class="text-3xl font-bold">${{ number_format($wallet->balance ?? 0.00, 2) }}</p>
                         @if($wallet->balance < $campaign->price)
-                            <div class="mt-4 bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
-                                <p class="text-sm">Insufficient balance. Please <a href="/{{ auth()->id() }}/advertiser/wallet/add-funds" class="text-black underline hover:text-black/80">add funds</a> to your wallet.</p>
+                            <div class="mt-6 text-center">
+                                <p class="text-sm text-red-500 mb-3">Insufficient balance for this campaign</p>
+                                <a href="/{{ auth()->id() }}/advertiser/wallet/add-funds" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-[#F72585] to-[#7209B7] border border-transparent rounded-xl shadow-lg text-lg font-semibold text-white hover:from-[#B5179E] hover:to-[#560BAD] transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7209B7] animate-pulse hover:animate-none">
+                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                    </svg>
+                                    Add Funds to Wallet
+                                </a>
                             </div>
                         @endif
                     </div>
