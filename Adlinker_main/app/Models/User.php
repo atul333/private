@@ -11,10 +11,16 @@ use App\Notifications\ResetPasswordNotification;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Interfaces\Wallet as WalletInterface;
 use App\Models\Wallet;
+use App\Models\TelegramNotification;
 
 class User extends Authenticatable implements WalletInterface
 {
     use HasApiTokens, HasFactory, Notifiable, HasWallet;
+
+    public function telegramNotification()
+    {
+        return $this->hasOne(TelegramNotification::class);
+    }
 
     /**
      * The attributes that are mass assignable.

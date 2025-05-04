@@ -20,6 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Campaign routes
+// Telegram webhook route
+Route::post('/telegram/webhook', [\App\Http\Controllers\TelegramNotificationController::class, 'handleWebhook']);
+
 Route::middleware(['web', 'auth:sanctum'])->group(function () {
     Route::post('/campaigns/{id}/complete', [CampaignController::class, 'complete']);
     Route::post('/campaigns/{id}/expire', [CampaignController::class, 'expire']);
