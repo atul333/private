@@ -21,6 +21,28 @@ class TelegramController extends Controller
             $data = $request->all();
             Log::info('Telegram webhook received:', ['data' => $data]);
 
+            $chatId = $data['message']['chat']['id'] ?? null;
+            $text = $data['message']['text'] ?? '';
+
+            if (!$chatId) {
+                throw new \Exception('Chat ID not found in webhook data');
+            }
+
+            $response = '';
+            switch ($text) {
+                case '/start':
+                    $response = "Welcome to SocialAdLinker! 🚀\n\n"
+                        . "I'm your assistant for managing your advertising campaigns. "
+                        . "Here's what you can do:\n\n"
+                        . "1. Link your Telegram account with SocialAdLinker\n"
+                        . "2. Receive notifications about your campaigns\n"
+                        . "3. Get updates about your earnings\n\n"
+                        . "To get started, please visit our website: https://socialadlinker.com";
+                    break;
+                default:
+                    $response = "I don't understand that command. Type /start for available options.";
+            }
+
             if (isset($data['message'])) {
                 $chatId = $data['message']['chat']['id'];
                 $messageText = $data['message']['text'] ?? '';
