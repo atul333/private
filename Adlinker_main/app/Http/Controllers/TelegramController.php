@@ -21,52 +21,12 @@ class TelegramController extends Controller
             $data = $request->all();
             Log::info('Telegram webhook received:', ['data' => $data]);
 
-            $chatId = $data['message']['chat']['id'] ?? null;
-            $text = $data['message']['text'] ?? '';
-
-            if (!$chatId) {
-                throw new \Exception('Chat ID not found in webhook data');
+            if (!isset($data['message'])) {
+                throw new \Exception('Message data not found in webhook');
             }
 
-            $response = '';
-            switch ($text) {
-                case '/start':
-                    $response = "Welcome to SocialAdLinker! 🚀\n\n"
-                        . "I'm your assistant for managing your advertising campaigns. "
-                        . "Here's what you can do:\n\n"
-                        . "1. Link your Telegram account with SocialAdLinker\n"
-                        . "2. Receive notifications about your campaigns\n"
-                        . "3. Get updates about your earnings\n\n"
-                        . "To get started, please visit our website: https://socialadlinker.com";
-                    break;
-                default:
-                    $response = "I don't understand that command. Type /start for available options.";
-            }
-
-            if (isset($data['message'])) {
-                $chatId = $data['message']['chat']['id'];
-                $messageText = $data['message']['text'] ?? '';
-
-                // Handle commands
-                if (strpos($messageText, '/') === 0) {
-                    switch ($messageText) {
-                        case '/start':
-                            $response = "Welcome to SocialAdLinker! 🚀\n\nI'm here to help you manage your advertising campaigns and channel monetization.";
-                            break;
-                        case '/help':
-                            $response = "Available commands:\n/start - Start the bot\n/help - Show this help message";
-                            break;
-                        default:
-                            $response = "Sorry, I don't understand that command. Type /help for available commands.";
-                    }
-                } else {
-                    $response = "Please use a valid command. Type /help to see available commands.";
-                }
-
-                $this->telegramService->sendMessage($chatId, $response);
-            }
-
-            return response()->json(['status' => 'success']);
+            return $this->telegramService->handleUpdate($data);
+            
         } catch (\Exception $e) {
             Log::error('Telegram webhook error:', ['error' => $e->getMessage()]);
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);

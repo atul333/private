@@ -24,7 +24,7 @@ class TelegramNotificationService
         $this->client = new Client();
         
         // Set up webhook URL with secure HTTPS domain
-        $webhookUrl = 'https://www.socialadlinker.com/api/telegram/webhook';
+        $webhookUrl = config('app.url') . '/webhook';
         $response = $this->setWebhook($webhookUrl);
         
         if (!$response || isset($response['error_code'])) {
