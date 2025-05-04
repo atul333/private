@@ -22,9 +22,12 @@ class TelegramNotificationService
         
         $this->apiBaseUrl = "https://api.telegram.org/bot{$this->token}";
         $this->client = new Client();
-        
+    }
+
+    public function initializeWebhook()
+    {
         // Set up webhook URL with secure HTTPS domain
-        $webhookUrl = config('app.url') . '/webhook';
+        $webhookUrl = config('app.url') . '/api/telegram/webhook';
         $response = $this->setWebhook($webhookUrl);
         
         if (!$response || isset($response['error_code'])) {
@@ -33,6 +36,7 @@ class TelegramNotificationService
         }
         
         Log::info('Webhook setup successful:', ['webhook_url' => $webhookUrl]);
+        return $response;
     }
 
     public function sendMessage($chatId, $message)
