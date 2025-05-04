@@ -4,6 +4,9 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use App\Models\TelegramNotification;
 
 class TelegramNotificationService
 {
@@ -11,6 +14,7 @@ class TelegramNotificationService
     private $apiBaseUrl;
     private $client;
     private $currentUpdate;
+    private $userStates = [];
 
     public function __construct()
     {
@@ -92,11 +96,19 @@ class TelegramNotificationService
             $text = $message['text'] ?? '';
             Log::info('Processing message:', ['chat_id' => $chatId, 'text' => $text]);
 
+            // Check if user is authenticated
+            $isAuthenticated = $this->isUserAuthenticated($chatId);
+
             if ($text === '/start') {
                 return $this->handleStartCommand($chatId);
             }
 
-            // Log unhandled command
+            // Handle authentication flow
+            if (!$isAuthenticated) {
+                return $this->handleAuthenticationFlow($chatId, $text);
+            }
+
+            // Handle other commands for authenticated users
             Log::info('Unhandled command received:', ['text' => $text]);
             return $this->sendMessage($chatId, "I don't understand that command. Use /start to begin.");
 
@@ -111,20 +123,121 @@ class TelegramNotificationService
 
     private function handleStartCommand($chatId)
     {
-        // Get user's first name from the message data
         $firstName = $this->currentUpdate['message']['from']['first_name'] ?? 'User';
-        $welcomeMessage = "👋 Hello {$firstName}!\n🎉 Welcome to SocialAdLinker Notification Bot! 🎉\n\n";
-        $welcomeMessage .= "I'm here to help you stay updated with your campaigns and wallet activities.\n\n";
-        $welcomeMessage .= "🔗 To get started:\n";
-        $welcomeMessage .= "1. Log in to your SocialAdLinker account\n";
-        $welcomeMessage .= "2. Go to your profile settings\n";
-        $welcomeMessage .= "3. Click on 'Link Telegram Account'\n\n";
-        $welcomeMessage .= "Once linked, you'll receive instant notifications about:\n";
-        $welcomeMessage .= "✅ Campaign updates\n";
-        $welcomeMessage .= "💰 Wallet transactions\n";
-        $welcomeMessage .= "📊 Performance metrics\n\n";
-        $welcomeMessage .= "Need help? Contact our support team through the website.";
+        
+        $welcomeMessage = "👋 Hello {$firstName}!\n\n";
+        $welcomeMessage .= "🔐 To use the SocialAdLinker Notification Bot, please authenticate with your website credentials.\n\n";
+        $welcomeMessage .= "Please enter your email address:";
+        
+        // Set user state to expecting email
+        $this->setUserState($chatId, 'AWAITING_EMAIL');
         
         return $this->sendMessage($chatId, $welcomeMessage);
+    }
+
+    private function handleAuthenticationFlow($chatId, $text)
+    {
+        $state = $this->getUserState($chatId);
+        
+        switch ($state) {
+            case 'AWAITING_EMAIL':
+                if ($this->isValidEmail($text)) {
+                    $this->setUserState($chatId, 'AWAITING_PASSWORD');
+                    $this->storeTemporaryEmail($chatId, $text);
+                    return $this->sendMessage($chatId, "Please enter your password:");
+                } else {
+                    return $this->sendMessage($chatId, "Invalid email format. Please enter a valid email address:");
+                }
+                break;
+
+            case 'AWAITING_PASSWORD':
+                return $this->authenticateUser($chatId, $text);
+                break;
+
+            default:
+                return $this->handleStartCommand($chatId);
+        }
+    }
+
+    private function isValidEmail($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    private function authenticateUser($chatId, $password)
+    {
+        try {
+            $email = $this->getTemporaryEmail($chatId);
+            
+            // Attempt authentication using Laravel's Auth facade
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                $user = Auth::user();
+                
+                // Link Telegram chat_id with user account
+                TelegramNotification::updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'chat_id' => $chatId,
+                        'is_active' => true
+                    ]
+                );
+
+                // Clear temporary data and state
+                $this->clearUserState($chatId);
+                $this->clearTemporaryEmail($chatId);
+
+                $successMessage = "✅ Authentication successful!\n\n";
+                $successMessage .= "Your Telegram account is now linked with SocialAdLinker.\n";
+                $successMessage .= "You will receive notifications about:\n";
+                $successMessage .= "✅ Campaign updates\n";
+                $successMessage .= "💰 Wallet transactions\n";
+                $successMessage .= "📊 Performance metrics\n\n";
+                $successMessage .= "Need help? Contact our support team through the website.";
+
+                return $this->sendMessage($chatId, $successMessage);
+            } else {
+                return $this->sendMessage($chatId, "❌ Invalid credentials. Please try again.\n\nEnter your email address:");
+            }
+        } catch (\Exception $e) {
+            Log::error('Authentication error:', ['error' => $e->getMessage()]);
+            return $this->sendMessage($chatId, "An error occurred during authentication. Please try again later.");
+        }
+    }
+
+    private function isUserAuthenticated($chatId)
+    {
+        return TelegramNotification::where('chat_id', $chatId)
+            ->where('is_active', true)
+            ->exists();
+    }
+
+    private function setUserState($chatId, $state)
+    {
+        Cache::put("telegram_state_{$chatId}", $state, now()->addMinutes(30));
+    }
+
+    private function getUserState($chatId)
+    {
+        return Cache::get("telegram_state_{$chatId}");
+    }
+
+    private function clearUserState($chatId)
+    {
+        Cache::forget("telegram_state_{$chatId}");
+    }
+
+    private function storeTemporaryEmail($chatId, $email)
+    {
+        Cache::put("telegram_email_{$chatId}", $email, now()->addMinutes(30));
+    }
+
+    private function getTemporaryEmail($chatId)
+    {
+        return Cache::get("telegram_email_{$chatId}");
+    }
+
+    private function clearTemporaryEmail($chatId)
+    {
+        Cache::forget("telegram_email_{$chatId}");
     }
 }
