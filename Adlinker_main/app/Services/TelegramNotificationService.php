@@ -10,6 +10,7 @@ class TelegramNotificationService
     private $token;
     private $apiBaseUrl;
     private $client;
+    private $currentUpdate;
 
     public function __construct()
     {
@@ -69,6 +70,7 @@ class TelegramNotificationService
     public function handleUpdate($update)
     {
         try {
+            $this->currentUpdate = $update;
             Log::info('Received Telegram update:', ['update' => $update]);
             
             if (!isset($update['message'])) {
@@ -105,8 +107,19 @@ class TelegramNotificationService
 
     private function handleStartCommand($chatId)
     {
-        $welcomeMessage = "Welcome to SocialAdLinker Notification Bot!\n";
-        $welcomeMessage .= "Please use your website credentials to link your account.";
+        // Get user's first name from the message data
+        $firstName = $this->currentUpdate['message']['from']['first_name'] ?? 'User';
+        $welcomeMessage = "👋 Hello {$firstName}!\n🎉 Welcome to SocialAdLinker Notification Bot! 🎉\n\n";
+        $welcomeMessage .= "I'm here to help you stay updated with your campaigns and wallet activities.\n\n";
+        $welcomeMessage .= "🔗 To get started:\n";
+        $welcomeMessage .= "1. Log in to your SocialAdLinker account\n";
+        $welcomeMessage .= "2. Go to your profile settings\n";
+        $welcomeMessage .= "3. Click on 'Link Telegram Account'\n\n";
+        $welcomeMessage .= "Once linked, you'll receive instant notifications about:\n";
+        $welcomeMessage .= "✅ Campaign updates\n";
+        $welcomeMessage .= "💰 Wallet transactions\n";
+        $welcomeMessage .= "📊 Performance metrics\n\n";
+        $welcomeMessage .= "Need help? Contact our support team through the website.";
         
         return $this->sendMessage($chatId, $welcomeMessage);
     }
