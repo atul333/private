@@ -123,16 +123,78 @@ class TelegramNotificationService
 
     private function handleStartCommand($chatId)
     {
-        $firstName = $this->currentUpdate['message']['from']['first_name'] ?? 'User';
-        
-        $welcomeMessage = "👋 Hello {$firstName}!\n\n";
-        $welcomeMessage .= "🔐 To use the SocialAdLinker Notification Bot, please authenticate with your website credentials.\n\n";
-        $welcomeMessage .= "Please enter your email address:";
-        
-        // Set user state to expecting email
-        $this->setUserState($chatId, 'AWAITING_EMAIL');
-        
-        return $this->sendMessage($chatId, $welcomeMessage);
+        try {
+            // Check if user is already authenticated
+            $telegramNotification = TelegramNotification::where('chat_id', $chatId)
+                ->where('is_active', true)
+                ->with(['user', 'user.wallet', 'user.advertiser', 'user.publisher'])
+                ->first();
+
+            if ($telegramNotification && $telegramNotification->user) {
+                $user = $telegramNotification->user;
+                
+                // Get user statistics
+                $walletBalance = $user->wallet ? $user->wallet->balance : 0;
+                
+                $message = "👋 Hello {$user->name}!\n\n";
+                $message .= "💰 Your Wallet Balance: $" . number_format($walletBalance, 2) . "\n\n";
+
+                // Check if user is an advertiser
+                if ($user->advertiser) {
+                    $campaignCount = $user->advertiser->campaigns()->count();
+                    $activeCampaigns = $user->advertiser->campaigns()->where('status', 'active')->count();
+                    
+                    $message .= "📊 Advertiser Statistics:\n";
+                    $message .= "━━━━━━━━━━━━━━━━━━━━━\n";
+                    $message .= "🎯 Total Campaigns: {$campaignCount}\n";
+                    $message .= "✅ Active Campaigns: {$activeCampaigns}\n";
+                }
+
+                // Check if user is a publisher
+                if ($user->publisher) {
+                    $channels = $user->publisher->channels()
+                        ->withCount(['campaigns' => function($query) {
+                            $query->where('status', 'active');
+                        }])
+                        ->get();
+                    
+                    $message .= "\n📺 Your Channels:\n";
+                    $message .= "━━━━━━━━━━━━━━━━━━━━━\n";
+                    
+                    foreach ($channels as $channel) {
+                        $message .= "• {$channel->name}\n";
+                        $message .= "  📢 Active Campaigns: {$channel->campaigns_count}\n";
+                    }
+                }
+
+                $message .= "\n📋 Available Commands:\n";
+                $message .= "/stats - View detailed statistics\n";
+                $message .= "/balance - Check wallet balance\n";
+                $message .= "/campaigns - List your campaigns\n";
+                $message .= "/help - Get help\n\n";
+                $message .= "Need assistance? Contact our support team through the website.";
+
+                return $this->sendMessage($chatId, $message);
+            }
+
+            // For non-authenticated users, show authentication request
+            $firstName = $this->currentUpdate['message']['from']['first_name'] ?? 'User';
+            $welcomeMessage = "👋 Hello {$firstName}!\n\n";
+            $welcomeMessage .= "🔐 To use the SocialAdLinker Notification Bot, please authenticate with your website credentials.\n\n";
+            $welcomeMessage .= "Please enter your email address:";
+            
+            // Set user state to expecting email
+            $this->setUserState($chatId, 'AWAITING_EMAIL');
+            
+            return $this->sendMessage($chatId, $welcomeMessage);
+        } catch (\Exception $e) {
+            Log::error('Error in handleStartCommand:', [
+                'error' => $e->getMessage(),
+                'chat_id' => $chatId,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return $this->sendMessage($chatId, "An error occurred. Please try again later.");
+        }
     }
 
     private function handleAuthenticationFlow($chatId, $text)
