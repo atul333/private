@@ -419,18 +419,19 @@ class TelegramNotificationService
                 return false;
             }
 
-            $message = "✅ Campaign Completed!\n";
+            $message = "🎉 Campaign Successfully Completed!\n";
             $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
             $message .= "📺 Channel: {$campaign->channel_name}\n\n";
             $message .= "Campaign Details:\n";
             $message .= "• Duration: {$campaign->duration} days\n";
-            $message .= "• Price: $" . number_format($campaign->price, 2) . "\n";
+            $message .= "• Investment: $" . number_format($campaign->price, 2) . "\n";
             $message .= "• Start Date: " . $campaign->post_submitted_at->format('Y-m-d') . "\n";
-            $message .= "• End Date: " . now()->format('Y-m-d') . "\n\n";
-            $message .= "🔗 Post Link:\n";
-            $message .= $campaign->post_link . "\n\n";
-            $message .= "🌐 Login to view details:\n";
-            $message .= "https://www.socialadlinker.com/login\n\n";
+            $message .= "• End Date: " . $campaign->post_submitted_at->addDays($campaign->duration)->format('Y-m-d') . "\n\n";
+            $message .= "📊 Performance:\n";
+            $message .= "• Status: Completed ✅\n";
+            $message .= "• Post Link: {$campaign->post_link}\n\n";
+            $message .= "🌐 View detailed analytics:\n";
+            $message .= "https://www.socialadlinker.com/advertiser/campaigns/{$campaign->id}\n\n";
             $message .= "❓ Need help? Contact support:\n";
             $message .= "@AdLinkerSupportBot";
 
@@ -462,17 +463,19 @@ class TelegramNotificationService
                 return false;
             }
 
-            $message = "✅ Campaign Completed!\n";
+            $message = "💰 Campaign Payment Processed!\n";
             $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
             $message .= "📺 Channel: {$campaign->channel_name}\n\n";
             $message .= "Campaign Details:\n";
             $message .= "• Duration: {$campaign->duration} days\n";
             $message .= "• Earnings: $" . number_format($campaign->price, 2) . "\n";
             $message .= "• Start Date: " . $campaign->post_submitted_at->format('Y-m-d') . "\n";
-            $message .= "• End Date: " . now()->format('Y-m-d') . "\n\n";
-            $message .= "💰 Payment will be processed shortly.\n\n";
-            $message .= "🌐 Login to view details:\n";
-            $message .= "https://www.socialadlinker.com/login\n\n";
+            $message .= "• End Date: " . $campaign->post_submitted_at->addDays($campaign->duration)->format('Y-m-d') . "\n\n";
+            $message .= "💳 Payment Status:\n";
+            $message .= "• Amount: $" . number_format($campaign->price, 2) . " ✅\n";
+            $message .= "• Added to wallet: Yes ✅\n\n";
+            $message .= "📊 View your earnings:\n";
+            $message .= "https://www.socialadlinker.com/publisher/earnings\n\n";
             $message .= "❓ Need help? Contact support:\n";
             $message .= "@AdLinkerSupportBot";
 

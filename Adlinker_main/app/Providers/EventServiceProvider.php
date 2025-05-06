@@ -6,6 +6,12 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\NewCampaignAssigned;
+use App\Listeners\SendCampaignNotification;
+use App\Events\CampaignLinkSubmitted;
+use App\Listeners\SendCampaignSubmissionNotification;
+use App\Events\CampaignCompleted;
+use App\Listeners\SendCampaignCompletionNotifications;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,11 +24,14 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        \App\Events\NewCampaignAssigned::class => [
-            \App\Listeners\SendCampaignNotification::class,
+        NewCampaignAssigned::class => [
+            SendCampaignNotification::class,
         ],
-        \App\Events\CampaignLinkSubmitted::class => [
-            \App\Listeners\SendCampaignSubmissionNotification::class,
+        CampaignLinkSubmitted::class => [
+            SendCampaignSubmissionNotification::class,
+        ],
+        CampaignCompleted::class => [
+            SendCampaignCompletionNotifications::class,
         ],
     ];
 
