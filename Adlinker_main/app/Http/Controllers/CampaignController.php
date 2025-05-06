@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewCampaignAssigned;
 use App\Models\Campaign;
 use App\Models\Channel;
 use App\Models\Wallet;
@@ -123,6 +124,10 @@ class CampaignController extends Controller
 
             // Activate the campaign
             $campaign->update(['status' => 'active']);
+
+            // Get the channel and dispatch the notification event
+            $channel = Channel::findOrFail($campaign->channel_id);
+            event(new NewCampaignAssigned($campaign, $channel));
 
             Session::flash('success', 'Payment processed successfully! Your campaign is now active.');
             return redirect('/'. auth()->id() .'/advertiser/dashboard');

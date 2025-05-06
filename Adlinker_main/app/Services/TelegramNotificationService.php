@@ -324,4 +324,38 @@ class TelegramNotificationService
     {
         Cache::forget("telegram_email_{$chatId}");
     }
+
+    /**
+     * Send notification about new campaign to publisher
+     */
+    public function sendCampaignNotification($userId, $campaign, $channel)
+    {
+        try {
+            $telegramNotification = TelegramNotification::where('user_id', $userId)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$telegramNotification) {
+                Log::info('No active Telegram notification found for user', ['user_id' => $userId]);
+                return false;
+            }
+
+            $message = "🎯 New Campaign Available!\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
+            $message .= "📺 Channel: {$channel->name}\n\n";
+            $message .= "Campaign Details:\n";
+            $message .= "• Duration: {$campaign->duration} days\n";
+            $message .= "• Price: $" . number_format($campaign->price, 2) . "\n";
+            $message .= "• Time to Post: 24 hours\n";
+
+            return $this->sendMessage($telegramNotification->chat_id, $message);
+        } catch (\Exception $e) {
+            Log::error('Error sending campaign notification:', [
+                'error' => $e->getMessage(),
+                'user_id' => $userId,
+                'campaign_id' => $campaign->id
+            ]);
+            return false;
+        }
+    }
 }
