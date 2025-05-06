@@ -464,9 +464,7 @@ class TelegramNotificationService
         try {
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
-                ->with(['user' => function($query) {
-                    $query->with('wallet');
-                }])
+                ->with('user.wallet')
                 ->first();
 
             if (!$telegramNotification || !$telegramNotification->user) {
@@ -475,13 +473,16 @@ class TelegramNotificationService
 
             $user = $telegramNotification->user;
             
-            // Safely get wallet balance
+            // Initialize balance variables
             $walletBalance = 0;
             $pendingBalance = 0;
             
-            if ($user->relationLoaded('wallet') && $user->wallet) {
-                $walletBalance = $user->wallet->balance ?? 0;
-                $pendingBalance = $user->wallet->pending_balance ?? 0;
+            // Get the wallet
+            $wallet = $user->wallet;
+            
+            if ($wallet) {
+                $walletBalance = $wallet->balance ?? 0;
+                $pendingBalance = $wallet->pending_balance ?? 0;
             }
 
             $message = "💰 Wallet Balance\n";
@@ -489,32 +490,33 @@ class TelegramNotificationService
             $message .= "Current Balance: $" . number_format($walletBalance, 2) . "\n";
             $message .= "Pending Balance: $" . number_format($pendingBalance, 2) . "\n\n";
 
-            // Get recent transactions
-            try {
-                $recentTransactions = $user->wallet->transactions()
-                    ->orderBy('created_at', 'desc')
-                    ->where('status', 'completed')
-                    ->take(5)
-                    ->get();
+            // Get recent transactions if wallet exists
+            if ($wallet) {
+                try {
+                    $recentTransactions = $wallet->transactions()
+                        ->orderBy('created_at', 'desc')
+                        ->where('status', 'completed')
+                        ->take(5)
+                        ->get();
 
-                if ($recentTransactions && $recentTransactions->count() > 0) {
-                    $message .= "Recent Transactions:\n";
-                    foreach ($recentTransactions as $transaction) {
-                        $prefix = in_array($transaction->type, ['deposit', 'earning']) ? '+' : '-';
-                        $message .= "• {$prefix}$" . number_format($transaction->amount, 2) . " ({$transaction->type})\n";
-                        if ($transaction->description) {
-                            $message .= "  Description: {$transaction->description}\n";
+                    if ($recentTransactions && $recentTransactions->count() > 0) {
+                        $message .= "Recent Transactions:\n";
+                        foreach ($recentTransactions as $transaction) {
+                            $prefix = in_array($transaction->type, ['deposit', 'earning']) ? '+' : '-';
+                            $message .= "• {$prefix}$" . number_format($transaction->amount, 2) . " ({$transaction->type})\n";
+                            if ($transaction->description) {
+                                $message .= "  Description: {$transaction->description}\n";
+                            }
+                            $message .= "  Status: {$transaction->status}\n";
+                            $message .= "  Date: " . $transaction->created_at->format('Y-m-d H:i') . "\n";
                         }
-                        $message .= "  Status: {$transaction->status}\n";
-                        $message .= "  Date: " . $transaction->created_at->format('Y-m-d H:i') . "\n";
-
                     }
+                } catch (\Exception $e) {
+                    Log::warning('Failed to get recent transactions', [
+                        'user_id' => $user->id,
+                        'error' => $e->getMessage()
+                    ]);
                 }
-            } catch (\Exception $e) {
-                Log::warning('Failed to get recent transactions', [
-                    'user_id' => $user->id,
-                    'error' => $e->getMessage()
-                ]);
             }
 
             $message .= "\nUse /stats for detailed statistics.";
