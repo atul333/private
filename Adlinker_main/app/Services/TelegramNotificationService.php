@@ -184,7 +184,11 @@ class TelegramNotificationService
             // Check if user is already authenticated
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
-                ->with(['user', 'user.wallet', 'user.advertiser', 'user.publisher'])
+                ->with(['user' => function($query) {
+                    $query->with(['wallet' => function($q) {
+                        $q->withBalance();
+                    }, 'advertiser', 'publisher']);
+                }])
                 ->first();
 
             if ($telegramNotification && $telegramNotification->user) {
@@ -373,7 +377,11 @@ class TelegramNotificationService
         try {
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
-                ->with(['user', 'user.wallet', 'user.advertiser', 'user.publisher'])
+                ->with(['user' => function($query) {
+                    $query->with(['wallet' => function($q) {
+                        $q->withBalance();
+                    }, 'advertiser', 'publisher']);
+                }])
                 ->first();
 
             if (!$telegramNotification || !$telegramNotification->user) {
