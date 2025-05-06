@@ -186,7 +186,9 @@ class TelegramNotificationService
                 ->where('is_active', true)
                 ->with(['user' => function($query) {
                     $query->with(['wallet' => function($q) {
-                        $q->withBalance();
+                        $q->with(['wallet' => function($q) {
+                            $q->withBalance();
+                        }, 'advertiser', 'publisher']);
                     }, 'advertiser', 'publisher']);
                 }])
                 ->first();
@@ -464,7 +466,11 @@ class TelegramNotificationService
         try {
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
-                ->with('user.wallet')
+                ->with(['user' => function($query) {
+                    $query->with(['wallet' => function($q) {
+                        $q->with('transactions');
+                    }]);
+                }])
                 ->first();
 
             if (!$telegramNotification || !$telegramNotification->user) {
@@ -503,7 +509,7 @@ class TelegramNotificationService
                         $message .= "Recent Transactions:\n";
                         foreach ($recentTransactions as $transaction) {
                             $prefix = in_array($transaction->type, ['deposit', 'earning']) ? '+' : '-';
-                            $message .= "• {$prefix}$" . number_format($transaction->amount, 2) . " ({$transaction->type})\n";
+                            $message .= "• {$prefix}$" . number_format(abs($transaction->amount), 2) . " ({$transaction->type})\n";
                             if ($transaction->description) {
                                 $message .= "  Description: {$transaction->description}\n";
                             }

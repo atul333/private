@@ -8,16 +8,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPasswordNotification;
-use Bavix\Wallet\Traits\HasWallet;
-use Bavix\Wallet\Interfaces\Wallet as WalletInterface;
-use Bavix\Wallet\Models\Wallet as WalletModel;
 use App\Models\TelegramNotification;
 use App\Models\Wallet;
 
 
-class User extends Authenticatable implements WalletInterface
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasWallet;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public function telegramNotification()
     {
