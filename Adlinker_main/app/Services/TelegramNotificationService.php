@@ -18,14 +18,31 @@ class TelegramNotificationService
 
     public function __construct()
     {
-        $this->token = config('services.telegram.bot_token');
-        if (!$this->token) {
-            Log::error('Telegram bot token not configured');
-            throw new \Exception('Telegram bot token not configured');
+        try {
+            $this->token = config('services.telegram.bot_token');
+            Log::info('Initializing TelegramNotificationService', [
+                'has_token' => !empty($this->token),
+                'config_loaded' => true
+            ]);
+
+            if (!$this->token) {
+                Log::error('Telegram bot token not configured');
+                throw new \Exception('Telegram bot token not configured');
+            }
+            
+            $this->apiBaseUrl = "https://api.telegram.org/bot{$this->token}";
+            $this->client = new Client();
+            
+            Log::info('TelegramNotificationService initialized successfully', [
+                'api_base_url' => $this->apiBaseUrl
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error initializing TelegramNotificationService', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
         }
-        
-        $this->apiBaseUrl = "https://api.telegram.org/bot{$this->token}";
-        $this->client = new Client();
     }
 
     public function initializeWebhook()
@@ -46,6 +63,11 @@ class TelegramNotificationService
     public function sendMessage($chatId, $message)
     {
         try {
+            Log::info('Attempting to send Telegram message', [
+                'chat_id' => $chatId,
+                'message_length' => strlen($message)
+            ]);
+
             $response = $this->client->post("{$this->apiBaseUrl}/sendMessage", [
                 'json' => [
                     'chat_id' => $chatId,
@@ -54,9 +76,19 @@ class TelegramNotificationService
                 ]
             ]);
 
-            return json_decode($response->getBody(), true);
+            $result = json_decode($response->getBody(), true);
+            Log::info('Telegram message sent successfully', [
+                'chat_id' => $chatId,
+                'response' => $result
+            ]);
+
+            return $result;
         } catch (\Exception $e) {
-            Log::error('Telegram notification error: ' . $e->getMessage());
+            Log::error('Telegram message sending error', [
+                'error' => $e->getMessage(),
+                'chat_id' => $chatId,
+                'trace' => $e->getTraceAsString()
+            ]);
             return false;
         }
     }
@@ -79,7 +111,11 @@ class TelegramNotificationService
     {
         try {
             $this->currentUpdate = $update;
-            Log::info('Received Telegram update:', ['update' => $update]);
+            Log::info('Processing Telegram update', [
+                'update_id' => $update['update_id'] ?? null,
+                'has_message' => isset($update['message']),
+                'raw_update' => $update
+            ]);
             
             if (!isset($update['message'])) {
                 Log::warning('Update does not contain message data');
@@ -94,34 +130,51 @@ class TelegramNotificationService
 
             $chatId = $message['chat']['id'];
             $text = $message['text'] ?? '';
-            Log::info('Processing message:', ['chat_id' => $chatId, 'text' => $text]);
+            Log::info('Processing message', [
+                'chat_id' => $chatId,
+                'text' => $text,
+                'from' => $message['from'] ?? null
+            ]);
 
             // Check if user is authenticated
             $isAuthenticated = $this->isUserAuthenticated($chatId);
+            Log::info('Authentication status', [
+                'chat_id' => $chatId,
+                'is_authenticated' => $isAuthenticated
+            ]);
 
             // Handle commands
             switch (strtolower($text)) {
                 case '/start':
+                    Log::info('Handling /start command', ['chat_id' => $chatId]);
                     return $this->handleStartCommand($chatId);
                 case '/stats':
+                    Log::info('Handling /stats command', ['chat_id' => $chatId]);
                     return $isAuthenticated ? $this->handleStatsCommand($chatId) : $this->handleStartCommand($chatId);
                 case '/balance':
+                    Log::info('Handling /balance command', ['chat_id' => $chatId]);
                     return $isAuthenticated ? $this->handleBalanceCommand($chatId) : $this->handleStartCommand($chatId);
                 case '/help':
+                    Log::info('Handling /help command', ['chat_id' => $chatId]);
                     return $this->handleHelpCommand($chatId);
                 default:
-                    // Handle authentication flow
                     if (!$isAuthenticated) {
+                        Log::info('Handling authentication flow', ['chat_id' => $chatId]);
                         return $this->handleAuthenticationFlow($chatId, $text);
                     }
+                    Log::info('Handling unknown command', ['chat_id' => $chatId, 'text' => $text]);
                     return $this->sendMessage($chatId, "I don't understand that command. Use /help to see available commands.");
             }
         } catch (\Exception $e) {
-            Log::error('Telegram update handling error: ' . $e->getMessage(), [
-                'exception' => $e,
+            Log::error('Error in handleUpdate', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
                 'update' => $update
             ]);
-            return $this->sendMessage($chatId, "An error occurred. Please try again later.");
+            if (isset($chatId)) {
+                return $this->sendMessage($chatId, "An error occurred. Please try again later.");
+            }
+            return false;
         }
     }
 

@@ -19,16 +19,29 @@ class TelegramController extends Controller
     {
         try {
             $data = $request->all();
-            Log::info('Telegram webhook received:', ['data' => $data]);
+            Log::info('Telegram webhook received:', [
+                'data' => $data,
+                'headers' => $request->headers->all(),
+                'method' => $request->method(),
+                'url' => $request->fullUrl()
+            ]);
 
             if (!isset($data['message'])) {
+                Log::warning('Message data not found in webhook', ['data' => $data]);
                 throw new \Exception('Message data not found in webhook');
             }
 
-            return $this->telegramService->handleUpdate($data);
+            $response = $this->telegramService->handleUpdate($data);
+            Log::info('Telegram webhook response:', ['response' => $response]);
+            return response()->json(['status' => 'success', 'response' => $response]);
             
         } catch (\Exception $e) {
-            Log::error('Telegram webhook error:', ['error' => $e->getMessage()]);
+            Log::error('Telegram webhook error:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ]);
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
