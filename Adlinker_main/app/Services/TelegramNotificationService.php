@@ -387,7 +387,9 @@ class TelegramNotificationService
             $message .= "🔗 Post Link:\n";
             $message .= $submittedLink . "\n\n";
             $message .= "🌐 Login to review:\n";
-            $message .= "https://www.socialadlinker.com/login";
+            $message .= "https://www.socialadlinker.com/login\n\n";
+            $message .= "❓ Need help? Contact support:\n";
+            $message .= "@AdLinkerSupportBot";
 
             return $this->sendMessage($telegramNotification->chat_id, $message);
         } catch (\Exception $e) {
@@ -395,6 +397,91 @@ class TelegramNotificationService
                 'error' => $e->getMessage(),
                 'campaign_id' => $campaign->id,
                 'advertiser_id' => $campaign->advertiser_id
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Send campaign completion notification to advertiser
+     */
+    public function sendAdvertiserCampaignCompletionNotification($campaign)
+    {
+        try {
+            $telegramNotification = TelegramNotification::where('user_id', $campaign->advertiser_id)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$telegramNotification) {
+                Log::info('No active Telegram notification found for advertiser', [
+                    'advertiser_id' => $campaign->advertiser_id
+                ]);
+                return false;
+            }
+
+            $message = "✅ Campaign Completed!\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
+            $message .= "📺 Channel: {$campaign->channel_name}\n\n";
+            $message .= "Campaign Details:\n";
+            $message .= "• Duration: {$campaign->duration} days\n";
+            $message .= "• Price: $" . number_format($campaign->price, 2) . "\n";
+            $message .= "• Start Date: " . $campaign->post_submitted_at->format('Y-m-d') . "\n";
+            $message .= "• End Date: " . now()->format('Y-m-d') . "\n\n";
+            $message .= "🔗 Post Link:\n";
+            $message .= $campaign->post_link . "\n\n";
+            $message .= "🌐 Login to view details:\n";
+            $message .= "https://www.socialadlinker.com/login\n\n";
+            $message .= "❓ Need help? Contact support:\n";
+            $message .= "@AdLinkerSupportBot";
+
+            return $this->sendMessage($telegramNotification->chat_id, $message);
+        } catch (\Exception $e) {
+            Log::error('Error sending campaign completion notification to advertiser:', [
+                'error' => $e->getMessage(),
+                'campaign_id' => $campaign->id,
+                'advertiser_id' => $campaign->advertiser_id
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Send campaign completion notification to publisher
+     */
+    public function sendPublisherCampaignCompletionNotification($campaign)
+    {
+        try {
+            $telegramNotification = TelegramNotification::where('user_id', $campaign->publisher_id)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$telegramNotification) {
+                Log::info('No active Telegram notification found for publisher', [
+                    'publisher_id' => $campaign->publisher_id
+                ]);
+                return false;
+            }
+
+            $message = "✅ Campaign Completed!\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
+            $message .= "📺 Channel: {$campaign->channel_name}\n\n";
+            $message .= "Campaign Details:\n";
+            $message .= "• Duration: {$campaign->duration} days\n";
+            $message .= "• Earnings: $" . number_format($campaign->price, 2) . "\n";
+            $message .= "• Start Date: " . $campaign->post_submitted_at->format('Y-m-d') . "\n";
+            $message .= "• End Date: " . now()->format('Y-m-d') . "\n\n";
+            $message .= "💰 Payment will be processed shortly.\n\n";
+            $message .= "🌐 Login to view details:\n";
+            $message .= "https://www.socialadlinker.com/login\n\n";
+            $message .= "❓ Need help? Contact support:\n";
+            $message .= "@AdLinkerSupportBot";
+
+            return $this->sendMessage($telegramNotification->chat_id, $message);
+        } catch (\Exception $e) {
+            Log::error('Error sending campaign completion notification to publisher:', [
+                'error' => $e->getMessage(),
+                'campaign_id' => $campaign->id,
+                'publisher_id' => $campaign->publisher_id
             ]);
             return false;
         }
