@@ -193,7 +193,7 @@ class TelegramNotificationService
                 // Get user statistics - safely handle wallet balance
                 $walletBalance = 0;
                 try {
-                    $walletBalance = $user->balance ?? 0;
+                    $walletBalance = $user->wallet ? $user->wallet->balance : 0;
                 } catch (\Exception $e) {
                     Log::warning('Failed to get wallet balance', [
                         'user_id' => $user->id,
