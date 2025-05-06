@@ -144,26 +144,15 @@ class TelegramNotificationService
             ]);
 
             // Handle commands
-            switch (strtolower($text)) {
-                case '/start':
-                    Log::info('Handling /start command', ['chat_id' => $chatId]);
-                    return $this->handleStartCommand($chatId);
-                case '/stats':
-                    Log::info('Handling /stats command', ['chat_id' => $chatId]);
-                    return $isAuthenticated ? $this->handleStatsCommand($chatId) : $this->handleStartCommand($chatId);
-                case '/balance':
-                    Log::info('Handling /balance command', ['chat_id' => $chatId]);
-                    return $isAuthenticated ? $this->handleBalanceCommand($chatId) : $this->handleStartCommand($chatId);
-                case '/help':
-                    Log::info('Handling /help command', ['chat_id' => $chatId]);
-                    return $this->handleHelpCommand($chatId);
-                default:
-                    if (!$isAuthenticated) {
-                        Log::info('Handling authentication flow', ['chat_id' => $chatId]);
-                        return $this->handleAuthenticationFlow($chatId, $text);
-                    }
-                    Log::info('Handling unknown command', ['chat_id' => $chatId, 'text' => $text]);
-                    return $this->sendMessage($chatId, "I don't understand that command. Use /help to see available commands.");
+            if (strtolower($text) === '/start') {
+                Log::info('Handling /start command', ['chat_id' => $chatId]);
+                return $this->handleStartCommand($chatId);
+            } else if (!$isAuthenticated) {
+                Log::info('Handling authentication flow', ['chat_id' => $chatId]);
+                return $this->handleAuthenticationFlow($chatId, $text);
+            } else {
+                Log::info('Handling unknown command', ['chat_id' => $chatId, 'text' => $text]);
+                return $this->sendMessage($chatId, "I don't understand that command. Use /start to restart.");
             }
         } catch (\Exception $e) {
             Log::error('Error in handleUpdate', [
@@ -185,64 +174,34 @@ class TelegramNotificationService
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
                 ->with(['user' => function($query) {
-                    $query->with(['wallet' => function($q) {
-                        $q->with(['wallet' => function($q) {
-                            $q->withBalance();
-                        }, 'advertiser', 'publisher']);
-                    }, 'advertiser', 'publisher']);
+                    $query->with(['wallet', 'publisher.channels']);
                 }])
                 ->first();
 
             if ($telegramNotification && $telegramNotification->user) {
                 $user = $telegramNotification->user;
                 
-                // Get user statistics - safely handle wallet balance
+                // Get wallet balance
                 $walletBalance = 0;
-                try {
-                    $walletBalance = $user->wallet ? $user->wallet->balance : 0;
-                } catch (\Exception $e) {
-                    Log::warning('Failed to get wallet balance', [
-                        'user_id' => $user->id,
-                        'error' => $e->getMessage()
-                    ]);
+                if ($wallet = $user->wallet) {
+                    $walletBalance = $wallet->balance ?? 0;
                 }
                 
                 $message = "👋 Hello {$user->name}!\n\n";
                 $message .= "💰 Your Wallet Balance: $" . number_format($walletBalance, 2) . "\n\n";
 
-                // Check if user is an advertiser
-                if ($user->advertiser) {
-                    $campaignCount = $user->advertiser->campaigns()->count();
-                    $activeCampaigns = $user->advertiser->campaigns()->where('status', 'active')->count();
-                    
-                    $message .= "📊 Advertiser Statistics:\n";
-                    $message .= "━━━━━━━━━━━━━━━━━━━━━\n";
-                    $message .= "🎯 Total Campaigns: {$campaignCount}\n";
-                    $message .= "✅ Active Campaigns: {$activeCampaigns}\n";
-                }
-
-                // Check if user is a publisher
+                // Show channels if user is a publisher
                 if ($user->publisher) {
-                    $channels = $user->publisher->channels()
-                        ->withCount(['campaigns' => function($query) {
-                            $query->where('status', 'active');
-                        }])
-                        ->get();
-                    
-                    $message .= "\n📺 Your Channels:\n";
+                    $message .= "📺 Your Channels:\n";
                     $message .= "━━━━━━━━━━━━━━━━━━━━━\n";
                     
+                    $channels = $user->publisher->channels;
                     foreach ($channels as $channel) {
                         $message .= "• {$channel->name}\n";
-                        $message .= "  📢 Active Campaigns: {$channel->campaigns_count}\n";
                     }
+                    $message .= "\n";
                 }
 
-                $message .= "\n📋 Available Commands:\n";
-                $message .= "/stats - View detailed statistics\n";
-                $message .= "/balance - Check wallet balance\n";
-                $message .= "/campaigns - List your campaigns\n";
-                $message .= "/help - Get help\n\n";
                 $message .= "Need assistance? Contact our support team through the website.";
 
                 return $this->sendMessage($chatId, $message);
@@ -302,7 +261,6 @@ class TelegramNotificationService
         try {
             $email = $this->getTemporaryEmail($chatId);
             
-            // Attempt authentication using Laravel's Auth facade
             if (Auth::attempt(['email' => $email, 'password' => $password])) {
                 $user = Auth::user();
                 
@@ -319,15 +277,8 @@ class TelegramNotificationService
                 $this->clearUserState($chatId);
                 $this->clearTemporaryEmail($chatId);
 
-                $successMessage = "✅ Authentication successful!\n\n";
-                $successMessage .= "Your Telegram account is now linked with SocialAdLinker.\n";
-                $successMessage .= "You will receive notifications about:\n";
-                $successMessage .= "✅ Campaign updates\n";
-                $successMessage .= "💰 Wallet transactions\n";
-                $successMessage .= "📊 Performance metrics\n\n";
-                $successMessage .= "Need help? Contact our support team through the website.";
-
-                return $this->sendMessage($chatId, $successMessage);
+                // Show welcome message
+                return $this->handleStartCommand($chatId);
             } else {
                 return $this->sendMessage($chatId, "❌ Invalid credentials. Please try again.\n\nEnter your email address:");
             }
@@ -372,191 +323,5 @@ class TelegramNotificationService
     private function clearTemporaryEmail($chatId)
     {
         Cache::forget("telegram_email_{$chatId}");
-    }
-
-    private function handleStatsCommand($chatId)
-    {
-        try {
-            $telegramNotification = TelegramNotification::where('chat_id', $chatId)
-                ->where('is_active', true)
-                ->with(['user' => function($query) {
-                    $query->with(['wallet' => function($q) {
-                        $q->withBalance();
-                    }, 'advertiser', 'publisher']);
-                }])
-                ->first();
-
-            if (!$telegramNotification || !$telegramNotification->user) {
-                return $this->handleStartCommand($chatId);
-            }
-
-            $user = $telegramNotification->user;
-            $message = "📊 Your Statistics\n";
-            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
-
-            // Wallet Statistics
-            $walletBalance = 0;
-            if ($wallet = $user->wallet()->first()) {
-                $walletBalance = $wallet->balance;
-            }
-            $message .= "💰 Wallet Statistics:\n";
-            $message .= "• Current Balance: $" . number_format($walletBalance, 2) . "\n";
-            
-            // Get last 5 transactions
-            if ($wallet = $user->wallet()->first()) {
-                $recentTransactions = $wallet->transactions()
-                    ->orderBy('created_at', 'desc')
-                    ->take(5)
-                    ->get();
-
-                if ($recentTransactions->count() > 0) {
-                    $message .= "\n📝 Recent Transactions:\n";
-                    foreach ($recentTransactions as $transaction) {
-                        $prefix = $transaction->type === 'credit' ? '+' : '-';
-                        $message .= "• {$prefix}$" . number_format($transaction->amount, 2) . " ({$transaction->type})\n";
-                    }
-                }
-            }
-
-            // Advertiser Statistics
-            if ($user->advertiser) {
-                $message .= "\n📢 Advertising Statistics:\n";
-                $totalCampaigns = $user->advertiser->campaigns()->count();
-                $activeCampaigns = $user->advertiser->campaigns()->where('status', 'active')->count();
-                $completedCampaigns = $user->advertiser->campaigns()->where('status', 'completed')->count();
-                
-                $message .= "• Total Campaigns: {$totalCampaigns}\n";
-                $message .= "• Active Campaigns: {$activeCampaigns}\n";
-                $message .= "• Completed Campaigns: {$completedCampaigns}\n";
-            }
-
-            // Publisher Statistics
-            if ($user->publisher) {
-                $message .= "\n📺 Publishing Statistics:\n";
-                $channels = $user->publisher->channels()
-                    ->withCount(['campaigns' => function($query) {
-                        $query->where('status', 'active');
-                    }])
-                    ->get();
-
-                $totalChannels = $channels->count();
-                $totalActiveCampaigns = $channels->sum('campaigns_count');
-                
-                $message .= "• Total Channels: {$totalChannels}\n";
-                $message .= "• Active Campaigns: {$totalActiveCampaigns}\n\n";
-                
-                foreach ($channels as $channel) {
-                    $message .= "📌 {$channel->name}\n";
-                    $message .= "  • Active Campaigns: {$channel->campaigns_count}\n";
-                }
-            }
-
-            return $this->sendMessage($chatId, $message);
-        } catch (\Exception $e) {
-            Log::error('Error in handleStatsCommand:', [
-                'error' => $e->getMessage(),
-                'chat_id' => $chatId
-            ]);
-            return $this->sendMessage($chatId, "An error occurred while fetching your statistics. Please try again later.");
-        }
-    }
-
-    private function handleBalanceCommand($chatId)
-    {
-        try {
-            $telegramNotification = TelegramNotification::where('chat_id', $chatId)
-                ->where('is_active', true)
-                ->with(['user' => function($query) {
-                    $query->with(['wallet' => function($q) {
-                        $q->with('transactions');
-                    }]);
-                }])
-                ->first();
-
-            if (!$telegramNotification || !$telegramNotification->user) {
-                return $this->handleStartCommand($chatId);
-            }
-
-            $user = $telegramNotification->user;
-            
-            // Initialize balance variables
-            $walletBalance = 0;
-            $pendingBalance = 0;
-            
-            // Get the wallet
-            $wallet = $user->wallet;
-            
-            if ($wallet) {
-                $walletBalance = $wallet->balance ?? 0;
-                $pendingBalance = $wallet->pending_balance ?? 0;
-            }
-
-            $message = "💰 Wallet Balance\n";
-            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
-            $message .= "Current Balance: $" . number_format($walletBalance, 2) . "\n";
-            $message .= "Pending Balance: $" . number_format($pendingBalance, 2) . "\n\n";
-
-            // Get recent transactions if wallet exists
-            if ($wallet) {
-                try {
-                    $recentTransactions = $wallet->transactions()
-                        ->orderBy('created_at', 'desc')
-                        ->where('status', 'completed')
-                        ->take(5)
-                        ->get();
-
-                    if ($recentTransactions && $recentTransactions->count() > 0) {
-                        $message .= "Recent Transactions:\n";
-                        foreach ($recentTransactions as $transaction) {
-                            $prefix = in_array($transaction->type, ['deposit', 'earning']) ? '+' : '-';
-                            $message .= "• {$prefix}$" . number_format(abs($transaction->amount), 2) . " ({$transaction->type})\n";
-                            if ($transaction->description) {
-                                $message .= "  Description: {$transaction->description}\n";
-                            }
-                            $message .= "  Status: {$transaction->status}\n";
-                            $message .= "  Date: " . $transaction->created_at->format('Y-m-d H:i') . "\n";
-                        }
-                    }
-                } catch (\Exception $e) {
-                    Log::warning('Failed to get recent transactions', [
-                        'user_id' => $user->id,
-                        'error' => $e->getMessage()
-                    ]);
-                }
-            }
-
-            $message .= "\nUse /stats for detailed statistics.";
-
-            return $this->sendMessage($chatId, $message);
-        } catch (\Exception $e) {
-            Log::error('Error in handleBalanceCommand:', [
-                'error' => $e->getMessage(),
-                'chat_id' => $chatId,
-                'trace' => $e->getTraceAsString()
-            ]);
-            return $this->sendMessage($chatId, "An error occurred while fetching your balance. Please try again later.");
-        }
-    }
-
-    private function handleHelpCommand($chatId)
-    {
-        try {
-            $message = "🤖 SocialAdLinker Bot Help\n";
-            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
-            $message .= "Available Commands:\n\n";
-            $message .= "📌 /start - Start or restart the bot\n";
-            $message .= "📊 /stats - View detailed statistics\n";
-            $message .= "💰 /balance - Check wallet balance\n";
-            $message .= "❓ /help - Show this help message\n\n";
-            $message .= "Need more help? Contact our support team through the website.";
-
-            return $this->sendMessage($chatId, $message);
-        } catch (\Exception $e) {
-            Log::error('Error in handleHelpCommand:', [
-                'error' => $e->getMessage(),
-                'chat_id' => $chatId
-            ]);
-            return $this->sendMessage($chatId, "An error occurred. Please try again later.");
-        }
     }
 }
