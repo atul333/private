@@ -346,7 +346,9 @@ class TelegramNotificationService
             $message .= "Campaign Details:\n";
             $message .= "• Duration: {$campaign->duration} days\n";
             $message .= "• Price: $" . number_format($campaign->price, 2) . "\n";
-            $message .= "• Time to Post: 24 hours\n";
+            $message .= "• Time to Post: 24 hours\n\n";
+            $message .= "🌐 Login to view details:\n";
+            $message .= "https://www.socialadlinker.com/login";
 
             return $this->sendMessage($telegramNotification->chat_id, $message);
         } catch (\Exception $e) {
@@ -354,6 +356,45 @@ class TelegramNotificationService
                 'error' => $e->getMessage(),
                 'user_id' => $userId,
                 'campaign_id' => $campaign->id
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Send notification to advertiser when publisher submits campaign link
+     */
+    public function sendCampaignSubmissionNotification($campaign, $submittedLink)
+    {
+        try {
+            $telegramNotification = TelegramNotification::where('user_id', $campaign->advertiser_id)
+                ->where('is_active', true)
+                ->first();
+
+            if (!$telegramNotification) {
+                Log::info('No active Telegram notification found for advertiser', [
+                    'advertiser_id' => $campaign->advertiser_id
+                ]);
+                return false;
+            }
+
+            $message = "✅ Campaign Post Submitted!\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
+            $message .= "📺 Channel: {$campaign->channel_name}\n\n";
+            $message .= "Campaign Details:\n";
+            $message .= "• Duration: {$campaign->duration} days\n";
+            $message .= "• Price: $" . number_format($campaign->price, 2) . "\n\n";
+            $message .= "🔗 Post Link:\n";
+            $message .= $submittedLink . "\n\n";
+            $message .= "🌐 Login to review:\n";
+            $message .= "https://www.socialadlinker.com/login";
+
+            return $this->sendMessage($telegramNotification->chat_id, $message);
+        } catch (\Exception $e) {
+            Log::error('Error sending campaign submission notification:', [
+                'error' => $e->getMessage(),
+                'campaign_id' => $campaign->id,
+                'advertiser_id' => $campaign->advertiser_id
             ]);
             return false;
         }

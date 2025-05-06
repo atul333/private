@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\NewCampaignAssigned::class => [
             \App\Listeners\SendCampaignNotification::class,
         ],
+        \App\Events\CampaignLinkSubmitted::class => [
+            \App\Listeners\SendCampaignSubmissionNotification::class,
+        ],
     ];
 
     /**
