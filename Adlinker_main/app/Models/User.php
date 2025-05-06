@@ -84,6 +84,6 @@ class User extends Authenticatable implements WalletInterface
      */
     public function wallet()
     {
-        return $this->morphOne(WalletModel::class, 'holder');
+        return $this->morphOne(WalletModel::class, 'user');
     }
 }
