@@ -464,7 +464,9 @@ class TelegramNotificationService
         try {
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
-                ->with(['user'])
+                ->with(['user' => function($query) {
+                    $query->with('wallet');
+                }])
                 ->first();
 
             if (!$telegramNotification || !$telegramNotification->user) {
@@ -476,16 +478,10 @@ class TelegramNotificationService
             // Safely get wallet balance
             $walletBalance = 0;
             $pendingBalance = 0;
-            try {
-                if ($user->wallet) {
-                    $walletBalance = $user->wallet->balance;
-                    $pendingBalance = $user->wallet->pending_balance;
-                }
-            } catch (\Exception $e) {
-                Log::warning('Failed to get wallet balance', [
-                    'user_id' => $user->id,
-                    'error' => $e->getMessage()
-                ]);
+            
+            if ($user->relationLoaded('wallet') && $user->wallet) {
+                $walletBalance = $user->wallet->balance ?? 0;
+                $pendingBalance = $user->wallet->pending_balance ?? 0;
             }
 
             $message = "💰 Wallet Balance\n";
