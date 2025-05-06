@@ -385,13 +385,16 @@ class TelegramNotificationService
             $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
 
             // Wallet Statistics
-            $walletBalance = $user->wallet ? $user->wallet->balance : 0;
+            $walletBalance = 0;
+            if ($wallet = $user->wallet()->first()) {
+                $walletBalance = $wallet->balance;
+            }
             $message .= "💰 Wallet Statistics:\n";
             $message .= "• Current Balance: $" . number_format($walletBalance, 2) . "\n";
             
             // Get last 5 transactions
-            if ($user->wallet) {
-                $recentTransactions = $user->wallet->transactions()
+            if ($wallet = $user->wallet()->first()) {
+                $recentTransactions = $wallet->transactions()
                     ->orderBy('created_at', 'desc')
                     ->take(5)
                     ->get();
