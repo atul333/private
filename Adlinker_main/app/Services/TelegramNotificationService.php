@@ -190,8 +190,16 @@ class TelegramNotificationService
             if ($telegramNotification && $telegramNotification->user) {
                 $user = $telegramNotification->user;
                 
-                // Get user statistics
-                $walletBalance = $user->wallet ? $user->wallet->balance : 0;
+                // Get user statistics - safely handle wallet balance
+                $walletBalance = 0;
+                try {
+                    $walletBalance = $user->balance ?? 0;
+                } catch (\Exception $e) {
+                    Log::warning('Failed to get wallet balance', [
+                        'user_id' => $user->id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
                 
                 $message = "👋 Hello {$user->name}!\n\n";
                 $message .= "💰 Your Wallet Balance: $" . number_format($walletBalance, 2) . "\n\n";
@@ -445,7 +453,7 @@ class TelegramNotificationService
         try {
             $telegramNotification = TelegramNotification::where('chat_id', $chatId)
                 ->where('is_active', true)
-                ->with(['user.wallet'])
+                ->with(['user'])
                 ->first();
 
             if (!$telegramNotification || !$telegramNotification->user) {
@@ -453,24 +461,45 @@ class TelegramNotificationService
             }
 
             $user = $telegramNotification->user;
-            $walletBalance = $user->wallet ? $user->wallet->balance : 0;
+            
+            // Safely get wallet balance
+            $walletBalance = 0;
+            try {
+                $walletBalance = $user->balance ?? 0;
+            } catch (\Exception $e) {
+                Log::warning('Failed to get wallet balance', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage()
+                ]);
+            }
 
             $message = "💰 Wallet Balance\n";
             $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
             $message .= "Current Balance: $" . number_format($walletBalance, 2) . "\n\n";
 
-            if ($user->wallet) {
-                $lastTransaction = $user->wallet->transactions()
+            // Get recent transactions
+            try {
+                $recentTransactions = $user->transactions()
                     ->orderBy('created_at', 'desc')
-                    ->first();
+                    ->take(5)
+                    ->get();
 
-                if ($lastTransaction) {
-                    $message .= "Last Transaction:\n";
-                    $prefix = $lastTransaction->type === 'credit' ? '+' : '-';
-                    $message .= "• Amount: {$prefix}$" . number_format($lastTransaction->amount, 2) . "\n";
-                    $message .= "• Type: " . ucfirst($lastTransaction->type) . "\n";
-                    $message .= "• Date: " . $lastTransaction->created_at->format('Y-m-d H:i') . "\n";
+                if ($recentTransactions && $recentTransactions->count() > 0) {
+                    $message .= "Recent Transactions:\n";
+                    foreach ($recentTransactions as $transaction) {
+                        $prefix = $transaction->type === 'deposit' ? '+' : '-';
+                        $message .= "• {$prefix}$" . number_format($transaction->amount, 2) . " ({$transaction->type})\n";
+                        if ($transaction->meta && isset($transaction->meta['description'])) {
+                            $message .= "  Description: {$transaction->meta['description']}\n";
+                        }
+                        $message .= "  Date: " . $transaction->created_at->format('Y-m-d H:i') . "\n";
+                    }
                 }
+            } catch (\Exception $e) {
+                Log::warning('Failed to get recent transactions', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage()
+                ]);
             }
 
             $message .= "\nUse /stats for detailed statistics.";
@@ -479,7 +508,8 @@ class TelegramNotificationService
         } catch (\Exception $e) {
             Log::error('Error in handleBalanceCommand:', [
                 'error' => $e->getMessage(),
-                'chat_id' => $chatId
+                'chat_id' => $chatId,
+                'trace' => $e->getTraceAsString()
             ]);
             return $this->sendMessage($chatId, "An error occurred while fetching your balance. Please try again later.");
         }

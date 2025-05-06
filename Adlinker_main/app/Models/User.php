@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPasswordNotification;
 use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Interfaces\Wallet as WalletInterface;
-use App\Models\Wallet;
+use Bavix\Wallet\Models\Wallet as WalletModel;
 use App\Models\TelegramNotification;
 
 class User extends Authenticatable implements WalletInterface
@@ -84,6 +84,6 @@ class User extends Authenticatable implements WalletInterface
      */
     public function wallet()
     {
-        return $this->hasOne(Wallet::class);
+        return $this->morphOne(WalletModel::class, 'holder');
     }
 }
