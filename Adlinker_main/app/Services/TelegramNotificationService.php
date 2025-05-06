@@ -467,8 +467,12 @@ class TelegramNotificationService
             
             // Safely get wallet balance
             $walletBalance = 0;
+            $pendingBalance = 0;
             try {
-                $walletBalance = $user->balance ?? 0;
+                if ($user->wallet) {
+                    $walletBalance = $user->wallet->balance;
+                    $pendingBalance = $user->wallet->pending_balance;
+                }
             } catch (\Exception $e) {
                 Log::warning('Failed to get wallet balance', [
                     'user_id' => $user->id,
@@ -478,24 +482,28 @@ class TelegramNotificationService
 
             $message = "💰 Wallet Balance\n";
             $message .= "━━━━━━━━━━━━━━━━━━━━━\n\n";
-            $message .= "Current Balance: $" . number_format($walletBalance, 2) . "\n\n";
+            $message .= "Current Balance: $" . number_format($walletBalance, 2) . "\n";
+            $message .= "Pending Balance: $" . number_format($pendingBalance, 2) . "\n\n";
 
             // Get recent transactions
             try {
-                $recentTransactions = $user->transactions()
+                $recentTransactions = $user->wallet->transactions()
                     ->orderBy('created_at', 'desc')
+                    ->where('status', 'completed')
                     ->take(5)
                     ->get();
 
                 if ($recentTransactions && $recentTransactions->count() > 0) {
                     $message .= "Recent Transactions:\n";
                     foreach ($recentTransactions as $transaction) {
-                        $prefix = $transaction->type === 'deposit' ? '+' : '-';
+                        $prefix = in_array($transaction->type, ['deposit', 'earning']) ? '+' : '-';
                         $message .= "• {$prefix}$" . number_format($transaction->amount, 2) . " ({$transaction->type})\n";
-                        if ($transaction->meta && isset($transaction->meta['description'])) {
-                            $message .= "  Description: {$transaction->meta['description']}\n";
+                        if ($transaction->description) {
+                            $message .= "  Description: {$transaction->description}\n";
                         }
+                        $message .= "  Status: {$transaction->status}\n";
                         $message .= "  Date: " . $transaction->created_at->format('Y-m-d H:i') . "\n";
+
                     }
                 }
             } catch (\Exception $e) {

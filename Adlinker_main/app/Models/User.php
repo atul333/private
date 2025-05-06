@@ -12,6 +12,8 @@ use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Interfaces\Wallet as WalletInterface;
 use Bavix\Wallet\Models\Wallet as WalletModel;
 use App\Models\TelegramNotification;
+use App\Models\Wallet;
+
 
 class User extends Authenticatable implements WalletInterface
 {
@@ -84,6 +86,7 @@ class User extends Authenticatable implements WalletInterface
      */
     public function wallet()
     {
-        return $this->morphOne(WalletModel::class, 'user');
+        return $this->hasOne(Wallet::class);
+
     }
 }
