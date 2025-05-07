@@ -102,9 +102,35 @@
                                             </div>
                                         </div>
 
+                                        @php
+                                        $wallet = \App\Models\Wallet::where('user_id', auth()->id())->first();
+                                        $campaignPrice = floatval(request('price'));
+                                        $walletBalance = $wallet ? number_format($wallet->balance, 2, '.', '') : 0;
+                                        $campaignPrice = number_format($campaignPrice, 2, '.', '');
+                                    @endphp
+
+                                    @if($wallet && $walletBalance >= $campaignPrice)
                                         <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
                                             Create Campaign
                                         </button>
+                                    @else
+                                        <div class="space-y-4">
+                                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                                <div class="flex">
+                                                    <div class="flex-shrink-0">
+                                                        <i class="fas fa-exclamation-circle text-red-400"></i>
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <p class="text-sm text-red-700">Insufficient wallet balance. Please add funds to continue.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="/{{ auth()->id() }}/advertiser/wallet/add-funds" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-gradient-to-r from-[#F72585] to-[#7209B7] hover:from-[#B5179E] hover:to-[#560BAD] transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7209B7]">
+                                                <i class="fas fa-wallet mr-2"></i>
+                                                Add Funds to Wallet
+                                            </a>
+                                        </div>
+                                    @endif
                                     </form>
                                 </div>
                             @else
