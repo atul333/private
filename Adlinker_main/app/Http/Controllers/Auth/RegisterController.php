@@ -60,8 +60,18 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'telegram_username' => [
+                'required',
+                'string',
+                'regex:/^https:\/\/t\.me\/[a-zA-Z0-9_]{5,32}$/',
+                'unique:users,telegram_username'
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'string', 'in:publisher,advertiser'],
+        ], [
+            'telegram_username.regex' => 'Telegram username must start with https://t.me/ followed by your username',
+            'telegram_username.min' => 'Telegram username must be at least 5 characters',
+            'telegram_username.max' => 'Telegram username cannot exceed 32 characters'
         ]);
     }
 
@@ -76,6 +86,7 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'telegram_username' => $data['telegram_username'] ?? null,
             'password' => Hash::make($data['password']),
             'role' => $data['role'],
         ]);
