@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+    <div class="flex flex-col h-full">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center">
             @if(auth()->user()->role === 'publisher')
             <div class="flex items-center">
                 <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
@@ -31,21 +31,21 @@
         </div>
 
         <!-- Fixed Metrics Section -->
-        <div class="bg-white/5 backdrop-blur-sm px-4 py-3 border-b border-[#7209B7]/10 shrink-0">
+        <div class="bg-white/5 backdrop-blur-sm px-4 py-3 border-b border-[#7209B7]/10">
             <div class="grid grid-cols-3 gap-6">
-                <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
+                <div class="bg-gradient-to-br from-[#6CC1F0]/20 to-[#4895EF]/20 rounded-xl p-4 text-[#4895EF] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#4CC9F0]/30 hover:border-[#4CC9F0]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Available Balance</h3>
                         <p class="text-lg font-bold mt-2">${{ number_format($availableBalance ?? 0.00, 2) }}</p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
+                <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Pending Payments</h3>
                         <p class="text-lg font-bold mt-2">${{ number_format($pendingPayments ?? 0.00, 2) }}</p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
+                <div class="bg-gradient-to-br from-[#3A0CA3]/20 to-[#4361EE]/20 rounded-xl p-4 text-[#4361EE] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#3A0CA3]/30 hover:border-[#3A0CA3]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-medium opacity-90">Payment Done</h3>
                         <p class="text-lg font-bold mt-2">${{ number_format($completedPayments ?? 0.00, 2) }}</p>
@@ -55,7 +55,7 @@
         </div>
 
         <!-- Scrollable Content Section -->
-        <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+        <div class="flex-1 px-4 py-4 overflow-y-auto">
             <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
                 <div class="px-4 py-3 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20">
                     <h2 class="text-lg font-semibold text-gray-900">Transaction History</h2>

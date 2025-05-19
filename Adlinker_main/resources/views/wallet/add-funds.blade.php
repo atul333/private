@@ -81,14 +81,14 @@
                     </div>
 
                     <div class="flex justify-between space-x-4 mb-4">
-                        <button type="button" onclick="document.getElementById('amount').value='100'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            $100
+                        <button type="button" onclick="document.getElementById('amount').value='1'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            $1
                         </button>
-                        <button type="button" onclick="document.getElementById('amount').value='500'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            $500
+                        <button type="button" onclick="document.getElementById('amount').value='2'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            $2
                         </button>
-                        <button type="button" onclick="document.getElementById('amount').value='1000'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            $1000
+                        <button type="button" onclick="document.getElementById('amount').value='5'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            $5
                         </button>
                     </div>
                     <div>
