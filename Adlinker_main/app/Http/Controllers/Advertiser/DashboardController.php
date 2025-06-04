@@ -56,13 +56,37 @@ class DashboardController extends Controller
         }
 
         // Apply sorting
-        $query->orderByRaw("CASE 
-            WHEN status = 'active' AND post_link IS NULL THEN 1
-            WHEN status = 'active' AND post_link IS NOT NULL THEN 2
-            WHEN status = 'completed' THEN 3
-            WHEN status = 'pending' THEN 4
-            ELSE 5
-        END");
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'price-high':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'price-low':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'duration-high':
+                    $query->orderBy('duration', 'desc');
+                    break;
+                case 'duration-low':
+                    $query->orderBy('duration', 'asc');
+                    break;
+                default: // newest
+                    $query->orderBy('created_at', 'desc');
+                    break;
+            }
+        } else {
+            // Default sorting if no sort parameter
+            $query->orderByRaw("CASE 
+                WHEN status = 'active' AND post_link IS NULL THEN 1
+                WHEN status = 'active' AND post_link IS NOT NULL THEN 2
+                WHEN status = 'completed' THEN 3
+                WHEN status = 'pending' THEN 4
+                ELSE 5
+            END");
+        }
 
         // Get paginated results
         $campaigns = $query->paginate(6)->withQueryString();

@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+    <div class="flex-1">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
+        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,8 +16,8 @@
             </div>
         </div>
 
-        <!-- Scrollable Content Section -->
-        <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+        <!-- Content Section -->
+        <div class="px-4 py-4">
             <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
                 <form method="POST" action="{{ route('channels.update', ['user' => Auth::id(), 'channel' => $channel]) }}" enctype="multipart/form-data" class="p-6 space-y-6">
                     @csrf
@@ -97,6 +97,18 @@
                         </div>
                     </div>
 
+                    <script>
+                        function validatePrice(input) {
+                            const errorElement = document.getElementById(input.id + '_error');
+                            if (parseFloat(input.value) < 0.1) {
+                                input.classList.add('border-[#F72585]', 'text-[#F72585]');
+                                errorElement.classList.remove('hidden');
+                            } else {
+                                input.classList.remove('border-[#F72585]', 'text-[#F72585]');
+                                errorElement.classList.add('hidden');
+                            }
+                        }
+                    </script>
                     <div class="pt-8">
                         <div class="relative">
                             <div class="absolute -inset-1 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-10"></div>
@@ -111,7 +123,8 @@
                                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                     <span class="text-gray-500 sm:text-sm">$</span>
                                                 </div>
-                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day', $channel->price_1_day) }}" required min="0">
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day', $channel->price_1_day) }}" required min="0.1" oninput="validatePrice(this)" placeholder="Enter Minimum $0.1">
+                                                <p class="mt-2 text-xs text-[#F72585] hidden" id="price_1_day_error">Price must be at least $0.1</p>
                                             </div>
                                             @error('price_1_day')
                                                 <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -127,7 +140,8 @@
                                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                     <span class="text-gray-500 sm:text-sm">$</span>
                                                 </div>
-                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days', $channel->price_2_days) }}" required min="0">
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days', $channel->price_2_days) }}" required min="0.1" oninput="validatePrice(this)" placeholder="Enter Minimum $0.1">
+                                                <p class="mt-2 text-xs text-[#F72585] hidden" id="price_2_days_error">Price must be at least $0.1</p>
                                             </div>
                                             @error('price_2_days')
                                                 <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -143,7 +157,8 @@
                                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                     <span class="text-gray-500 sm:text-sm">$</span>
                                                 </div>
-                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days', $channel->price_3_days) }}" required min="0">
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days', $channel->price_3_days) }}" required min="0.1" oninput="validatePrice(this)" placeholder="Enter Minimum $0.1">
+                                                <p class="mt-2 text-xs text-[#F72585] hidden" id="price_3_days_error">Price must be at least $0.1</p>
                                             </div>
                                             @error('price_3_days')
                                                 <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -159,7 +174,8 @@
                                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                     <span class="text-gray-500 sm:text-sm">$</span>
                                                 </div>
-                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days', $channel->price_7_days) }}" required min="0">
+                                                <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days', $channel->price_7_days) }}" required min="0.1" oninput="validatePrice(this)" placeholder="Enter Minimum $0.1">
+                                                <p class="mt-2 text-xs text-[#F72585] hidden" id="price_7_days_error">Price must be at least $0.1</p>
                                             </div>
                                             @error('price_7_days')
                                                 <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -171,6 +187,18 @@
                         </div>
                     </div>
 
+                    <script>
+                        function validatePrice(input) {
+                            const errorElement = document.getElementById(input.id + '_error');
+                            if (parseFloat(input.value) < 0.1) {
+                                input.classList.add('border-[#F72585]', 'text-[#F72585]');
+                                errorElement.classList.remove('hidden');
+                            } else {
+                                input.classList.remove('border-[#F72585]', 'text-[#F72585]');
+                                errorElement.classList.add('hidden');
+                            }
+                        }
+                    </script>
                     <div class="pt-8">
                         <div class="relative group">
                             <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-25"></div>

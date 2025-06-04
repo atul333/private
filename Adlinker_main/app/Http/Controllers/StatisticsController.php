@@ -10,7 +10,7 @@ class StatisticsController extends Controller
 {
     public function getStatistics()
     {
-        $totalChannels = Channel::count();
+        $totalChannels = Channel::where('status', 'active')->count();
         $activeAdvertisers = User::where('role', 'advertiser')->count();
         $activePublishers = User::where('role', 'publisher')->count();
 

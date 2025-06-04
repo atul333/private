@@ -15,90 +15,25 @@
                 <h1 class="text-base font-bold text-black">All Channels</h1>
             </div>
             
-            <!-- Simple Search & Filter - Mobile Friendly -->
+            <!-- Filter Section -->
             <div class="flex items-center w-full sm:w-auto space-x-2">
-                <div class="relative flex-grow">
-                    <input 
-                        type="text" 
-                        id="simple-search" 
-                        placeholder="Search..." 
-                        class="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                    <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-                
-                <div class="relative inline-block text-left">
-                    <button id="simple-filter-btn" type="button" class="inline-flex items-center px-3 py-1.5 text-sm bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
-                        <svg class="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                        </svg>
-                        <span class="hidden sm:inline">Filters</span>
-                    </button>
-                    
-                    <div id="simple-filter-dropdown" class="hidden absolute right-0 mt-2 w-64 sm:w-72 bg-white rounded-xl shadow-xl z-50 overflow-hidden border border-gray-100">
-                        <!-- Dropdown Header -->
-                        <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-                            <h3 class="text-sm font-medium text-gray-700">Filter Channels</h3>
-                        </div>
-                        
-                        <!-- Filter Options -->
-                        <div class="p-4 space-y-4">
-                            <!-- Subscribers Filter -->
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
-                                    Subscribers
-                                </label>
-                                <div class="relative">
-                                    <select id="simple-subscriber-filter" class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 appearance-none pr-10 bg-white text-xs">
-                                        <option value="all" class="text-xs">All Subscribers</option>
-                                        <option value="0-10000" class="text-xs">< 10K</option>
-                                        <option value="10000-50000" class="text-xs">10K - 50K</option>
-                                        <option value="50000+" class="text-xs">50K+</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Sort By Filter -->
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
-                                    Sort By
-                                </label>
-                                <div class="relative">
-                                    <select id="simple-sort-filter" class="w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 appearance-none pr-10 bg-white text-xs">
-                                        <option value="subscribers-desc" class="text-xs">Most Subscribers</option>
-                                        <option value="subscribers-asc" class="text-xs">Least Subscribers</option>
-                                        <option value="name-asc" class="text-xs">Name A-Z</option>
-                                        <option value="name-desc" class="text-xs">Name Z-A</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Filter Actions -->
-                        <div class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end space-x-2">
-                            <button id="simple-reset-filter" class="px-3 py-1.5 bg-white text-gray-700 rounded-lg border border-gray-300 text-sm font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Reset
-                            </button>
-                            <button id="simple-apply-filter" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Apply
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <form id="filterForm" action="{{ url()->current() }}" method="GET" class="flex justify-end items-center gap-2 overflow-x-auto whitespace-nowrap">
+                    <!-- Status Filter -->
+                    <select name="status" onchange="this.form.submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[90px]">
+                        <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Subscribers</option>
+                        <option value="0-10000" {{ request('status') == '0-10000' ? 'selected' : '' }}>< 10K</option>
+                        <option value="10000-50000" {{ request('status') == '10000-50000' ? 'selected' : '' }}>10K - 50K</option>
+                        <option value="50000+" {{ request('status') == '50000+' ? 'selected' : '' }}>50K+</option>
+                    </select>
+
+                    <!-- Sort By -->
+                    <select name="sort" onchange="this.form.submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[110px]">
+                        <option value="subscribers-desc" {{ request('sort') == 'subscribers-desc' || !request('sort') ? 'selected' : '' }}>Most Subscribers</option>
+                        <option value="subscribers-asc" {{ request('sort') == 'subscribers-asc' ? 'selected' : '' }}>Least Subscribers</option>
+                        <option value="name-asc" {{ request('sort') == 'name-asc' ? 'selected' : '' }}>Name A-Z</option>
+                        <option value="name-desc" {{ request('sort') == 'name-desc' ? 'selected' : '' }}>Name Z-A</option>
+                    </select>
+                </form>
             </div>
         </div>
 
@@ -214,140 +149,38 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM elements
-    const filterBtn = document.getElementById('simple-filter-btn');
-    const filterDropdown = document.getElementById('simple-filter-dropdown');
-    const searchInput = document.getElementById('simple-search');
-    const subscriberFilter = document.getElementById('simple-subscriber-filter');
-    const sortFilter = document.getElementById('simple-sort-filter');
-    const applyBtn = document.getElementById('simple-apply-filter');
-    const resetBtn = document.getElementById('simple-reset-filter');
     const clearBtn = document.getElementById('clear-filters-btn');
+    const noChannelsMsg = document.getElementById('no-channels-message');
     const channelCards = document.querySelectorAll('.channel-card');
     const channelsContainer = document.getElementById('channels-container');
-    const noChannelsMsg = document.getElementById('no-channels-message');
+    const subscriberFilter = document.querySelector('select[name="status"]');
+    const sortFilter = document.querySelector('select[name="sort"]');
     
-    // Toggle dropdown
-    if (filterBtn && filterDropdown) {
-        filterBtn.addEventListener('click', function() {
-            filterDropdown.classList.toggle('hidden');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!filterBtn.contains(event.target) && !filterDropdown.contains(event.target)) {
-                filterDropdown.classList.add('hidden');
-            }
-        });
-    }
-    
-    // Apply filters
-    function applyFilters() {
-        const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
-        const subscriberValue = subscriberFilter ? subscriberFilter.value : 'all';
-        const sortValue = sortFilter ? sortFilter.value : 'subscribers-desc';
-        
-        let visibleCount = 0;
-        
-        // Filter cards
-        channelCards.forEach(card => {
-            const name = card.getAttribute('data-name') || '';
-            const subscribers = parseInt(card.getAttribute('data-subscribers') || '0');
-            
-            let isVisible = true;
-            
-            // Filter by search
-            if (searchTerm && !name.includes(searchTerm)) {
-                isVisible = false;
-            }
-            
-            // Filter by subscribers
-            if (subscriberValue !== 'all') {
-                if (subscriberValue === '0-10000' && subscribers >= 10000) {
-                    isVisible = false;
-                } else if (subscriberValue === '10000-50000' && (subscribers < 10000 || subscribers > 50000)) {
-                    isVisible = false;
-                } else if (subscriberValue === '50000+' && subscribers < 50000) {
-                    isVisible = false;
-                }
-            }
-            
-            // Show/hide card
-            if (isVisible) {
-                card.style.display = '';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
-        // Sort visible cards
-        if (channelsContainer) {
-            const visibleCards = Array.from(channelCards).filter(card => card.style.display !== 'none');
-            
-            visibleCards.sort((a, b) => {
-                const aName = (a.getAttribute('data-name') || '').toLowerCase();
-                const bName = (b.getAttribute('data-name') || '').toLowerCase();
-                const aSubscribers = parseInt(a.getAttribute('data-subscribers') || '0');
-                const bSubscribers = parseInt(b.getAttribute('data-subscribers') || '0');
-                
-                if (sortValue === 'subscribers-desc') {
-                    return bSubscribers - aSubscribers;
-                } else if (sortValue === 'subscribers-asc') {
-                    return aSubscribers - bSubscribers;
-                } else if (sortValue === 'name-asc') {
-                    return aName.localeCompare(bName);
-                } else if (sortValue === 'name-desc') {
-                    return bName.localeCompare(aName);
-                }
-                
-                return 0;
-            });
-            
-            // Reappend sorted cards
-            visibleCards.forEach(card => {
-                channelsContainer.appendChild(card);
-            });
-        }
-        
-        // Show/hide no results message
-        if (noChannelsMsg) {
-            if (visibleCount === 0) {
-                channelsContainer.classList.add('hidden');
-                noChannelsMsg.classList.remove('hidden');
-            } else {
-                channelsContainer.classList.remove('hidden');
-                noChannelsMsg.classList.add('hidden');
-            }
-        }
-        
-        // Hide dropdown
-        if (filterDropdown) {
-            filterDropdown.classList.add('hidden');
-        }
-    }
-    
-    // Search input
-    if (searchInput) {
-        searchInput.addEventListener('input', applyFilters);
-    }
-    
-    // Apply button
-    if (applyBtn) {
-        applyBtn.addEventListener('click', function(e) {
+    // Clear all filters button
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            applyFilters();
+            window.location.href = window.location.pathname;
         });
     }
     
-    // Reset button
-    if (resetBtn) {
-        resetBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (searchInput) searchInput.value = '';
-            if (subscriberFilter) subscriberFilter.value = 'all';
-            if (sortFilter) sortFilter.value = 'subscribers-desc';
-            applyFilters();
+    // Show/hide no results message based on server-side data
+    if (noChannelsMsg && channelsContainer) {
+        const hasChannels = channelCards.length > 0;
+        channelsContainer.classList.toggle('hidden', !hasChannels);
+        noChannelsMsg.classList.toggle('hidden', hasChannels);
+    }
+    
+    // Initialize filters
+    if (subscriberFilter) {
+        subscriberFilter.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+    
+    if (sortFilter) {
+        sortFilter.addEventListener('change', function() {
+            this.form.submit();
         });
     }
     
@@ -355,10 +188,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clearBtn) {
         clearBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (searchInput) searchInput.value = '';
             if (subscriberFilter) subscriberFilter.value = 'all';
             if (sortFilter) sortFilter.value = 'subscribers-desc';
-            applyFilters();
+            document.getElementById('filterForm').submit();
         });
     }
     

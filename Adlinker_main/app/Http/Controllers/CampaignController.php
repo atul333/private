@@ -26,14 +26,52 @@ class CampaignController extends Controller
         return view('campaigns.index', compact('campaigns'));
     }
 
-    public function create($user)
+    public function create(Request $request, $user)
     {
         if (auth()->id() != $user) {
             abort(403, 'Unauthorized action.');
         }
-        $channels = Channel::where('status', 'active')
-            ->orderBy('subscribers_count', 'desc')
-            ->paginate(6);
+
+        $query = Channel::where('status', 'active');
+
+        // Handle subscriber count filter
+        if ($request->has('status') && $request->status != 'all') {
+            switch($request->status) {
+                case '0-10000':
+                    $query->where('subscribers_count', '<', 10000);
+                    break;
+                case '10000-50000':
+                    $query->whereBetween('subscribers_count', [10000, 50000]);
+                    break;
+                case '50000+':
+                    $query->where('subscribers_count', '>', 50000);
+                    break;
+            }
+        }
+
+        // Handle sorting
+        if ($request->has('sort')) {
+            switch($request->sort) {
+                case 'subscribers-asc':
+                    $query->orderBy('subscribers_count', 'asc');
+                    break;
+                case 'subscribers-desc':
+                    $query->orderBy('subscribers_count', 'desc');
+                    break;
+                case 'name-asc':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name-desc':
+                    $query->orderBy('name', 'desc');
+                    break;
+                default:
+                    $query->orderBy('subscribers_count', 'desc');
+            }
+        } else {
+            $query->orderBy('subscribers_count', 'desc');
+        }
+
+        $channels = $query->paginate(6)->withQueryString();
         return view('campaigns.create', compact('channels'));
     }
 

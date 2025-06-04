@@ -19,65 +19,46 @@
       <div class="grid grid-cols-3 gap-4">
         <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Active Campaigns</h3>
-            <p class="text-lg font-bold mt-2">{{ $activeCampaigns }}</p>
+            <h3 class="text-sm font-semibold opacity-90 text-gray-900">Active Campaigns</h3>
+            <p class="text-lg font-semibold mt-2 text-gray-900">{{ $activeCampaigns }}</p>
           </div>
         </div>
         <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Total Spent</h3>
-            <p class="text-lg font-bold mt-2">${{ number_format($totalSpent, 2) }}</p>
+            <h3 class="text-sm font-semibold opacity-90 text-gray-900">Total Spent</h3>
+            <p class="text-lg font-semibold mt-2 text-gray-900">${{ number_format($totalSpent, 2) }}</p>
           </div>
         </div>
         <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
           <div class="text-center">
-            <h3 class="text-sm font-medium opacity-90">Completed Campaigns</h3>
-            <p class="text-lg font-bold mt-2">{{ $completedCampaigns }}</p>
+            <h3 class="text-sm font-semibold opacity-90 text-gray-900">Completed Campaigns</h3>
+            <p class="text-lg font-semibold mt-2 text-gray-900">{{ $completedCampaigns }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Filter Section -->
-    <div class="px-4 py-2.5 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
-      <form action="{{ url()->current() }}" method="GET" class="flex items-center gap-3 flex-wrap">
-        <div class="relative">
-          <select name="status" class="appearance-none pl-8 pr-3 py-1.5 bg-white/80 rounded-lg border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#4361EE] text-sm hover:bg-white transition-colors min-w-[130px]">
-            <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Statuses</option>
-            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
-            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-            <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
-          </select>
-          <svg class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </div>
-        
-        <div class="relative">
-          <select name="sort" class="appearance-none pl-8 pr-3 py-1.5 bg-white/80 rounded-lg border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#4361EE] text-sm hover:bg-white transition-colors min-w-[160px]">
-            <option value="newest" {{ request('sort') == 'newest' || !request('sort') ? 'selected' : '' }}>Newest First</option>
-            <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
-            <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price (High to Low)</option>
-            <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Price (Low to High)</option>
-            <option value="duration-high" {{ request('sort') == 'duration-high' ? 'selected' : '' }}>Duration (High to Low)</option>
-            <option value="duration-low" {{ request('sort') == 'duration-low' ? 'selected' : '' }}>Duration (Low to High)</option>
-          </select>
-          <svg class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
-        </div>
-    
-        <div class="relative flex-1 min-w-[200px]">
-          <input type="text" name="search" value="{{ request('search') }}" placeholder="Search channels..." class="pl-8 pr-3 w-full py-1.5 bg-white/80 rounded-lg border-0 ring-1 ring-gray-200 focus:ring-2 focus:ring-[#4361EE] text-sm hover:bg-white transition-colors">
-          <svg class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </div>
-    
-        <button type="submit" class="shrink-0 text-sm bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white font-medium py-1.5 px-4 rounded-lg hover:from-[#3F37C9] hover:to-[#4895EF] transition-all duration-300 shadow-sm hover:shadow inline-flex items-center">
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"></path></svg>
-          Apply
-        </button>
-    
-        <a href="{{ url()->current() }}" class="shrink-0 text-sm bg-gray-100 text-gray-700 font-medium py-1.5 px-4 rounded-lg hover:bg-gray-200 transition-colors inline-flex items-center">
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-          Reset
-        </a>
+    <div class="px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
+      <form id="filterForm" action="{{ url()->current() }}" method="GET" class="flex justify-end items-center gap-2 overflow-x-auto whitespace-nowrap">
+        <!-- Status Filter -->
+        <select name="status" onchange="this.form.submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[90px]">
+          <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Statuses</option>
+          <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+          <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+          <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+          <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+        </select>
+
+        <!-- Sort By -->
+        <select name="sort" onchange="this.form.submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-2 sm:px-3 min-w-[110px]">
+          <option value="newest" {{ request('sort') == 'newest' || !request('sort') ? 'selected' : '' }}>Newest First</option>
+          <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
+          <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price (High to Low)</option>
+          <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Price (Low to High)</option>
+          <option value="duration-high" {{ request('sort') == 'duration-high' ? 'selected' : '' }}>Duration (High to Low)</option>
+          <option value="duration-low" {{ request('sort') == 'duration-low' ? 'selected' : '' }}>Duration (Low to High)</option>
+        </select>
       </form>
     </div>
 
