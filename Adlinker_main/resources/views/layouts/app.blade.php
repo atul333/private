@@ -26,7 +26,7 @@
     <!-- Scripts -->
     @vite(['resources/js/app.js', 'resources/js/countdown.js','resources/sass/app.scss'])
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="bg-gray-50 {{ in_array(Request::path(), ['login', 'register']) ? 'overflow-hidden' : 'min-h-screen flex flex-col' }}">
     @php
         $balance = '0.00';
         if(Auth::check()) {
@@ -126,7 +126,7 @@
             <div class="sm:hidden h-0"></div>
         </nav>
 
-        <main class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8 mt-12 flex-1 overflow-y-auto py-4">
+        <main class="w-full {{ in_array(Request::path(), ['login', 'register']) ? 'h-screen flex items-center justify-center' : 'max-w-7xl mx-auto sm:px-6 lg:px-8 mt-12 flex-1 overflow-y-auto py-4' }}">
             @yield('content')
         </main>
 

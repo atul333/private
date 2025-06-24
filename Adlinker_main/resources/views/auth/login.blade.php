@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col justify-end pb-32">
-    <div class="container-custom">
-        <div class="max-w-md mx-auto">
+<div class="w-full max-w-md mx-auto">
+    <div class="px-4">
+        <div class="w-full">
             <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-[#4895EF]/20 transform transition-all duration-300 hover:shadow-2xl">
                 <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 ">
                     <h2 class="text-xl font-bold text-black text-center">{{ __('Welcome back') }}</h2>
