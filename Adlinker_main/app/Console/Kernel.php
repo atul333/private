@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Run log rotation at midnight
+        $schedule->command('logs:rotate')->dailyAt('00:00');
     }
 
     /**

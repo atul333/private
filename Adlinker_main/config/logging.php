@@ -54,8 +54,17 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'actions'],
             'ignore_exceptions' => false,
+        ],
+
+        'actions' => [
+            'driver' => 'daily',
+            'path' => '/logs/adlinker/actions.log',
+            'level' => 'info',
+            'days' => 30,
+            'permission' => 0664,
+            'replace_placeholders' => true,
         ],
 
         'single' => [
