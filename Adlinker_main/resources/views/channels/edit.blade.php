@@ -37,17 +37,6 @@
                     <div class="relative group">
                         <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                         <div class="relative space-y-2">
-                            <label for="link" class="block text-sm font-semibold text-gray-900">Channel Link</label>
-                            <input type="url" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('link') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="link" name="link" value="{{ old('link', $channel->link) }}" required placeholder="https://t.me/yourchannel">
-                            @error('link')
-                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="relative group">
-                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                        <div class="relative space-y-2">
                             <label for="description" class="block text-sm font-semibold text-gray-900">Channel Description</label>
                             <textarea class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('description') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="description" name="description" rows="3" required>{{ old('description', $channel->description) }}</textarea>
                             @error('description')
@@ -67,31 +56,6 @@
                                 <input type="file" class="mt-1 block w-full px-4 py-3 text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#4CC9F0]/10 file:text-[#4361EE] hover:file:bg-[#4CC9F0]/20 transition duration-200" id="logo" name="logo" accept="image/*">
                             </div>
                             @error('logo')
-                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="relative group">
-                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                        <div class="relative space-y-2">
-                            <label for="subscribers_count" class="block text-sm font-semibold text-gray-900">Subscribers Count</label>
-                            <input type="number" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('subscribers_count') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count', $channel->subscribers_count) }}" required min="0">
-                            @error('subscribers_count')
-                                <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="relative group">
-                        <div class="absolute -inset-0.5 bg-gradient-to-r from-[#F72585] to-[#7209B7] rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                        <div class="relative space-y-2">
-                            <label for="status" class="block text-sm font-semibold text-gray-900">Channel Status</label>
-                            <select class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('status') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="status" name="status" required>
-                                <option value="active" {{ old('status', $channel->status) === 'active' ? 'selected' : '' }}>Active</option>
-                                <option value="inactive" {{ old('status', $channel->status) === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                            </select>
-                            @error('status')
                                 <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                             @enderror
                         </div>
