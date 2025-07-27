@@ -9,6 +9,10 @@ class Channel extends Model
 {
     use HasFactory;
 
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_INACTIVE = 'inactive';
+    public const STATUS_MODERATION = 'moderation';
+
     protected $fillable = [
         'name',
         'link',

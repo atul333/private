@@ -28,20 +28,31 @@ class ChannelController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'link' => 'nullable|url',
+            'link' => ['required', 'url', function ($attribute, $value, $fail) {
+                // Remove any spaces from the URL
+                $value = str_replace(' ', '', $value);
+                if (!filter_var($value, FILTER_VALIDATE_URL)) {
+                    $fail('The '.$attribute.' must be a valid URL.');
+                }
+            }],
             'description' => 'required|string',
-            'subscribers_count' => 'required|integer|min:0',
             'price_1_day' => 'nullable|numeric|min:0',
             'price_2_days' => 'nullable|numeric|min:0',
             'price_3_days' => 'nullable|numeric|min:0',
             'price_7_days' => 'nullable|numeric|min:0',
             'logo' => 'nullable|image|max:2048'
         ]);
+        
+        // Set default subscribers count to 0
+        $validated['subscribers_count'] = 0;
 
+        // Clean and prepare the data
+        $validated['link'] = str_replace(' ', '', $validated['link']);
+        
         $channel = new Channel();
         $channel->fill($validated);
         $channel->publisher_id = auth()->user()->publisher->id;
-        $channel->status = 'active';
+        $channel->status = Channel::STATUS_MODERATION;
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('channel-logos', 'public');
@@ -51,7 +62,7 @@ class ChannelController extends Controller
         $channel->save();
 
         return redirect()->to('/' . auth()->id() . '/publisher/dashboard')
-            ->with('success', 'Channel created successfully.');
+            ->with('success', 'Channel has been submitted for moderation. We will review it shortly.');
     }
 
     public function show($user, Channel $channel)
@@ -78,6 +89,14 @@ class ChannelController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'link' => ['required', 'url', function ($attribute, $value, $fail) {
+                // Remove any spaces from the URL
+                $value = str_replace(' ', '', $value);
+                if (!filter_var($value, FILTER_VALIDATE_URL)) {
+                    $fail('The '.$attribute.' must be a valid URL.');
+                }
+            }],
+            'name' => 'required|string|max:255',
             'link' => 'nullable|url',
             'description' => 'required|string',
             'subscribers_count' => 'required|integer|min:0',
@@ -85,7 +104,7 @@ class ChannelController extends Controller
             'price_2_days' => 'nullable|numeric|min:0',
             'price_3_days' => 'nullable|numeric|min:0',
             'price_7_days' => 'nullable|numeric|min:0',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:' . Channel::STATUS_ACTIVE . ',' . Channel::STATUS_INACTIVE . ',' . Channel::STATUS_MODERATION,
             'logo' => 'nullable|image|max:2048'
         ]);
 

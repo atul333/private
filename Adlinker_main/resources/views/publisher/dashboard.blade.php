@@ -54,9 +54,18 @@ use App\Models\Channel;
           <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50">
             <div class="relative border-b border-gray-100">
               <div class="absolute top-3 right-3">
-                <span class="px-2.5 py-1 text-xs font-semibold rounded-full border {{ $channel->status === 'active' ? 'bg-[#4CC9F0]/20 text-[#3A0CA3] border-[#4CC9F0]' : 'bg-[#F72585]/20 text-[#B5179E] border-[#F72585]' }}">
-                  {{ ucfirst($channel->status) }}
-                </span>
+                @if($channel->status === 'moderation')
+                  <div class="flex flex-col items-end">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-full border bg-[#F72585]/20 text-[#B5179E] border-[#F72585]">
+                      {{ ucfirst($channel->status) }}
+                    </span>
+                    <span class="text-xs text-[#B5179E] mt-1">Wait 24h for activation</span>
+                  </div>
+                @else
+                  <span class="px-2.5 py-1 text-xs font-semibold rounded-full border {{ $channel->status === 'active' ? 'bg-[#4CC9F0]/20 text-[#3A0CA3] border-[#4CC9F0]' : 'bg-[#F72585]/20 text-[#B5179E] border-[#F72585]' }}">
+                    {{ ucfirst($channel->status) }}
+                  </span>
+                @endif
               </div>
               <div class="p-4">
                 <div class="flex items-center space-x-3 mb-3 border-b border-gray-200 pb-3">

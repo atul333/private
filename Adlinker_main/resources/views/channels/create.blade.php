@@ -69,16 +69,6 @@
                             </div>
                         </div>
 
-                        <div class="relative group">
-                            <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                            <div class="relative space-y-2">
-                                <label for="subscribers_count" class="block text-sm font-semibold text-gray-900">Subscribers Count</label>
-                                <input type="number" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('subscribers_count') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="subscribers_count" name="subscribers_count" value="{{ old('subscribers_count') }}" required min="0">
-                                @error('subscribers_count')
-                                    <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
 
                         <script>
                     function validatePrice(input) {
@@ -186,7 +176,7 @@
                     <div class="relative group">
                         <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-25"></div>
                         <button type="submit" class="relative w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#F72585] to-[#7209B7] hover:from-[#B5179E] hover:to-[#560BAD] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            Create Channel
+                            Submit Channel
                             <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
