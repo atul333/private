@@ -139,6 +139,13 @@
             </button>
         </div>
 
+        <!-- Telegram Contact Button -->
+        <div class="fixed bottom-5 right-5 z-50">
+            <a href="https://t.me/Atulking007" target="_blank" class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#0088cc] to-[#0099ff] text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                <i class="fab fa-telegram-plane text-xl"></i>
+            </a>
+        </div>
+
          
 
 
