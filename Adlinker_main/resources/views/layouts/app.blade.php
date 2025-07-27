@@ -57,7 +57,7 @@
                             @if(Auth::check())
                                 <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1 bg-white hover:bg-gray-50 text-gray-700 px-3 py-2 rounded-lg shadow-sm border border-gray-200 transition-all duration-200">
                                     <i class="fas fa-wallet text-blue-500"></i>
-                                    <span class="font-medium">${{ $balance }}</span>
+                                    <span class="font-medium">₹{{ $balance }}</span>
                                 </a>
                                 <div class="relative">
                                     <button type="button" class="mobile-menu-button text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center">
@@ -91,7 +91,7 @@
                                     <div class="relative group">
                                         <a href="{{ auth()->user()->role === 'publisher' ? url('/' . auth()->user()->id . '/publisher/wallet') : url('/' . auth()->user()->id . '/advertiser/wallet') }}" class="flex items-center space-x-1 bg-white hover:bg-gray-50 text-gray-700 px-2 py-1.5 rounded-lg shadow-sm border border-gray-200 transition-all duration-200">
                                             <i class="fas fa-wallet text-blue-500 text-sm"></i>
-                                            <span class="font-medium text-sm">${{ $balance }}</span>
+                                            <span class="font-medium text-sm">₹{{ $balance }}</span>
                                         </a>
                                     </div>
                                 @endif
@@ -424,8 +424,8 @@
                             'bg-gray-100 text-gray-800' : 
                             'bg-blue-600 text-white'} rounded-lg px-4 py-2 max-w-[80%]">
                             <p class="text-sm">${message.message}</p>
-                            <p class="text-xs opacity-75 mt-1">${new Date(message.created_at).toLocaleTimeString()}</p>
-                            ${message.admin_reply ? `<div class='mt-2 p-2 bg-yellow-100 text-yellow-800 rounded text-xs'>Admin reply: ${message.admin_reply}</div>` : ''}
+                             <p class="text-xs opacity-75 mt-1">${new Date(message.created_at).toLocaleTimeString()}</p>
+                             ${message.admin_reply ? `<div class='mt-2 p-2 bg-yellow-100 text-yellow-800 rounded text-xs'>Admin reply: ${message.admin_reply}</div>` : ''}
                         </div>
                     `;
                     chatMessages.appendChild(messageElement);

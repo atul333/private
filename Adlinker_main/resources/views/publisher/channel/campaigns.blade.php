@@ -27,7 +27,7 @@
                         <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                             <div class="flex flex-col">
                                 <h3 class="text-base font-medium opacity-90">Total Budget</h3>
-                                <p class="text-2xl font-bold mt-2">${{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
+                                <p class="text-2xl font-bold mt-2">₹{{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
                             </div>
                         </div>
                         <div class="bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
@@ -55,7 +55,7 @@
                                     @foreach($channel->campaigns as $campaign)
                                         <tr class="hover:bg-gray-50 transition-all duration-300 ease-in-out">
                                             <td class="px-6 py-4 whitespace-nowrap text-xs font-semibold text-gray-800">{{ $campaign->name }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-xs font-medium text-gray-600">${{ number_format($campaign->budget, 2) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-xs font-medium text-gray-600">₹{{ number_format($campaign->budget, 2) }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-3 py-1.5 inline-flex text-[0.65rem] leading-5 font-semibold rounded-full shadow-sm transition-all duration-200 {{ $campaign->status === 'active' ? 'bg-green-100 text-green-800 ring-2 ring-green-100/50' : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800 ring-2 ring-yellow-100/50' : 'bg-gray-100 text-gray-800 ring-2 ring-gray-100/50') }}">
                                                     {{ ucfirst($campaign->status) }}

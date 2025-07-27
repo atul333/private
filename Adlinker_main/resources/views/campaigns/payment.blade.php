@@ -24,7 +24,7 @@
                     <div class="text-center space-y-2">
                         <h3 class="text-lg font-medium opacity-90">Payment Details</h3>
                         <p class="text-lg">Campaign Duration: {{ $campaign->duration }} Days</p>
-                        <p class="text-3xl font-bold mt-2">Amount: ${{ number_format($campaign->price, 2) }}</p>
+                        <p class="text-3xl font-bold mt-2">Amount: ₹{{ number_format($campaign->price, 2) }}</p>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                 <div class="bg-gradient-to-br from-[#FFFFFF] to-[#FFFFFF] rounded-xl p-6 text-black shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <div class="text-center space-y-2">
                         <h3 class="text-lg font-medium opacity-90">Wallet Balance</h3>
-                        <p class="text-3xl font-bold">${{ number_format($wallet->balance ?? 0.00, 2) }}</p>
+                        <p class="text-3xl font-bold">₹{{ number_format($wallet->balance ?? 0.00, 2) }}</p>
                         @if($wallet->balance < $campaign->price)
                             <div class="mt-6 text-center">
                                 <p class="text-sm text-red-500 mb-3">Insufficient balance for this campaign</p>

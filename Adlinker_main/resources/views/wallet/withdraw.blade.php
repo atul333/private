@@ -49,10 +49,10 @@
                             @endif
 
                             <div class="mb-6">
-                                <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">Withdrawal Amount ($)</label>
+                                <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">Withdrawal Amount (₹)</label>
                                 <div class="relative rounded-md shadow-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                        <span class="text-gray-500 sm:text-sm">₹</span>
                                     </div>
                                     <input type="number" name="amount" id="amount" step="0.01" min="10" required
                                            class="block w-full pl-7 pr-12 py-2 rounded-md border-gray-300 focus:ring-[#4361EE] focus:border-[#4361EE]"
@@ -62,10 +62,10 @@
 
                                 <div id="feeDetails" class="mt-4 p-4 bg-blue-50 rounded-lg hidden">
                                     <div class="space-y-2 text-sm">
-                                        <p>Withdrawal Amount: $<span id="withdrawalAmount">0.00</span></p>
-                                        <p>Tax : $<span id="taxAmount">0.00</span></p>
-                                        <p>Platform Fee : $<span id="platformFee">0.00</span></p>
-                                        <p class="font-semibold text-base">You will receive: $<span id="finalAmount">0.00</span></p>
+                                        <p>Withdrawal Amount: ₹<span id="withdrawalAmount">0.00</span></p>
+                                        <p>Tax : ₹<span id="taxAmount">0.00</span></p>
+                                        <p>Platform Fee : ₹<span id="platformFee">0.00</span></p>
+                                        <p class="font-semibold text-base">You will receive: ₹<span id="finalAmount">0.00</span></p>
                                     </div>
                                 </div>
                             </div>

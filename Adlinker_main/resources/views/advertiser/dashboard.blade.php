@@ -26,7 +26,7 @@
         <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
           <div class="text-center">
             <h3 class="text-sm font-semibold opacity-90 text-gray-900">Total Spent</h3>
-            <p class="text-lg font-semibold mt-2 text-gray-900">${{ number_format($totalSpent, 2) }}</p>
+            <p class="text-lg font-semibold mt-2 text-gray-900">₹{{ number_format($totalSpent, 2) }}</p>
           </div>
         </div>
         <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
@@ -93,7 +93,7 @@
 
             <div class="text-sm text-gray-700 space-y-2">
               <p><span class="font-semibold">Duration:</span> {{ $campaign->duration }} days</p>
-              <p><span class="font-semibold">Price:</span> <span class="text-green-600">${{ number_format($campaign->price, 2) }}</span></p>
+              <p><span class="font-semibold">Price:</span> <span class="text-green-600">₹{{ number_format($campaign->price, 2) }}</span></p>
               
               @if($campaign->advertisement_content)
                 <p class="line-clamp-2"><span class="font-semibold">Content:</span> {{ $campaign->advertisement_content }}</p>

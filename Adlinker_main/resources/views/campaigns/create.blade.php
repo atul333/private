@@ -105,10 +105,10 @@
                                         <div class="p-3 bg-gradient-to-r from-indigo-50/30 to-blue-50/30">
                                             <select name="durations[{{ $channel->id }}]" class="w-full rounded-md text-xs sm:text-sm border-2 border-gray-300/50 shadow-sm focus:ring-blue-500 focus:border-blue-500 channel-duration bg-blue-50/20" data-channel-id="{{ $channel->id }}" data-price-1="{{ $channel->price_1_day }}" data-price-2="{{ $channel->price_2_days }}" data-price-3="{{ $channel->price_3_days }}" data-price-7="{{ $channel->price_7_days }}">
                                                 <option value="">Select Duration</option>
-                                                <option value="1">1 Day (${{ number_format($channel->price_1_day, 2) }})</option>
-                                                <option value="2">2 Days (${{ number_format($channel->price_2_days, 2) }})</option>
-                                                <option value="3">3 Days (${{ number_format($channel->price_3_days, 2) }})</option>
-                                                <option value="7">7 Days (${{ number_format($channel->price_7_days, 2) }})</option>
+                                                <option value="1">1 Day (₹{{ number_format($channel->price_1_day, 2) }})</option>
+                                                <option value="2">2 Days (₹{{ number_format($channel->price_2_days, 2) }})</option>
+                                                <option value="3">3 Days (₹{{ number_format($channel->price_3_days, 2) }})</option>
+                                                <option value="7">7 Days (₹{{ number_format($channel->price_7_days, 2) }})</option>
                                             </select>
                                         </div>
 

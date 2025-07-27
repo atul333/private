@@ -101,13 +101,13 @@
                                         <div class="relative group">
                                             <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                                             <div class="relative space-y-2">
-                                                <label for="price_1_day" class="block text-sm font-semibold text-gray-900">Price for 1 Day ($)</label>
+                                                <label for="price_1_day" class="block text-sm font-semibold text-gray-900">Price for 1 Day (₹)</label>
                                                 <div class="relative rounded-lg shadow-sm">
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                                        <span class="text-gray-500 sm:text-sm">₹</span>
                                                     </div>
-                                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day') }}" placeholder="Enter Minimum $0.1" required min="0.1" oninput="validatePrice(this)">
-                                                    <p class="mt-2 text-xs text-[#F72585] hidden" id="price_1_day_error">Price must be at least $0.1</p>
+                                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                                    <p class="mt-2 text-xs text-[#F72585] hidden" id="price_1_day_error">Price must be at least ₹0.1</p>
                                                 </div>
                                                 @error('price_1_day')
                                                     <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -118,13 +118,13 @@
                                 <div class="relative group">
                                     <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                                     <div class="relative space-y-2">
-                                        <label for="price_2_days" class="block text-sm font-semibold text-gray-900">Price for 2 Days ($)</label>
+                                        <label for="price_2_days" class="block text-sm font-semibold text-gray-900">Price for 2 Days (₹)</label>
                                         <div class="relative rounded-lg shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500 sm:text-sm">$</span>
+                                                <span class="text-gray-500 sm:text-sm">₹</span>
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days') }}" placeholder="Enter Minimum $0.1" required min="0.1" oninput="validatePrice(this)">
-                                            <p class="mt-2 text-xs text-[#F72585] hidden" id="price_2_days_error">Price must be at least $0.1</p>
+                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                            <p class="mt-2 text-xs text-[#F72585] hidden" id="price_2_days_error">Price must be at least ₹0.1</p>
                                         </div>
                                         @error('price_2_days')
                                             <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -135,13 +135,13 @@
                                 <div class="relative group">
                                     <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                                     <div class="relative space-y-2">
-                                        <label for="price_3_days" class="block text-sm font-semibold text-gray-900">Price for 3 Days ($)</label>
+                                        <label for="price_3_days" class="block text-sm font-semibold text-gray-900">Price for 3 Days (₹)</label>
                                         <div class="relative rounded-lg shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500 sm:text-sm">$</span>
+                                                <span class="text-gray-500 sm:text-sm">₹</span>
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days') }}" placeholder="Enter Minimum $0.1" required min="0.1" oninput="validatePrice(this)">
-                                            <p class="mt-2 text-xs text-[#F72585] hidden" id="price_3_days_error">Price must be at least $0.1</p>
+                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                            <p class="mt-2 text-xs text-[#F72585] hidden" id="price_3_days_error">Price must be at least ₹0.1</p>
                                         </div>
                                         @error('price_3_days')
                                             <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
@@ -152,13 +152,13 @@
                                 <div class="relative group">
                                     <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                                     <div class="relative space-y-2">
-                                        <label for="price_7_days" class="block text-sm font-semibold text-gray-900">Price for 7 Days ($)</label>
+                                        <label for="price_7_days" class="block text-sm font-semibold text-gray-900">Price for 7 Days (₹)</label>
                                         <div class="relative rounded-lg shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500 sm:text-sm">$</span>
+                                                <span class="text-gray-500 sm:text-sm">₹</span>
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days') }}" placeholder="Enter Minimum $0.1" required min="0.1" oninput="validatePrice(this)">
-                                            <p class="mt-2 text-xs text-[#F72585] hidden" id="price_7_days_error">Price must be at least $0.1</p>
+                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                            <p class="mt-2 text-xs text-[#F72585] hidden" id="price_7_days_error">Price must be at least ₹0.1</p>
                                         </div>
                                         @error('price_7_days')
                                             <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>

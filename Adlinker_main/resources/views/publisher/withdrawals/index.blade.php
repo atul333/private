@@ -32,7 +32,7 @@
                                 @forelse($withdrawals as $withdrawal)
                                     <tr>
                                         <td>{{ $withdrawal->created_at->format('Y-m-d') }}</td>
-                                        <td>${{ number_format($withdrawal->amount, 2) }}</td>
+                                        <td>₹{{ number_format($withdrawal->amount, 2) }}</td>
                                         <td>{{ $withdrawal->payment_method }}</td>
                                         <td>
                                             @if($withdrawal->status === 'pending')

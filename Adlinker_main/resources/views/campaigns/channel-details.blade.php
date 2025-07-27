@@ -65,7 +65,7 @@
                                             <div class="text-center">
                                                 <i class="fas fa-tag text-base opacity-90"></i>
                                                 <h5 class="text-xs font-medium mt-1 opacity-90">Price</h5>
-                                                <p class="text-base font-bold mt-1">${{ request('price') }}</p>
+                                                <p class="text-base font-bold mt-1">₹{{ request('price') }}</p>
                                             </div>
                                         </div>
                                     </div>

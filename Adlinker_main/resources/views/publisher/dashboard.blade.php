@@ -32,7 +32,7 @@ use App\Models\Channel;
         <div class="bg-gradient-to-br from-[#F72585]/20 to-[#B5179E]/20 rounded-xl p-4 text-[#B5179E] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#F72585]/30 hover:border-[#F72585]/50">
           <div class="text-center">
             <h3 class="text-sm font-semibold text-gray-900">Total Earnings</h3>
-            <p class="text-lg font-semibold mt-2 text-gray-900">${{ number_format($totalEarnings, 2) }}</p>
+            <p class="text-lg font-semibold mt-2 text-gray-900">₹{{ number_format($totalEarnings, 2) }}</p>
           </div>
         </div>
         <div class="bg-gradient-to-br from-[#3A0CA3]/20 to-[#4361EE]/20 rounded-xl p-4 text-[#3A0CA3] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#3A0CA3]/30 hover:border-[#3A0CA3]/50">
@@ -83,7 +83,7 @@ use App\Models\Channel;
                 <div class="border-t border-gray-50 pt-3">
                   <div class="flex items-center justify-between mb-3">
                     <span class="text-xs text-gray-900">Earnings</span>
-                    <span class="text-xs font-semibold text-gray-900 rounded-md ">${{ number_format($channel->campaigns->where('status', 'completed')->sum('price') ?? 0, 2) }}</span>
+                    <span class="text-xs font-semibold text-gray-900 rounded-md ">₹{{ number_format($channel->campaigns->where('status', 'completed')->sum('price') ?? 0, 2) }}</span>
                   </div>
 
                   <div class="flex items-center justify-between space-x-2">

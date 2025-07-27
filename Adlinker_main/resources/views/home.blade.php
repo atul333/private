@@ -34,7 +34,7 @@
                                         <div class="card bg-success text-white">
                                             <div class="card-body text-center">
                                                 <h5 class="card-title">Total Spent</h5>
-                                                <h2 class="display-4 mb-0">${{ number_format($totalSpent, 2) }}</h2>
+                                                <h2 class="display-4 mb-0">₹{{ number_format($totalSpent, 2) }}</h2>
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@
                                                 @foreach($campaigns as $campaign)
                                                     <tr>
                                                         <td class="align-middle">{{ $campaign->name }}</td>
-                                                        <td class="align-middle">${{ number_format($campaign->budget, 2) }}</td>
+                                                        <td class="align-middle">₹{{ number_format($campaign->budget, 2) }}</td>
                                                         <td class="align-middle"><span class="badge bg-{{ $campaign->status === 'active' ? 'success' : 'secondary' }}">{{ ucfirst($campaign->status) }}</span></td>
                                                         <td class="align-middle">
                                                             <a href="{{ route('campaigns.show', $campaign) }}" class="btn btn-sm btn-info">View Details</a>
@@ -97,7 +97,7 @@
                                         <div class="card bg-success text-white">
                                             <div class="card-body text-center">
                                                 <h5 class="card-title">Total Earnings</h5>
-                                                <h2 class="display-4 mb-0">${{ number_format($totalEarnings, 2) }}</h2>
+                                                <h2 class="display-4 mb-0">₹{{ number_format($totalEarnings, 2) }}</h2>
                                             </div>
                                         </div>
                                     </div>

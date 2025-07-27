@@ -36,19 +36,19 @@
                 <div class="bg-gradient-to-br from-[#6CC1F0]/20 to-[#4895EF]/20 rounded-xl p-4 text-[#4895EF] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#4CC9F0]/30 hover:border-[#4CC9F0]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-semibold opacity-90 text-gray-900">Available Balance</h3>
-                        <p class="text-lg font-semibold mt-2 text-gray-900">${{ number_format($availableBalance ?? 0.00, 2) }}</p>
+                        <p class="text-lg font-semibold mt-2 text-gray-900">₹{{ number_format($availableBalance ?? 0.00, 2) }}</p>
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-semibold opacity-90 text-gray-900">Pending Payments</h3>
-                        <p class="text-lg font-semibold mt-2 text-gray-900">${{ number_format($pendingPayments ?? 0.00, 2) }}</p>
+                        <p class="text-lg font-semibold mt-2 text-gray-900">₹{{ number_format($pendingPayments ?? 0.00, 2) }}</p>
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-[#3A0CA3]/20 to-[#4361EE]/20 rounded-xl p-4 text-[#4361EE] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#3A0CA3]/30 hover:border-[#3A0CA3]/50">
                     <div class="text-center">
                         <h3 class="text-sm font-semibold opacity-90 text-gray-900">Payment Done</h3>
-                        <p class="text-lg font-semibold mt-2 text-gray-900">${{ number_format($completedPayments ?? 0.00, 2) }}</p>
+                        <p class="text-lg font-semibold mt-2 text-gray-900">₹{{ number_format($completedPayments ?? 0.00, 2) }}</p>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                                             <tr class="hover:bg-gray-50 transition-colors duration-200">
                                                 <td class="px-4 py-4 text-sm text-gray-600">{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
                                                 <td class="px-4 py-4 text-sm text-gray-600 break-words">{{ $transaction->description }}</td>
-                                                <td class="px-4 py-4 text-sm text-gray-600">${{ number_format($transaction->amount, 2) }}</td>
+                                                <td class="px-4 py-4 text-sm text-gray-600">₹{{ number_format($transaction->amount, 2) }}</td>
                             </tr>
                                             @endforeach
                         </tbody>

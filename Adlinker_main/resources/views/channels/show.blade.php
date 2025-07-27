@@ -75,19 +75,19 @@
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div class="bg-white/50 backdrop-blur-sm rounded-lg p-4 text-center border border-[#4895EF]/30">
                                         <span class="text-sm text-gray-600">1 Day</span>
-                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">${{ number_format($channel->price_1_day, 2) }}</p>
+                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">₹{{ number_format($channel->price_1_day, 2) }}</p>
                                     </div>
                                     <div class="bg-white/50 backdrop-blur-sm rounded-lg p-4 text-center border border-[#4895EF]/30">
                                         <span class="text-sm text-gray-600">2 Days</span>
-                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">${{ number_format($channel->price_2_days, 2) }}</p>
+                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">₹{{ number_format($channel->price_2_days, 2) }}</p>
                                     </div>
                                     <div class="bg-white/50 backdrop-blur-sm rounded-lg p-4 text-center border border-[#4895EF]/30">
                                         <span class="text-sm text-gray-600">3 Days</span>
-                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">${{ number_format($channel->price_3_days, 2) }}</p>
+                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">₹{{ number_format($channel->price_3_days, 2) }}</p>
                                     </div>
                                     <div class="bg-white/50 backdrop-blur-sm rounded-lg p-4 text-center border border-[#4895EF]/30">
                                         <span class="text-sm text-gray-600">7 Days</span>
-                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">${{ number_format($channel->price_7_days, 2) }}</p>
+                                        <p class="text-lg font-bold text-[#3A0CA3] mt-1">₹{{ number_format($channel->price_7_days, 2) }}</p>
                                     </div>
                                 </div>
                             </div>
