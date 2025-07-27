@@ -89,22 +89,11 @@ class ChannelController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'link' => ['required', 'url', function ($attribute, $value, $fail) {
-                // Remove any spaces from the URL
-                $value = str_replace(' ', '', $value);
-                if (!filter_var($value, FILTER_VALIDATE_URL)) {
-                    $fail('The '.$attribute.' must be a valid URL.');
-                }
-            }],
-            'name' => 'required|string|max:255',
-            'link' => 'nullable|url',
             'description' => 'required|string',
-            'subscribers_count' => 'required|integer|min:0',
             'price_1_day' => 'nullable|numeric|min:0',
             'price_2_days' => 'nullable|numeric|min:0',
             'price_3_days' => 'nullable|numeric|min:0',
             'price_7_days' => 'nullable|numeric|min:0',
-            'status' => 'required|in:' . Channel::STATUS_ACTIVE . ',' . Channel::STATUS_INACTIVE . ',' . Channel::STATUS_MODERATION,
             'logo' => 'nullable|image|max:2048'
         ]);
 
