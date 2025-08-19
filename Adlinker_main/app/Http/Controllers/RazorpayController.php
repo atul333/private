@@ -103,9 +103,10 @@ class RazorpayController extends Controller
             DB::beginTransaction();
             try {
                 // Update wallet balance directly
-                $usdAmount = $amount/85;
+                // Remove the currency conversion to keep the same amount
+                // $usdAmount = $amount/85;
                 $oldBalance = $wallet->balance;
-                $wallet->balance += $usdAmount;
+                $wallet->balance += $amount; // Use the original amount without conversion
                 
                 if (!$wallet->save()) {
                     throw new \Exception('Failed to update wallet balance');
@@ -114,7 +115,7 @@ class RazorpayController extends Controller
                 // Create transaction record
                 $transaction = Transaction::create([
                     'user_id' => $user->id,
-                    'amount' => $usdAmount,
+                    'amount' => $amount, // Use the original amount
                     'type' => 'credit',
                     'status' => 'completed',
                     'payment_id' => $input['razorpay_payment_id'],
@@ -130,10 +131,10 @@ class RazorpayController extends Controller
                 // Create wallet transaction record for tracking
                 $walletTransaction = WalletTransaction::create([
                     'wallet_id' => $wallet->id,
-                    'amount' => $usdAmount,
+                    'amount' => $amount, // Use the original amount
                     'type' => 'credit',
                     'status' => 'completed',
-                    'description' => 'Payment via Razorpay (ID: ' . $input['razorpay_payment_id'] . ') - Converted from INR ' . $amount,
+                    'description' => 'Payment via Razorpay (ID: ' . $input['razorpay_payment_id'] . ') - INR ' . $amount,
                     
                 ]);
 
@@ -142,10 +143,11 @@ class RazorpayController extends Controller
                 }
 
                 DB::commit();
-                Log::info('Payment processed successfully. User ID: ' . $user->id . ', Amount: USD ' . $usdAmount . ', New Balance: ' . $wallet->balance);
+                Log::info('Payment processed successfully. User ID: ' . $user->id . ', Amount: INR ' . $amount . ', New Balance: ' . $wallet->balance);
                 return response()->json([
-                    'success' => 'Payment verified and funds added successfully',
-                    'amount_added' => $usdAmount,
+                    'success' => true,
+                    'message' => 'Payment verified and funds added successfully',
+                    'amount_added' => $amount,
                     'new_balance' => $wallet->balance
                 ], 200);
 

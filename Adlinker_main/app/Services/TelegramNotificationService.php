@@ -389,7 +389,7 @@ class TelegramNotificationService
             $message .= "🌐 Login to review:\n";
             $message .= "https://www.socialadlinker.com/login\n\n";
             $message .= "❓ Need help? Contact support:\n";
-            $message .= "@AdLinkerSupportBot";
+            $message .= "https://t.me/SocialAdLinker";
 
             return $this->sendMessage($telegramNotification->chat_id, $message);
         } catch (\Exception $e) {
@@ -433,7 +433,7 @@ class TelegramNotificationService
             $message .= "🌐 View detailed analytics:\n";
             $message .= "https://www.socialadlinker.com/advertiser/campaigns/{$campaign->id}\n\n";
             $message .= "❓ Need help? Contact support:\n";
-            $message .= "@AdLinkerSupportBot";
+            $message .= "https://t.me/SocialAdLinker";
 
             return $this->sendMessage($telegramNotification->chat_id, $message);
         } catch (\Exception $e) {
@@ -477,7 +477,7 @@ class TelegramNotificationService
             $message .= "📊 View your earnings:\n";
             $message .= "https://www.socialadlinker.com/publisher/earnings\n\n";
             $message .= "❓ Need help? Contact support:\n";
-            $message .= "@AdLinkerSupportBot";
+            $message .= "https://t.me/SocialAdLinker";
 
             return $this->sendMessage($telegramNotification->chat_id, $message);
         } catch (\Exception $e) {

@@ -62,7 +62,7 @@
                     </div>
 
                     <div>
-                        <label for="amount" class="block text-sm font-medium text-gray-700">Amount (USD) <span class="text-red-500">*</span></label>
+                        <label for="amount" class="block text-sm font-medium text-gray-700">Amount (Indian Rupees) <span class="text-red-500">*</span></label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">₹</span>
@@ -71,7 +71,7 @@
                                 class="appearance-none block w-full pl-7 pr-12 py-2 border border-[#4895EF]/30 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#4361EE] focus:border-[#4361EE] transition-all duration-200 sm:text-sm @error('amount') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @enderror"
                                 placeholder="1.00" oninput="if(this.value < 1) this.setCustomValidity('Amount must be at least ₹1'); else this.setCustomValidity('');">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                <span class="text-gray-500 sm:text-sm">USD</span>
+                                <span class="text-gray-500 sm:text-sm">INR</span>
                             </div>
                             <p id="amountError" class="mt-2 text-sm text-red-600 hidden">Please enter a valid amount</p>
                             @error('amount')
@@ -81,14 +81,14 @@
                     </div>
 
                     <div class="flex justify-between space-x-4 mb-4">
-                        <button type="button" onclick="document.getElementById('amount').value='1'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            ₹1
+                        <button type="button" onclick="document.getElementById('amount').value='50'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            ₹50
                         </button>
-                        <button type="button" onclick="document.getElementById('amount').value='2'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            ₹2
+                        <button type="button" onclick="document.getElementById('amount').value='100'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            ₹100
                         </button>
-                        <button type="button" onclick="document.getElementById('amount').value='5'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            ₹5
+                        <button type="button" onclick="document.getElementById('amount').value='500'" class="inline-flex items-center px-4 py-2 border border-[#4895EF]/30 shadow-sm text-sm font-medium rounded-lg text-[#3A0CA3] bg-[#4361EE]/10 hover:bg-[#4361EE]/20 transform hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                            ₹500
                         </button>
                     </div>
                     <div>
@@ -143,8 +143,8 @@
                     const form = document.getElementById('payment-form');
                     const formData = new FormData(form);
                     
-                    const usdAmount = parseFloat(document.getElementById('amount').value);
-                    const inrAmount = Math.round(usdAmount * 85 * 100) / 100; // Convert USD to INR
+                    const amount = parseFloat(document.getElementById('amount').value);
+                    const inrAmount = amount; // No conversion needed as amount is already in INR
 
                     fetch('{{ route("razorpay.create.order") }}', {
                         method: 'POST',
@@ -166,7 +166,7 @@
                             currency: data.currency,
                             order_id: data.order_id,
                             name: '{{ Auth::user()->name }}',
-                            description: 'Add Funds to Wallet (₹' + usdAmount.toFixed(2) + ' INR)',
+                            description: 'Add Funds to Wallet (₹' + amount.toFixed(2) + ' INR)',
                             handler: function(response) {
                                 fetch('{{ route("razorpay.verify.payment") }}', {
                                     method: 'POST',
@@ -184,7 +184,8 @@
                                 })
                                 .then(response => response.json())
                                 .then(data => {
-                                    if (data.success) {
+                                    if (data.success === true) {
+                                        // On successful payment, redirect to wallet page without showing error
                                         window.location.href = '{{ Auth::user()->role === "publisher" ? route("publisher.wallet.index") : "/" . Auth::user()->id . "/advertiser/wallet" }}';
                                     } else {
                                         // Remove any existing error messages
@@ -202,7 +203,7 @@
                                                     </svg>
                                                 </div>
                                                 <div class="ml-3">
-                                                    <p class="text-sm font-medium text-red-800">₹{data.error || data.message || 'Payment verification failed. Please try again or contact support.'}</p>
+                                                    <p class="text-sm font-medium text-red-800">${data.error || data.message || 'Payment verification failed. Please try again or contact support.'}</p>
                                                 </div>
                                             </div>
                                         `;
