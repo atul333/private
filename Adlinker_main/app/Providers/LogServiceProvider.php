@@ -15,13 +15,18 @@ class LogServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Ensure log directory exists
-        $logPath = '/logs/adlinker';
-        if (!File::exists($logPath)) {
-            File::makeDirectory($logPath, 0775, true);
+        // Ensure legacy log directory exists
+        $legacyLogPath = '/logs/adlinker';
+        if (!File::exists($legacyLogPath)) {
+            File::makeDirectory($legacyLogPath, 0775, true);
         }
-
-        // Set proper permissions
-        File::chmod($logPath, 0775);
+        File::chmod($legacyLogPath, 0775);
+        
+        // Ensure storage/logs directory exists
+        $storageLogsPath = storage_path('logs');
+        if (!File::exists($storageLogsPath)) {
+            File::makeDirectory($storageLogsPath, 0775, true);
+        }
+        File::chmod($storageLogsPath, 0775);
     }
 }

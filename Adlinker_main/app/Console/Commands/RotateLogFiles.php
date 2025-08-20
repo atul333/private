@@ -13,6 +13,9 @@ class RotateLogFiles extends Command
 
     public function handle()
     {
+        // The app logs are now handled by Laravel's daily driver
+        // This is just for any custom log files not handled by Laravel
+        
         $logPath = '/logs/adlinker';
         $currentLogFile = $logPath . '/actions.log';
 
@@ -28,9 +31,18 @@ class RotateLogFiles extends Command
             File::put($currentLogFile, '');
             File::chmod($currentLogFile, 0664);
 
-            $this->info('Log files rotated successfully.');
-        } else {
-            $this->warn('No log file found to rotate.');
+            $this->info('Legacy log files rotated successfully.');
         }
+        
+        // Ensure storage/logs directory exists and has proper permissions
+        $storageLogsPath = storage_path('logs');
+        if (!File::exists($storageLogsPath)) {
+            File::makeDirectory($storageLogsPath, 0775, true);
+        }
+        
+        // Set proper permissions
+        File::chmod($storageLogsPath, 0775);
+        
+        $this->info('Log rotation completed.');
     }
 }

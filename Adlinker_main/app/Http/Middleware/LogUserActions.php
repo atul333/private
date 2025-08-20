@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Services\LoggingService;
 use Illuminate\Support\Facades\Auth;
 
 class LogUserActions
@@ -19,11 +19,9 @@ class LogUserActions
             
             // Prepare log data
             $logData = [
-                'user_id' => $user->id,
                 'email' => $user->email,
                 'method' => $request->method(),
                 'url' => $request->fullUrl(),
-                'ip' => $request->ip(),
                 'user_agent' => $request->userAgent(),
                 'status_code' => $response->status(),
             ];
@@ -34,8 +32,12 @@ class LogUserActions
                 $logData['request_data'] = json_encode($input);
             }
 
-            // Log the action
-            Log::channel('actions')->info('User Action', $logData);
+            // Determine the action based on the route
+            $routeName = $request->route() ? $request->route()->getName() : 'Unknown';
+            $action = $routeName ?: $request->method() . ':' . $request->path();
+
+            // Log the action using our centralized logging service
+            LoggingService::logActivity($action, 'User Action', $logData);
         }
 
         return $response;

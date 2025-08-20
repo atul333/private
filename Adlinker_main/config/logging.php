@@ -54,10 +54,20 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'actions'],
+            'channels' => ['app'],
             'ignore_exceptions' => false,
         ],
 
+        'app' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/app.log'),
+            'level' => 'debug',
+            'days' => 30,
+            'permission' => 0664,
+            'replace_placeholders' => true,
+            'tap' => [\App\Logging\CustomizeFormatter::class],
+        ],
+        
         'actions' => [
             'driver' => 'daily',
             'path' => '/logs/adlinker/actions.log',
