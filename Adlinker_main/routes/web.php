@@ -42,18 +42,41 @@ Route::get('/cancellation', function () { return view('cancellation'); })->name(
 Route::get('/contact', function () { return view('contact'); })->name('contact');
 Route::get('/faq', function () { return view('faq'); })->name('faq');
 
-// Redirect root to home
+// Redirect root to home or platform selection
 Route::get('/', function () {
     if (Auth::check()) {
-        $user = Auth::user();
-        if ($user->role === 'advertiser') {
-            return redirect('/advertiser/dashboard');
-        } else if ($user->role === 'publisher') {
-            return redirect('/publisher/dashboard');
-        }
+        return redirect()->route('platform.selection');
     }
     return view('welcome');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Platform Selection Routes (MUST BE BEFORE TELEGRAM ROUTES)
+|--------------------------------------------------------------------------
+*/
+use App\Http\Controllers\PlatformSelectionController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/platform-selection', [PlatformSelectionController::class, 'index'])->name('platform.selection');
+    Route::post('/platform-select', [PlatformSelectionController::class, 'selectPlatform'])->name('platform.select');
+    Route::get('/platform/{platform}/coming-soon', [PlatformSelectionController::class, 'comingSoon'])->name('platform.coming-soon');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Instagram Routes (MUST BE BEFORE TELEGRAM ROUTES)
+|--------------------------------------------------------------------------
+*/
+require __DIR__.'/instagram_publisher.php';
+require __DIR__.'/instagram_advertiser.php';
+
+/*
+|--------------------------------------------------------------------------
+| Telegram Routes (WITH WILDCARD {user} PARAMETER)
+|--------------------------------------------------------------------------
+*/
+
 
 Route::middleware(['auth', 'role:advertiser'])->group(function () {
     Route::get('/{user}/campaigns', [App\Http\Controllers\CampaignController::class, 'index'])->name('campaigns.index');
@@ -128,4 +151,3 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
         return redirect('/' . Auth::id() . '/advertiser/dashboard');
     });
 });
-

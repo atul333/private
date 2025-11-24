@@ -85,6 +85,21 @@ class User extends Authenticatable
     public function wallet()
     {
         return $this->hasOne(Wallet::class);
+    }
 
+    /**
+     * Get all Instagram profiles for the user (publisher).
+     */
+    public function instagramProfiles()
+    {
+        return $this->hasMany(InstagramProfile::class);
+    }
+
+    /**
+     * Get all Instagram campaigns created by the user (advertiser).
+     */
+    public function instagramCampaigns()
+    {
+        return $this->hasMany(InstagramCampaign::class, 'advertiser_id');
     }
 }
