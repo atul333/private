@@ -154,35 +154,60 @@ class ProfileController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        // Auto-complete campaigns that have exceeded 24 hours
-        $completedCampaigns = \App\Models\InstagramCampaign::where('status', 'published')
+        // Auto-expire: pending OR approved campaigns not completed within 24h of creation → refund advertiser
+        $expiredCampaigns = \App\Models\InstagramCampaign::where('instagram_profile_id', $profile->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->where('paid', true)
+            ->where('created_at', '<=', now()->subHours(24))
+            ->get();
+
+        foreach ($expiredCampaigns as $campaign) {
+            $campaign->update(['status' => 'expired']);
+
+            $advertiser = \App\Models\User::find($campaign->advertiser_id);
+            if ($advertiser && $advertiser->wallet) {
+                $instagramId = '@' . $profile->instagram_id;
+                $reason = $campaign->status === 'approved'
+                    ? 'publisher approved but did not submit story link within 24 hours'
+                    : 'publisher did not respond within 24 hours';
+                $refundDesc = "Refund for expired Instagram Campaign #{$campaign->id} on {$instagramId} — {$reason}";
+                $advertiser->wallet->deposit($campaign->price, $refundDesc);
+            }
+        }
+
+        // Auto-complete published campaigns older than 24 hours
+        $completedCampaigns = \App\Models\InstagramCampaign::where('instagram_profile_id', $profile->id)
+            ->where('status', 'published')
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now()->subHours(24))
             ->get();
 
         foreach ($completedCampaigns as $campaign) {
-            // Update campaign status to completed
             $campaign->update(['status' => 'completed']);
 
-            // Credit publisher's wallet if campaign is paid
             if ($campaign->paid && $campaign->publisher_id) {
                 $publisherUser = \App\Models\User::find($campaign->publisher_id);
                 if ($publisherUser && $publisherUser->wallet) {
-                    $campaign->load('instagramProfile');
-                    $instagramId = $campaign->instagramProfile ? '@' . $campaign->instagramProfile->instagram_id : '';
-                    $depositDesc = "Instagram Campaign #{$campaign->id} completed" . ($instagramId ? " on {$instagramId}" : '');
-                    $publisherUser->wallet->deposit(
-                        $campaign->price,
-                        $depositDesc
-                    );
+                    $instagramId = '@' . $profile->instagram_id;
+                    $depositDesc = "Instagram Campaign #{$campaign->id} completed on {$instagramId}";
+                    $publisherUser->wallet->deposit($campaign->price, $depositDesc);
                 }
             }
         }
 
-        // Only show paid campaigns to publishers
+        // Show only paid campaigns to publishers (include expired so publisher sees history)
         $campaigns = $profile->campaigns()
             ->where('paid', true)
             ->with('advertiser')
+            ->orderByRaw("CASE
+                WHEN status = 'pending' THEN 1
+                WHEN status = 'approved' THEN 2
+                WHEN status = 'published' THEN 3
+                WHEN status = 'completed' THEN 4
+                WHEN status = 'rejected' THEN 5
+                WHEN status = 'expired' THEN 6
+                ELSE 7
+            END")
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -343,9 +368,10 @@ class ProfileController extends Controller
             abort(404, 'Media file not found.');
         }
 
-        // Build a clean download filename like: campaign-8-media.jpg
-        $extension = pathinfo($campaign->media_file, PATHINFO_EXTENSION);
-        $downloadName = 'campaign-' . $campaign->id . '-media.' . $extension;
+        // Build a descriptive download filename like: instagram-campaign-1-@atul_k_333.jpg
+        $extension   = pathinfo($campaign->media_file, PATHINFO_EXTENSION);
+        $profileHandle = '@' . preg_replace('/[^a-zA-Z0-9_.]/', '_', $profile->instagram_id);
+        $downloadName = 'instagram-campaign-' . $campaign->id . '-' . $profileHandle . '.' . $extension;
 
         return Storage::disk('public')->download($campaign->media_file, $downloadName);
     }

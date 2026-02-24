@@ -23,7 +23,7 @@ class LogUserActions
                 'method' => $request->method(),
                 'url' => $request->fullUrl(),
                 'user_agent' => $request->userAgent(),
-                'status_code' => $response->status(),
+                'status_code' => method_exists($response, 'status') ? $response->status() : $response->getStatusCode(),
             ];
 
             // Add request parameters if any (excluding sensitive data)

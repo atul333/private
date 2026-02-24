@@ -22,27 +22,43 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Auto-complete campaigns that have exceeded 24 hours
+        // Auto-expire: pending OR approved campaigns not completed within 24h of creation → refund advertiser
+        $expiredCampaigns = InstagramCampaign::whereIn('status', ['pending', 'approved'])
+            ->where('paid', true)
+            ->where('created_at', '<=', now()->subHours(24))
+            ->get();
+
+        foreach ($expiredCampaigns as $campaign) {
+            $campaign->update(['status' => 'expired']);
+
+            $advertiser = \App\Models\User::find($campaign->advertiser_id);
+            if ($advertiser && $advertiser->wallet) {
+                $campaign->load('instagramProfile');
+                $instagramId = $campaign->instagramProfile ? '@' . $campaign->instagramProfile->instagram_id : '';
+                $reason = $campaign->getOriginal('status') === 'approved'
+                    ? 'publisher approved but did not submit story link within 24 hours'
+                    : 'publisher did not respond within 24 hours';
+                $refundDesc = "Refund for expired Instagram Campaign #{$campaign->id}" . ($instagramId ? " on {$instagramId}" : '') . " — {$reason}";
+                $advertiser->wallet->deposit($campaign->price, $refundDesc);
+            }
+        }
+
+        // Auto-complete campaigns that have exceeded 24 hours after publishing
         $completedCampaigns = InstagramCampaign::where('status', 'published')
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now()->subHours(24))
             ->get();
 
         foreach ($completedCampaigns as $campaign) {
-            // Update campaign status to completed
             $campaign->update(['status' => 'completed']);
 
-            // Credit publisher's wallet if campaign is paid
             if ($campaign->paid && $campaign->publisher_id) {
                 $publisherUser = \App\Models\User::find($campaign->publisher_id);
                 if ($publisherUser && $publisherUser->wallet) {
                     $campaign->load('instagramProfile');
                     $instagramId = $campaign->instagramProfile ? '@' . $campaign->instagramProfile->instagram_id : '';
                     $depositDesc = "Instagram Campaign #{$campaign->id} completed" . ($instagramId ? " on {$instagramId}" : '');
-                    $publisherUser->wallet->deposit(
-                        $campaign->price,
-                        $depositDesc
-                    );
+                    $publisherUser->wallet->deposit($campaign->price, $depositDesc);
                 }
             }
         }
@@ -75,7 +91,8 @@ class DashboardController extends Controller
                 WHEN paid = 1 AND status = 'approved' THEN 3
                 WHEN status = 'completed' THEN 4
                 WHEN status = 'rejected' THEN 5
-                ELSE 6
+                WHEN status = 'expired' THEN 6
+                ELSE 7
             END";
             
             $query->orderByRaw($statusOrder);
@@ -95,7 +112,8 @@ class DashboardController extends Controller
                 WHEN paid = 1 AND status = 'approved' THEN 3
                 WHEN status = 'completed' THEN 4
                 WHEN status = 'rejected' THEN 5
-                ELSE 6
+                WHEN status = 'expired' THEN 6
+                ELSE 7
             END";
             
             $query->orderByRaw($statusOrder);

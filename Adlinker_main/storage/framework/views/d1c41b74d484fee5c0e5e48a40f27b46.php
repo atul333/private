@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Select Platform'); ?>
 
-@section('title', 'Select Platform')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-6 px-4">
     <div class="max-w-2xl mx-auto">
         <!-- Header -->
@@ -17,8 +15,8 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
 
             <!-- Telegram -->
-            <form action="{{ route('platform.select') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('platform.select')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="platform" value="telegram">
                 <button type="submit" class="w-full group">
                     <div class="relative bg-white rounded-xl shadow hover:shadow-md transition-all duration-200 border-2 border-transparent hover:border-blue-400 p-4 text-center">
@@ -40,8 +38,8 @@
             </form>
 
             <!-- Instagram -->
-            <form action="{{ route('platform.select') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('platform.select')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="platform" value="instagram">
                 <button type="submit" class="w-full group">
                     <div class="relative bg-white rounded-xl shadow hover:shadow-md transition-all duration-200 border-2 border-transparent hover:border-pink-400 p-4 text-center">
@@ -63,8 +61,8 @@
             </form>
 
             <!-- Facebook -->
-            <form action="{{ route('platform.select') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('platform.select')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="platform" value="facebook">
                 <button type="submit" class="w-full cursor-not-allowed" disabled>
                     <div class="relative bg-white rounded-xl shadow border-2 border-gray-200 p-4 text-center opacity-60">
@@ -86,8 +84,8 @@
             </form>
 
             <!-- YouTube -->
-            <form action="{{ route('platform.select') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('platform.select')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="platform" value="youtube">
                 <button type="submit" class="w-full cursor-not-allowed" disabled>
                     <div class="relative bg-white rounded-xl shadow border-2 border-gray-200 p-4 text-center opacity-60">
@@ -116,4 +114,6 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\xampp\htdocs\Adlinker\Adlinker_main\resources\views/platform-selection.blade.php ENDPATH**/ ?>
