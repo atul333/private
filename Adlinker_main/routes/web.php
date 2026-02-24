@@ -128,6 +128,10 @@ Route::get('/publisher/campaign/{campaign}/submit-link', [\App\Http\Controllers\
 
 Route::post('/publisher/campaign/{campaign}/submit-link', [\App\Http\Controllers\Publisher\CampaignActionController::class, 'submitLink'])
 ->name('publisher.campaign.submit-link');
+
+// Instagram Story Link Submission
+Route::post('/{user}/instagram/publisher/profile/{profile}/campaign/{campaign}/submit-story', [\App\Http\Controllers\Instagram\Publisher\CampaignController::class, 'submitStory'])
+->name('instagram.publisher.campaign.submit-story');
     Route::get('/publisher/dashboard', function() {
         return redirect('/' . Auth::id() . '/publisher/dashboard');
     });
@@ -151,3 +155,6 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
         return redirect('/' . Auth::id() . '/advertiser/dashboard');
     });
 });
+
+// Temporary route to credit completed campaigns
+require __DIR__.'/temp_credit.php';

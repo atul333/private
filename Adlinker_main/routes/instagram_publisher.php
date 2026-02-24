@@ -13,18 +13,22 @@ use App\Http\Controllers\Instagram\Publisher\ProfileController;
 |
 */
 
-Route::middleware(['auth', 'role:publisher'])->prefix('instagram/publisher')->name('instagram.publisher.')->group(function () {
+Route::middleware(['auth', 'role:publisher'])->group(function () {
     
     // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/{user}/instagram/publisher/dashboard', [DashboardController::class, 'index'])->name('instagram.publisher.dashboard');
     
     // Profile Management
-    Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
-    Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
-    Route::get('/profile/{profile}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/{profile}', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile/{profile}', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/{user}/instagram/publisher/profile/create', [ProfileController::class, 'create'])->name('instagram.publisher.profile.create');
+    Route::post('/{user}/instagram/publisher/profile', [ProfileController::class, 'store'])->name('instagram.publisher.profile.store');
+    Route::get('/{user}/instagram/publisher/profile/{profile}/edit', [ProfileController::class, 'edit'])->name('instagram.publisher.profile.edit');
+    Route::put('/{user}/instagram/publisher/profile/{profile}', [ProfileController::class, 'update'])->name('instagram.publisher.profile.update');
+    Route::delete('/{user}/instagram/publisher/profile/{profile}', [ProfileController::class, 'destroy'])->name('instagram.publisher.profile.destroy');
     
     // Profile Campaigns
-    Route::get('/profile/{profile}/campaigns', [ProfileController::class, 'campaigns'])->name('profile.campaigns');
+    Route::get('/{user}/instagram/publisher/profile/{profile}/campaigns', [ProfileController::class, 'campaigns'])->name('instagram.publisher.profile.campaigns');
+    Route::post('/{user}/instagram/publisher/profile/{profile}/campaigns/{campaign}/approve', [ProfileController::class, 'approveCampaign'])->name('instagram.publisher.campaign.approve');
+    Route::post('/{user}/instagram/publisher/profile/{profile}/campaigns/{campaign}/reject', [ProfileController::class, 'rejectCampaign'])->name('instagram.publisher.campaign.reject');
+    Route::post('/{user}/instagram/publisher/profile/{profile}/campaigns/{campaign}/submit-story', [ProfileController::class, 'submitStoryLink'])->name('instagram.publisher.campaign.submit-story');
+    Route::get('/{user}/instagram/publisher/profile/{profile}/campaigns/{campaign}/download', [ProfileController::class, 'downloadMedia'])->name('instagram.publisher.campaign.download');
 });

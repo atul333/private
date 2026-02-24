@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Withdrawal;
+use App\Observers\WithdrawalObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Withdrawal::observe(WithdrawalObserver::class);
     }
 }

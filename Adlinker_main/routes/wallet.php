@@ -23,3 +23,6 @@ Route::middleware(['auth', 'role:advertiser'])->group(function () {
         Route::post('/wallet/add-funds', [WalletController::class, 'addFunds'])->name('advertiser.wallet.add-funds');
     })->where('id', auth()->id());
 });
+
+// Admin: Mark withdrawal as payment done
+Route::middleware(['auth'])->post('/wallet/withdrawals/{withdrawal}/mark-done', [WalletController::class, 'markPaymentDone'])->name('wallet.withdrawal.mark-done');

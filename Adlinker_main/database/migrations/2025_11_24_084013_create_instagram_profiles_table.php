@@ -18,8 +18,12 @@ return new class extends Migration
             $table->string('profile_photo')->nullable();
             $table->integer('followers')->default(0);
             $table->decimal('price_per_story', 10, 2)->default(0);
-            $table->boolean('mention_available')->default(false);
             $table->boolean('is_active')->default(true);
+            
+            // Status field for moderation (active, inactive, moderation)
+            // New profiles default to 'moderation' requiring admin approval
+            $table->enum('status', ['active', 'inactive', 'moderation'])->default('moderation');
+            
             $table->timestamps();
         });
     }

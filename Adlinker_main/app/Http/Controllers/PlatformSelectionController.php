@@ -46,11 +46,11 @@ class PlatformSelectionController extends Controller
             case 'instagram':
                 \Log::info('Instagram selected, redirecting to dashboard');
                 if ($user->role === 'advertiser') {
-                    \Log::info('Redirecting to instagram.advertiser.dashboard');
-                    return redirect()->route('instagram.advertiser.dashboard');
+                    \Log::info('Redirecting to instagram.advertiser.dashboard with user: ' . $user->id);
+                    return redirect()->route('instagram.advertiser.dashboard', ['user' => $user->id]);
                 } else {
-                    \Log::info('Redirecting to instagram.publisher.dashboard');
-                    return redirect()->route('instagram.publisher.dashboard');
+                    \Log::info('Redirecting to instagram.publisher.dashboard with user: ' . $user->id);
+                    return redirect()->route('instagram.publisher.dashboard', ['user' => $user->id]);
                 }
 
             case 'snapchat':

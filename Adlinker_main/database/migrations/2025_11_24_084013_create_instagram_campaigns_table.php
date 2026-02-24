@@ -16,13 +16,27 @@ return new class extends Migration
             $table->foreignId('advertiser_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('publisher_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('instagram_profile_id')->constrained('instagram_profiles')->onDelete('cascade');
+            
+            // Media fields
             $table->enum('media_type', ['image', 'video'])->default('image');
             $table->string('media_file');
-            $table->text('caption')->nullable();
-            $table->boolean('mention_required')->default(false);
-            $table->enum('status', ['pending', 'approved', 'rejected', 'completed'])->default('pending');
+            
+            // Link fields (replaced caption)
+            $table->string('link_text')->nullable();
+            $table->string('link_url', 500)->nullable();
+            
+            // Story link and timestamps
+            $table->string('story_link')->nullable();
+            $table->timestamp('published_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            
+            // Status with all possible values including 'published'
+            $table->enum('status', ['pending', 'approved', 'rejected', 'published', 'completed'])->default('pending');
+            
+            // Payment
             $table->decimal('price', 10, 2);
             $table->boolean('paid')->default(false);
+            
             $table->timestamps();
         });
     }

@@ -15,17 +15,21 @@ class InstagramCampaign extends Model
         'instagram_profile_id',
         'media_type',
         'media_file',
-        'caption',
-        'mention_required',
+        'link_text',
+        'link_url',
         'status',
         'price',
         'paid',
+        'story_link',
+        'published_at',
+        'completed_at',
     ];
 
     protected $casts = [
-        'mention_required' => 'boolean',
         'price' => 'decimal:2',
         'paid' => 'boolean',
+        'published_at' => 'datetime',
+        'completed_at' => 'datetime',
     ];
 
     /**

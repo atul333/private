@@ -13,7 +13,14 @@ class Withdrawal extends Model
         'payment_method',
         'payment_details',
         'notes',
-        'processed_at'
+        'processed_at',
+        'upi_id',
+        'first_name',
+        'mobile_number',
+        'bank_name',
+        'account_holder_name',
+        'account_number',
+        'ifsc_code',
     ];
 
     protected $casts = [

@@ -25,29 +25,27 @@ class CampaignController extends Controller
     {
         $query = InstagramProfile::active()->with('user');
 
-        // Filter by followers
-        if ($request->has('min_followers')) {
-            $query->where('followers', '>=', $request->min_followers);
+        // Combined sorting logic
+        $sortBy = $request->get('sort_by');
+        
+        switch ($sortBy) {
+            case 'max_followers':
+                $query->orderBy('followers', 'desc');
+                break;
+            case 'lower_followers':
+                $query->orderBy('followers', 'asc');
+                break;
+            case 'max_price':
+                $query->orderBy('price_per_story', 'desc');
+                break;
+            case 'lower_price':
+                $query->orderBy('price_per_story', 'asc');
+                break;
+            default:
+                // Default sorting - max followers
+                $query->orderBy('followers', 'desc');
+                break;
         }
-
-        if ($request->has('max_followers')) {
-            $query->where('followers', '<=', $request->max_followers);
-        }
-
-        // Filter by price
-        if ($request->has('max_price')) {
-            $query->where('price_per_story', '<=', $request->max_price);
-        }
-
-        // Filter by mention availability
-        if ($request->has('mention_available')) {
-            $query->where('mention_available', true);
-        }
-
-        // Sorting
-        $sortBy = $request->get('sort_by', 'followers');
-        $sortOrder = $request->get('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
 
         $profiles = $query->paginate(12)->withQueryString();
 
@@ -57,11 +55,13 @@ class CampaignController extends Controller
     /**
      * Show the form for creating a new campaign.
      */
-    public function create(InstagramProfile $profile)
+    public function create($user, $profile)
     {
+        $profile = InstagramProfile::findOrFail($profile);
+        
         if (!$profile->is_active) {
             return redirect()
-                ->route('instagram.advertiser.profiles.index')
+                ->route('instagram.advertiser.profiles.index', ['user' => auth()->id()])
                 ->with('error', 'This profile is not active.');
         }
 
@@ -77,18 +77,13 @@ class CampaignController extends Controller
             'instagram_profile_id' => 'required|exists:instagram_profiles,id',
             'media_type' => 'required|in:image,video',
             'media_file' => 'required|file|mimes:jpg,jpeg,png,mp4,mov|max:10240',
-            'caption' => 'nullable|string|max:2200',
-            'mention_required' => 'boolean',
+            'link_text' => 'required|string|max:100',
+            'link_url' => 'required|url|max:500',
         ]);
+
 
         $profile = InstagramProfile::findOrFail($validated['instagram_profile_id']);
 
-        // Check if mention is required but profile doesn't support it
-        if ($request->has('mention_required') && !$profile->mention_available) {
-            return redirect()
-                ->back()
-                ->with('error', 'This profile does not support mentions.');
-        }
 
         // Handle media file upload
         $mediaPath = $request->file('media_file')
@@ -101,23 +96,25 @@ class CampaignController extends Controller
             'instagram_profile_id' => $profile->id,
             'media_type' => $validated['media_type'],
             'media_file' => $mediaPath,
-            'caption' => $validated['caption'],
-            'mention_required' => $request->has('mention_required'),
+            'link_text' => $validated['link_text'],
+            'link_url' => $validated['link_url'],
             'status' => 'pending',
             'price' => $profile->price_per_story,
             'paid' => false,
         ]);
 
         return redirect()
-            ->route('instagram.advertiser.campaigns.payment', $campaign)
+            ->route('instagram.advertiser.campaigns.payment', ['user' => auth()->id(), 'campaign' => $campaign->id])
             ->with('success', 'Campaign created! Please complete the payment.');
     }
 
     /**
      * Show the payment page for a campaign.
      */
-    public function payment(InstagramCampaign $campaign)
+    public function payment($user, $campaign)
     {
+        $campaign = InstagramCampaign::findOrFail($campaign);
+        
         // Ensure the campaign belongs to the authenticated user
         if ($campaign->advertiser_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
@@ -126,7 +123,7 @@ class CampaignController extends Controller
         // Check if already paid
         if ($campaign->paid) {
             return redirect()
-                ->route('instagram.advertiser.dashboard')
+                ->route('instagram.advertiser.dashboard', ['user' => auth()->id()])
                 ->with('info', 'This campaign has already been paid for.');
         }
 
@@ -141,8 +138,10 @@ class CampaignController extends Controller
     /**
      * Process the payment for a campaign.
      */
-    public function processPayment(InstagramCampaign $campaign)
+    public function processPayment($user, $campaign)
     {
+        $campaign = InstagramCampaign::findOrFail($campaign);
+        
         // Ensure the campaign belongs to the authenticated user
         if ($campaign->advertiser_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
@@ -151,7 +150,7 @@ class CampaignController extends Controller
         // Check if already paid
         if ($campaign->paid) {
             return redirect()
-                ->route('instagram.advertiser.dashboard')
+                ->route('instagram.advertiser.dashboard', ['user' => auth()->id()])
                 ->with('info', 'This campaign has already been paid for.');
         }
 
@@ -168,7 +167,10 @@ class CampaignController extends Controller
             DB::beginTransaction();
 
             // Deduct amount from wallet
-            if (!$wallet->withdraw($campaign->price, "Payment for Instagram Campaign #{$campaign->id}")) {
+            $campaign->load('instagramProfile');
+            $instagramId = $campaign->instagramProfile ? '@' . $campaign->instagramProfile->instagram_id : '';
+            $description = "Payment for Instagram Campaign #{$campaign->id}" . ($instagramId ? " on {$instagramId}" : '');
+            if (!$wallet->withdraw($campaign->price, $description)) {
                 throw new \Exception('Failed to process wallet transaction');
             }
 
@@ -178,7 +180,7 @@ class CampaignController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('instagram.advertiser.dashboard')
+                ->route('instagram.advertiser.dashboard', ['user' => auth()->id()])
                 ->with('success', 'Payment processed successfully! Your campaign is now pending publisher approval.');
 
         } catch (\Exception $e) {
@@ -192,8 +194,10 @@ class CampaignController extends Controller
     /**
      * Display the specified campaign.
      */
-    public function show(InstagramCampaign $campaign)
+    public function show($user, $campaign)
     {
+        $campaign = InstagramCampaign::findOrFail($campaign);
+        
         // Ensure the campaign belongs to the authenticated user
         if ($campaign->advertiser_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
@@ -202,18 +206,5 @@ class CampaignController extends Controller
         $campaign->load(['instagramProfile', 'publisher']);
 
         return view('instagram.advertiser.campaigns.show', compact('campaign'));
-    }
-
-    /**
-     * Display campaign history.
-     */
-    public function history()
-    {
-        $campaigns = InstagramCampaign::where('advertiser_id', Auth::id())
-            ->with(['instagramProfile', 'publisher'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-
-        return view('instagram.advertiser.campaigns.history', compact('campaigns'));
     }
 }

@@ -15,14 +15,13 @@ class InstagramProfile extends Model
         'profile_photo',
         'followers',
         'price_per_story',
-        'mention_available',
         'is_active',
+        'status',
     ];
 
     protected $casts = [
         'followers' => 'integer',
         'price_per_story' => 'decimal:2',
-        'mention_available' => 'boolean',
         'is_active' => 'boolean',
     ];
 
@@ -55,6 +54,6 @@ class InstagramProfile extends Model
      */
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('is_active', true)->where('status', 'active');
     }
 }

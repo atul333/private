@@ -98,4 +98,26 @@ class Wallet extends Model
             return false;
         }
     }
+
+    /**
+     * Mark a pending withdrawal transaction as completed with an updated description.
+     * Call this when admin marks a withdrawal as 'payment done'.
+     */
+    public function completeWithdrawal(float $amount, string $completedDesc): bool
+    {
+        $transaction = $this->transactions()
+            ->where('type', 'withdrawal')
+            ->where('status', 'pending')
+            ->where('amount', -$amount)
+            ->latest()
+            ->first();
+
+        if ($transaction) {
+            $transaction->description = $completedDesc;
+            $transaction->status = 'completed';
+            return $transaction->save();
+        }
+
+        return false;
+    }
 }
