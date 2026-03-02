@@ -19,8 +19,19 @@ class LoggingService
      */
     public static function logActivity(string $action, string $message, array $context = [])
     {
-        $userId = Auth::check() ? Auth::id() : 'Guest';
-        $userIp = Request::ip();
+        $userId = 'Unknown';
+        $userIp = 'Unknown';
+        
+        try {
+            if (app()->bound('auth')) {
+                $userId = Auth::check() ? Auth::id() : 'Guest';
+            }
+            if (app()->bound('request')) {
+                $userIp = Request::ip();
+            }
+        } catch (\Throwable $e) {
+            // Silently handle if request/auth isn't fully loaded
+        }
         
         $context['user_info'] = "User:{$userId} IP:{$userIp}";
         $context['action'] = $action;
@@ -42,8 +53,19 @@ class LoggingService
      */
     public static function logError(string $action, string $message, ?Throwable $exception = null, array $context = [])
     {
-        $userId = Auth::check() ? Auth::id() : 'Guest';
-        $userIp = Request::ip();
+        $userId = 'Unknown';
+        $userIp = 'Unknown';
+        
+        try {
+            if (app()->bound('auth')) {
+                $userId = Auth::check() ? Auth::id() : 'Guest';
+            }
+            if (app()->bound('request')) {
+                $userIp = Request::ip();
+            }
+        } catch (\Throwable $e) {
+            // Silently handle if request/auth isn't fully loaded
+        }
         
         $context['user_info'] = "User:{$userId} IP:{$userIp}";
         $context['action'] = $action;
