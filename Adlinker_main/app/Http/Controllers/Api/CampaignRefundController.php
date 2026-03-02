@@ -21,10 +21,9 @@ class CampaignRefundController extends Controller
             // Process refund
             $refundAmount = $campaign->price;
             $refundDescription = sprintf(
-                'Refund received for Campaign #%d - %s (Amount: $%.2f)',
+                '[Telegram] Refund for Campaign #%d — %s',
                 $campaign->id,
-                $campaign->title,
-                $refundAmount
+                $campaign->title
             );
             $advertiserWallet->deposit($refundAmount, $refundDescription);
 

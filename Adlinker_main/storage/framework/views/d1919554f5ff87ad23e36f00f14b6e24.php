@@ -2,7 +2,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5">
   <div class="flex flex-col">
     <!-- Header Section -->
-    <div class="px-4 py-1.5 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center">
+    <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
       <div class="flex items-center">
         <a href="<?php echo e(route('platform.selection')); ?>" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200 flex-shrink-0">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,12 +10,14 @@
           </svg>
           <span></span>
         </a>
-        <h1 class="text-sm font-bold text-gray-800 leading-tight max-w-[200px]"><?php echo e(__('Instagram Advertiser Dashboard')); ?></h1>
+        <h1 class="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">
+          <span class="hidden sm:inline">Instagram </span>Advertiser Dashboard
+        </h1>
       </div>
       <div class="flex-shrink-0">
-        <a href="<?php echo e(route('instagram.advertiser.profiles.index', ['user' => auth()->id()])); ?>" class="inline-flex items-center px-2 py-1 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 max-w-[100px] text-center leading-tight">
-          <svg class="w-3.5 h-3.5 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-          <span class="break-words">Create New Campaign</span>
+        <a href="<?php echo e(route('instagram.advertiser.profiles.index', ['user' => auth()->id()])); ?>" class="inline-flex items-center gap-1 px-2 py-1.5 sm:px-4 sm:py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 whitespace-nowrap">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Create New Campaign
         </a>
       </div>
     </div>

@@ -38,7 +38,7 @@ class DashboardController extends Controller
                 $reason = $campaign->getOriginal('status') === 'approved'
                     ? 'publisher approved but did not submit story link within 24 hours'
                     : 'publisher did not respond within 24 hours';
-                $refundDesc = "Refund for expired Instagram Campaign #{$campaign->id}" . ($instagramId ? " on {$instagramId}" : '') . " — {$reason}";
+                $refundDesc = "[Instagram] Refund for expired Campaign #{$campaign->id}" . ($instagramId ? " on {$instagramId}" : '') . " — {$reason}";
                 $advertiser->wallet->deposit($campaign->price, $refundDesc);
             }
         }
@@ -57,7 +57,7 @@ class DashboardController extends Controller
                 if ($publisherUser && $publisherUser->wallet) {
                     $campaign->load('instagramProfile');
                     $instagramId = $campaign->instagramProfile ? '@' . $campaign->instagramProfile->instagram_id : '';
-                    $depositDesc = "Instagram Campaign #{$campaign->id} completed" . ($instagramId ? " on {$instagramId}" : '');
+                    $depositDesc = "[Instagram] Campaign #{$campaign->id} completed" . ($instagramId ? " on {$instagramId}" : '');
                     $publisherUser->wallet->deposit($campaign->price, $depositDesc);
                 }
             }

@@ -26,10 +26,7 @@
                             <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                             <div class="relative space-y-2">
                                 <label for="name" class="block text-sm font-semibold text-gray-900">Channel Name</label>
-                                <div class="relative">
-                                    <input type="text" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('name') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="name" name="name" value="{{ old('name') }}" required>
-                                    <div class="absolute inset-0 rounded-lg pointer-events-none border border-[#4895EF]/30 transition-colors duration-200"></div>
-                                </div>
+                                <input type="text" class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('name') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="name" name="name" value="{{ old('name') }}" required>
                                 @error('name')
                                     <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                                 @enderror
@@ -40,7 +37,7 @@
                             <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                             <div class="relative space-y-2">
                                 <label for="link" class="block text-sm font-semibold text-gray-900">Channel Link</label>
-                                <input type="url" class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('link') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="link" name="link" value="{{ old('link') }}" required placeholder="https://t.me/yourchannel">
+                                <input type="url" class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('link') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="link" name="link" value="{{ old('link') }}" required placeholder="https://t.me/yourchannel">
                                 @error('link')
                                     <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                                 @enderror
@@ -51,7 +48,7 @@
                             <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                             <div class="relative space-y-2">
                                 <label for="description" class="block text-sm font-semibold text-gray-900">Channel Description</label>
-                                <textarea class="mt-1 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('description') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
+                                <textarea class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('description') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
                                 @error('description')
                                     <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                                 @enderror
@@ -62,7 +59,7 @@
                             <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                             <div class="relative space-y-2">
                                 <label for="logo" class="block text-sm font-semibold text-gray-900">Channel Logo</label>
-                                <input type="file" class="mt-1 block w-full px-4 py-3 text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#4CC9F0]/10 file:text-[#4361EE] hover:file:bg-[#4CC9F0]/20 transition duration-200 @error('logo') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="logo" name="logo" accept="image/*" required>
+                                <input type="file" class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#4CC9F0]/10 file:text-[#4361EE] hover:file:bg-[#4CC9F0]/20 transition duration-200 @error('logo') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="logo" name="logo" accept="image/*" required>
                                 @error('logo')
                                     <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
                                 @enderror
@@ -96,7 +93,7 @@
                                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                         <span class="text-gray-500 sm:text-sm">₹</span>
                                                     </div>
-                                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_1_day') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_1_day" name="price_1_day" value="{{ old('price_1_day') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
                                                     <p class="mt-2 text-xs text-[#F72585] hidden" id="price_1_day_error">Price must be at least ₹0.1</p>
                                                 </div>
                                                 @error('price_1_day')
@@ -113,7 +110,7 @@
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <span class="text-gray-500 sm:text-sm">₹</span>
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_2_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_2_days" name="price_2_days" value="{{ old('price_2_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
                                             <p class="mt-2 text-xs text-[#F72585] hidden" id="price_2_days_error">Price must be at least ₹0.1</p>
                                         </div>
                                         @error('price_2_days')
@@ -130,7 +127,7 @@
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <span class="text-gray-500 sm:text-sm">₹</span>
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_3_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_3_days" name="price_3_days" value="{{ old('price_3_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
                                             <p class="mt-2 text-xs text-[#F72585] hidden" id="price_3_days_error">Price must be at least ₹0.1</p>
                                         </div>
                                         @error('price_3_days')
@@ -147,7 +144,7 @@
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                 <span class="text-gray-500 sm:text-sm">₹</span>
                                             </div>
-                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
+                                            <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_7_days') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_7_days" name="price_7_days" value="{{ old('price_7_days') }}" placeholder="Enter Minimum ₹0.1" required min="0.1" oninput="validatePrice(this)">
                                             <p class="mt-2 text-xs text-[#F72585] hidden" id="price_7_days_error">Price must be at least ₹0.1</p>
                                         </div>
                                         @error('price_7_days')
@@ -160,28 +157,14 @@
                     </div>
                 </div>
 
-                <script>
-                    function validatePrice(input) {
-                        const errorElement = document.getElementById(input.id + '_error');
-                        if (parseFloat(input.value) < 0.1) {
-                            input.classList.add('border-[#F72585]', 'text-[#F72585]');
-                            errorElement.classList.remove('hidden');
-                        } else {
-                            input.classList.remove('border-[#F72585]', 'text-[#F72585]');
-                            errorElement.classList.add('hidden');
-                        }
-                    }
-                </script>
+
                 <div class="pt-8">
-                    <div class="relative group">
-                        <div class="absolute -inset-0.5 bg-gradient-to-r  rounded-lg blur opacity-25"></div>
-                        <button type="submit" class="relative w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#F72585] to-[#7209B7] hover:from-[#B5179E] hover:to-[#560BAD] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                            Submit Channel
-                            <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
+                    <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                        Submit Channel
+                        <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
                 </div>
             </form>
         </div>

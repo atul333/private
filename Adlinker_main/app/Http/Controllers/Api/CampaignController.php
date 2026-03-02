@@ -31,7 +31,7 @@ class CampaignController extends Controller
             $wallet = Wallet::firstOrCreate(['user_id' => $publisher->id], ['balance' => 0]);
             
             // Deposit the campaign price to the publisher's wallet
-            if (!$wallet->deposit($campaign->price, "Payout for Campaign #{$campaign->id} on {$campaign->channel_name} for {$campaign->duration} days")) {
+            if (!$wallet->deposit($campaign->price, "[Telegram] Payout for Campaign #{$campaign->id} on {$campaign->channel_name} for {$campaign->duration} days")) {
                 throw new \Exception('Failed to process wallet transaction');
             }
 
@@ -78,7 +78,7 @@ class CampaignController extends Controller
                 // Process refund
                 if (!$advertiserWallet->deposit(
                     $campaign->price,
-                    "Refund for expired campaign on {$campaign->channel_name} for {$campaign->duration} days"
+                    "[Telegram] Refund for expired Campaign #{$campaign->id} on {$campaign->channel_name} for {$campaign->duration} days"
                 )) {
                     throw new \Exception('Failed to process refund');
                 }
@@ -114,7 +114,7 @@ class CampaignController extends Controller
             DB::transaction(function () use ($campaign) {
                 $publisher = \App\Models\User::find($campaign->publisher_id);
                 $wallet = \App\Models\Wallet::firstOrCreate(['user_id' => $publisher->id], ['balance' => 0]);
-                if ($wallet->deposit($campaign->price, "Payout for Campaign #{$campaign->id}")) {
+                if ($wallet->deposit($campaign->price, "[Telegram] Payout for Campaign #{$campaign->id} on {$campaign->channel_name}")) {
                     $campaign->status = 'completed';
                     $campaign->save();
                 }

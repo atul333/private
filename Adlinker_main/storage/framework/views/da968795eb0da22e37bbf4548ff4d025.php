@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1 flex items-center justify-center p-4">
         <div class="max-w-md w-full">
@@ -17,8 +15,8 @@
                 <div class="p-6 space-y-6">
                     <!-- Amount -->
                     <div class="text-center">
-                        <div class="text-4xl font-bold text-[#4361EE] mb-1">₹{{ number_format($campaign->price, 2) }}</div>
-                        <p class="text-sm text-gray-500">Campaign #{{ $campaign->id }}</p>
+                        <div class="text-4xl font-bold text-[#4361EE] mb-1">₹<?php echo e(number_format($campaign->price, 2)); ?></div>
+                        <p class="text-sm text-gray-500">Campaign #<?php echo e($campaign->id); ?></p>
                     </div>
 
                     <!-- Payment Summary -->
@@ -36,22 +34,22 @@
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Publisher</span>
-                                <span class="font-semibold">{{ $campaign->channel->name ?? 'Channel' }}</span>
+                                <span class="font-semibold"><?php echo e($campaign->channel->name ?? 'Channel'); ?></span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Duration</span>
-                                <span>{{ $campaign->duration }} Days</span>
+                                <span><?php echo e($campaign->duration); ?> Days</span>
                             </div>
                             <div class="border-t border-gray-300 pt-2 mt-2"></div>
                             <div class="flex justify-between items-center text-base">
                                 <span class="font-bold text-gray-900">Total Amount</span>
-                                <span class="font-bold text-xl text-[#4361EE]">₹{{ number_format($campaign->price, 2) }}</span>
+                                <span class="font-bold text-xl text-[#4361EE]">₹<?php echo e(number_format($campaign->price, 2)); ?></span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Wallet Balance -->
-                    <div class="border-2 rounded-lg p-4 {{ $wallet->balance >= $campaign->price ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50' }}">
+                    <div class="border-2 rounded-lg p-4 <?php echo e($wallet->balance >= $campaign->price ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'); ?>">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-semibold text-gray-900 flex items-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,11 +57,12 @@
                                 </svg>
                                 Wallet Balance
                             </span>
-                            <span class="font-bold text-lg {{ $wallet->balance >= $campaign->price ? 'text-green-600' : 'text-red-600' }}">
-                                ₹{{ number_format($wallet->balance, 2) }}
+                            <span class="font-bold text-lg <?php echo e($wallet->balance >= $campaign->price ? 'text-green-600' : 'text-red-600'); ?>">
+                                ₹<?php echo e(number_format($wallet->balance, 2)); ?>
+
                             </span>
                         </div>
-                        @if($wallet->balance < $campaign->price)
+                        <?php if($wallet->balance < $campaign->price): ?>
                             <div class="bg-red-100 border border-red-200 rounded p-3 mt-3">
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-red-600 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -71,35 +70,36 @@
                                     </svg>
                                     <div class="flex-1">
                                         <p class="font-semibold text-red-800 text-sm">Insufficient Balance!</p>
-                                        <p class="text-xs text-red-700 mt-1">You need ₹{{ number_format($campaign->price - $wallet->balance, 2) }} more</p>
+                                        <p class="text-xs text-red-700 mt-1">You need ₹<?php echo e(number_format($campaign->price - $wallet->balance, 2)); ?> more</p>
                                     </div>
                                 </div>
-                                <a href="/{{ auth()->id() }}/advertiser/wallet/add-funds" class="block w-full mt-3 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium rounded-lg text-center transition-colors duration-200">
+                                <a href="/<?php echo e(auth()->id()); ?>/advertiser/wallet/add-funds" class="block w-full mt-3 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium rounded-lg text-center transition-colors duration-200">
                                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                     </svg>
                                     Add Funds to Wallet
                                 </a>
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="flex items-center text-green-700 text-sm mt-2">
                                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                 </svg>
                                 Sufficient balance available
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
 
                     <!-- Payment Form -->
-                    <form action="{{ route('campaigns.payment.process', ['user' => auth()->id(), 'campaign' => $campaign->id]) }}" method="GET" class="space-y-3">
-                        <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl {{ $wallet->balance < $campaign->price ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $wallet->balance < $campaign->price ? 'disabled' : '' }}>
+                    <form action="<?php echo e(route('campaigns.payment.process', ['user' => auth()->id(), 'campaign' => $campaign->id])); ?>" method="GET" class="space-y-3">
+                        <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl <?php echo e($wallet->balance < $campaign->price ? 'opacity-50 cursor-not-allowed' : ''); ?>" <?php echo e($wallet->balance < $campaign->price ? 'disabled' : ''); ?>>
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                             </svg>
-                            Pay Securely ₹{{ number_format($campaign->price, 2) }}
+                            Pay Securely ₹<?php echo e(number_format($campaign->price, 2)); ?>
+
                         </button>
-                        <a href="/{{ auth()->id() }}/advertiser/dashboard" class="block w-full text-center px-8 py-3 border-2 border-gray-300 rounded-lg text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200">
+                        <a href="/<?php echo e(auth()->id()); ?>/advertiser/dashboard" class="block w-full text-center px-8 py-3 border-2 border-gray-300 rounded-lg text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200">
                             Cancel Payment
                         </a>
                     </form>
@@ -118,4 +118,5 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\xampp\htdocs\Adlinker\Adlinker_main\resources\views/campaigns/payment.blade.php ENDPATH**/ ?>

@@ -169,7 +169,7 @@ class CampaignController extends Controller
             // Deduct amount from wallet
             $campaign->load('instagramProfile');
             $instagramId = $campaign->instagramProfile ? '@' . $campaign->instagramProfile->instagram_id : '';
-            $description = "Payment for Instagram Campaign #{$campaign->id}" . ($instagramId ? " on {$instagramId}" : '');
+            $description = "[Instagram] Payment for Campaign #{$campaign->id}" . ($instagramId ? " on {$instagramId}" : '');
             if (!$wallet->withdraw($campaign->price, $description)) {
                 throw new \Exception('Failed to process wallet transaction');
             }

@@ -2,7 +2,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center">
+        <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
             <div class="flex items-center">
                 <a href="<?php echo e(route('instagram.publisher.dashboard', ['user' => auth()->id()])); ?>" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200 mr-3">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,11 +10,11 @@
                     </svg>
                 </a>
                 <div>
-                    <h1 class="text-lg font-bold text-gray-800">Instagram Campaigns for <?php echo e('@' . $profile->instagram_id); ?></h1>
-                    <p class="text-xs text-gray-600"><?php echo e(number_format($profile->followers)); ?> followers • ₹<?php echo e(number_format($profile->price_per_story, 2)); ?> per story</p>
+                    <h1 class="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap"><?php echo e('@' . $profile->instagram_id); ?></h1>
+                    <p class="text-xs text-gray-600 hidden sm:block"><?php echo e(number_format($profile->followers)); ?> followers • ₹<?php echo e(number_format($profile->price_per_story, 2)); ?> per story</p>
                 </div>
             </div>
-            <a href="<?php echo e(route('instagram.publisher.profile.edit', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" class="inline-flex items-center px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200">
+            <a href="<?php echo e(route('instagram.publisher.profile.edit', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" class="inline-flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200 whitespace-nowrap">
                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>

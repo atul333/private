@@ -1,12 +1,10 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1">
         <!-- Header Section -->
         <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
             <div class="flex items-center">
-                <a href="{{ route('instagram.publisher.dashboard', ['user' => auth()->id()]) }}" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
+                <a href="<?php echo e(route('instagram.publisher.dashboard', ['user' => auth()->id()])); ?>" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
@@ -19,11 +17,11 @@
         <!-- Content Section -->
         <div class="px-4 py-4">
             <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                <form method="POST" action="{{ route('instagram.publisher.profile.store', ['user' => auth()->id()]) }}" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-6">
-                        @csrf
+                <form method="POST" action="<?php echo e(route('instagram.publisher.profile.store', ['user' => auth()->id()])); ?>" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-6">
+                        <?php echo csrf_field(); ?>
 
                         <!-- Error Messages -->
-                        @if($errors->any())
+                        <?php if($errors->any()): ?>
                             <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
@@ -34,14 +32,14 @@
                                     <div class="ml-3">
                                         <h3 class="text-sm font-medium text-red-800">Please fix the following errors:</h3>
                                         <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
+                                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li><?php echo e($error); ?></li>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <!-- Profile Photo Upload -->
                         <div class="relative group text-center">
@@ -77,13 +75,27 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-500 sm:text-sm">@</span>
                                     </div>
-                                    <input type="text" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('instagram_id') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="instagram_id" name="instagram_id" value="{{ old('instagram_id') }}" placeholder="your_username" required oninput="removeAtSymbol(this)">
+                                    <input type="text" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 <?php $__errorArgs = ['instagram_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="instagram_id" name="instagram_id" value="<?php echo e(old('instagram_id')); ?>" placeholder="your_username" required oninput="removeAtSymbol(this)">
                                     <div class="absolute inset-0 rounded-lg pointer-events-none border border-[#4895EF]/30 transition-colors duration-200"></div>
                                 </div>
                                 <p class="text-xs text-gray-500">Enter your Instagram username without the @ symbol</p>
-                                @error('instagram_id')
-                                    <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
-                                @enderror
+                                <?php $__errorArgs = ['instagram_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="mt-2 text-xs text-[#F72585]"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -97,12 +109,26 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-500 sm:text-sm">₹</span>
                                     </div>
-                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_per_story') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_per_story" name="price_per_story" value="{{ old('price_per_story') }}" placeholder="e.g. 500" required min="0">
+                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 <?php $__errorArgs = ['price_per_story'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="price_per_story" name="price_per_story" value="<?php echo e(old('price_per_story')); ?>" placeholder="e.g. 500" required min="0">
                                 </div>
                                 <p class="text-xs text-gray-500">Set your price for a 24-hour Instagram story</p>
-                                @error('price_per_story')
-                                    <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
-                                @enderror
+                                <?php $__errorArgs = ['price_per_story'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="mt-2 text-xs text-[#F72585]"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -140,4 +166,6 @@ function removeAtSymbol(input) {
     input.value = input.value.replace(/@/g, '');
 }
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\xampp\htdocs\Adlinker\Adlinker_main\resources\views/instagram/publisher/profile/create.blade.php ENDPATH**/ ?>

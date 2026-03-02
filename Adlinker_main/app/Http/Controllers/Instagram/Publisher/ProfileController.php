@@ -97,7 +97,7 @@ class ProfileController extends Controller
             'instagram_id' => $validated['instagram_id'],
             'price_per_story' => $validated['price_per_story'],
             'mention_available' => $request->has('mention_available'),
-            'is_active' => $request->has('is_active'),
+            'is_active' => $request->input('is_active') == '1',
         ];
 
         // Handle profile photo upload
@@ -170,7 +170,7 @@ class ProfileController extends Controller
                 $reason = $campaign->status === 'approved'
                     ? 'publisher approved but did not submit story link within 24 hours'
                     : 'publisher did not respond within 24 hours';
-                $refundDesc = "Refund for expired Instagram Campaign #{$campaign->id} on {$instagramId} — {$reason}";
+                $refundDesc = "[Instagram] Refund for expired Campaign #{$campaign->id} on {$instagramId} — {$reason}";
                 $advertiser->wallet->deposit($campaign->price, $refundDesc);
             }
         }
@@ -189,7 +189,7 @@ class ProfileController extends Controller
                 $publisherUser = \App\Models\User::find($campaign->publisher_id);
                 if ($publisherUser && $publisherUser->wallet) {
                     $instagramId = '@' . $profile->instagram_id;
-                    $depositDesc = "Instagram Campaign #{$campaign->id} completed on {$instagramId}";
+                    $depositDesc = "[Instagram] Campaign #{$campaign->id} completed on {$instagramId}";
                     $publisherUser->wallet->deposit($campaign->price, $depositDesc);
                 }
             }
@@ -285,7 +285,7 @@ class ProfileController extends Controller
                 // Refund the campaign price to advertiser's wallet
                 $refunded = $wallet->deposit(
                     $campaign->price, 
-                    "Refund for rejected Instagram campaign #{$campaign->id}"
+                    "[Instagram] Refund for rejected campaign #{$campaign->id}"
                 );
                 
                 if (!$refunded) {

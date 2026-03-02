@@ -4,7 +4,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5">
   <div class="flex flex-col">
     <!-- Header Section -->
-    <div class="px-4 py-1.5 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center">
+    <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
       <div class="flex items-center">
         <a href="{{ route('instagram.advertiser.dashboard', ['user' => auth()->id()]) }}" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,14 +12,14 @@
           </svg>
           <span></span>
         </a>
-        <h1 class="text-lg font-bold text-gray-800">{{ __('Browse Instagram Profiles') }}</h1>
+        <h1 class="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">Browse Profiles</h1>
       </div>
     </div>
 
     <div class="px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
       <form action="{{ route('instagram.advertiser.profiles.index', ['user' => auth()->id()]) }}" method="GET" id="filterForm" class="flex justify-end items-center gap-2">
         <!-- Combined Sort Dropdown -->
-        <select name="sort_by" onchange="document.getElementById('filterForm').submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-3 min-w-[180px]">
+        <select name="sort_by" onchange="document.getElementById('filterForm').submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-3 w-full sm:w-auto sm:min-w-[180px]">
           <option value="max_followers" {{ request('sort_by', 'max_followers') == 'max_followers' ? 'selected' : '' }}>Max Followers</option>
           <option value="lower_followers" {{ request('sort_by') == 'lower_followers' ? 'selected' : '' }}>Lower Followers</option>
           <option value="max_price" {{ request('sort_by') == 'max_price' ? 'selected' : '' }}>Max Price</option>
@@ -32,7 +32,7 @@
     <div class="px-4 py-4">
       @if($profiles->count() > 0)
         <!-- Profiles Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           @foreach($profiles as $profile)
             <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50">
               <div class="p-6 text-center">

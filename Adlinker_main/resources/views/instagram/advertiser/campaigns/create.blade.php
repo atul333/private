@@ -4,7 +4,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center">
+        <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
             <div class="flex items-center">
                 <a href="{{ route('instagram.advertiser.profiles.index', ['user' => auth()->id()]) }}" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,7 +12,7 @@
                     </svg>
                     <span></span>
                 </a>
-                <h1 class="text-lg font-bold text-gray-800">Create Instagram Campaign</h1>
+                <h1 class="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">Create Campaign</h1>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
         <div class="px-4 py-4">
             <div class="max-w-4xl mx-auto">
                 <!-- Profile Summary Card -->
-                <div class="bg-white border border-gray-300 rounded-xl p-6 mb-6 shadow-lg">
+                <div class="bg-white border border-gray-300 rounded-xl p-4 sm:p-6 mb-6 shadow-lg">
                     <div class="flex items-center">
                         @if($profile->profile_photo)
                             <img src="{{ asset('storage/' . $profile->profile_photo) }}" class="w-16 h-16 rounded-full border-4 border-gray-200 object-cover mr-4">
@@ -32,7 +32,7 @@
                             </div>
                         @endif
                         <div>
-                            <h2 class="text-xl font-bold text-gray-900">Advertising on {{ '@' . $profile->instagram_id }}</h2>
+                            <h2 class="text-base sm:text-xl font-bold text-gray-900">Advertising on {{ '@' . $profile->instagram_id }}</h2>
                             <p class="text-gray-600 text-sm">
                                 {{ number_format($profile->followers) }} followers • ₹{{ number_format($profile->price_per_story, 2) }} per story
                             </p>
@@ -42,7 +42,7 @@
 
                 <!-- Form Card -->
                 <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30">
-                    <form action="{{ route('instagram.advertiser.campaigns.store', ['user' => auth()->id()]) }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
+                    <form action="{{ route('instagram.advertiser.campaigns.store', ['user' => auth()->id()]) }}" method="POST" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-6">
                         @csrf
                         <input type="hidden" name="instagram_profile_id" value="{{ $profile->id }}">
 
@@ -70,7 +70,7 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <input class="peer hidden" type="radio" name="media_type" id="typeImage" value="image" checked>
-                                    <label for="typeImage" class="flex flex-col items-center justify-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:ring-2 peer-checked:ring-blue-500">
+                                    <label for="typeImage" class="flex flex-col items-center justify-center p-3 sm:p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:ring-2 peer-checked:ring-blue-500">
                                         <svg class="w-12 h-12 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
@@ -79,7 +79,7 @@
                                 </div>
                                 <div>
                                     <input class="peer hidden" type="radio" name="media_type" id="typeVideo" value="video">
-                                    <label for="typeVideo" class="flex flex-col items-center justify-center p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-red-500 hover:bg-red-50 transition-all duration-200 peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:ring-2 peer-checked:ring-red-500">
+                                    <label for="typeVideo" class="flex flex-col items-center justify-center p-3 sm:p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-red-500 hover:bg-red-50 transition-all duration-200 peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:ring-2 peer-checked:ring-red-500">
                                         <svg class="w-12 h-12 text-red-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                         </svg>

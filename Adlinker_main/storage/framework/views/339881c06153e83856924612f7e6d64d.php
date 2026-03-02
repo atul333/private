@@ -1,17 +1,15 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
   <div class="flex-1 flex flex-col">
     <!-- Header Section -->
     <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center shrink-0">
       <div class="flex items-center">
-        <a href="{{ url()->previous() }}" class="mr-4 text-sm flex items-center text-black/90 hover:text-black transition-colors duration-200">
+        <a href="<?php echo e(url()->previous()); ?>" class="mr-4 text-sm flex items-center text-black/90 hover:text-black transition-colors duration-200">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
         </a>
-        <h1 class="text-lg font-bold text-black">{{ __('Submit Post Link') }}</h1>
+        <h1 class="text-lg font-bold text-black"><?php echo e(__('Submit Post Link')); ?></h1>
       </div>
     </div>
 
@@ -29,40 +27,41 @@
                 <p class="text-sm text-gray-500 mt-2">Provide the link to your live post to complete the campaign.</p>
             </div>
 
-            <form method="POST" action="{{ route('publisher.campaign.submit-link', ['campaign' => $campaign->id]) }}" class="space-y-6">
-              @csrf
+            <form method="POST" action="<?php echo e(route('publisher.campaign.submit-link', ['campaign' => $campaign->id])); ?>" class="space-y-6">
+              <?php echo csrf_field(); ?>
 
               <!-- Campaign Info Summary -->
               <div class="mb-6 bg-gradient-to-br from-[#4361EE]/5 to-[#3A0CA3]/5 border border-[#4361EE]/20 rounded-xl p-5 shadow-sm">
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold text-gray-900">Campaign #{{ $campaign->id }}</h2>
+                  <h2 class="text-base font-semibold text-gray-900">Campaign #<?php echo e($campaign->id); ?></h2>
                   <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    {{ ucfirst($campaign->status) }}
+                    <?php echo e(ucfirst($campaign->status)); ?>
+
                   </span>
                 </div>
-                @if($campaign->advertisement_content)
+                <?php if($campaign->advertisement_content): ?>
                 <div class="bg-white/60 p-3 rounded-lg border border-gray-100 mb-3">
-                    <p class="text-sm text-gray-700 line-clamp-3">{{ $campaign->advertisement_content }}</p>
+                    <p class="text-sm text-gray-700 line-clamp-3"><?php echo e($campaign->advertisement_content); ?></p>
                 </div>
-                @endif
+                <?php endif; ?>
                 <div class="grid grid-cols-2 gap-3 mt-4">
                   <div class="flex items-center justify-center p-3 bg-white/80 rounded-lg border border-gray-100 text-sm font-medium text-gray-700 shadow-sm">
                     <svg class="w-4 h-4 mr-2 text-[#4361EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <span>{{ $campaign->duration }} Days</span>
+                    <span><?php echo e($campaign->duration); ?> Days</span>
                   </div>
                   <div class="flex items-center justify-center p-3 bg-white/80 rounded-lg border border-gray-100 text-sm font-bold text-gray-900 shadow-sm">
                     <svg class="w-4 h-4 mr-2 text-[#4361EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <span class="text-[#3A0CA3]">₹{{ number_format($campaign->price, 2) }}</span>
+                    <span class="text-[#3A0CA3]">₹<?php echo e(number_format($campaign->price, 2)); ?></span>
                   </div>
                 </div>
               </div>
 
               <div class="space-y-2">
-                <label for="post_link" class="block text-sm font-semibold text-gray-900">{{ __('Post Link') }}</label>
+                <label for="post_link" class="block text-sm font-semibold text-gray-900"><?php echo e(__('Post Link')); ?></label>
                 <div class="relative rounded-md shadow-sm">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,9 +70,16 @@
                   </div>
                   <input id="post_link" 
                          type="url" 
-                         class="pl-10 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('post_link') border-red-400 text-red-600 focus:border-red-400 focus:ring-red-400 @enderror" 
+                         class="pl-10 block w-full px-4 py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 <?php $__errorArgs = ['post_link'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-400 text-red-600 focus:border-red-400 focus:ring-red-400 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                          name="post_link" 
-                         value="{{ old('post_link') }}" 
+                         value="<?php echo e(old('post_link')); ?>" 
                          placeholder="https://t.me/yourchannel/123"
                          required 
                          autocomplete="post_link" 
@@ -82,14 +88,22 @@
                 <p class="mt-2 text-xs text-gray-500">
                   Please enter the link to your post exactly where you've shared the advertisement in your channel.
                 </p>
-                @error('post_link')
-                  <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                @enderror
+                <?php $__errorArgs = ['post_link'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                  <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
               </div>
 
               <div class="pt-6">
                 <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
-                  {{ __('Submit Link') }}
+                  <?php echo e(__('Submit Link')); ?>
+
                   <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
               </div>
@@ -100,4 +114,5 @@
     </div>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\xampp\htdocs\Adlinker\Adlinker_main\resources\views/publisher/campaigns/submit-link.blade.php ENDPATH**/ ?>
