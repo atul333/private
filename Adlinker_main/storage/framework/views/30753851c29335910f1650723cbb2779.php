@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdLinker - Telegram Ads Platform</title>
+    <title>SocialAdLinker - Social Media Ads Platform</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -39,10 +39,10 @@
                 <div class="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
                     <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
                         <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl leading-tight">
-                            Amplify Your Reach on <span class="text-blue-600">Telegram</span>
+                            Amplify Your Reach on <span class="text-blue-600">Social Media</span>
                         </h1>
                         <p class="mt-6 text-xl text-gray-500 leading-relaxed">
-                            Connect with millions of engaged users through targeted advertising on Telegram channels. Launch successful campaigns that drive real results.
+                            Connect with millions of engaged users through targeted advertising on Telegram & Instagram. Launch successful campaigns that drive real results.
                         </p>
                         <div class="mt-10 sm:flex sm:justify-center lg:justify-start space-x-4">
                             <a href="<?php echo e(route('register')); ?>" class="inline-flex items-center px-8 py-4 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition duration-300 shadow-lg hover:shadow-xl">
@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- Stats Section -->
-                <div class="mt-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="mt-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     <?php
                         $stats = app(\App\Http\Controllers\StatisticsController::class)->getStatistics();
                         $stats = json_decode($stats->getContent());
@@ -102,8 +102,15 @@
                     <div class="bg-white overflow-hidden shadow-lg rounded-lg transform transition duration-300 hover:scale-105">
                         <div class="px-4 py-5 sm:p-6 text-center">
                             <dt class="text-5xl font-extrabold text-blue-600 mb-4"><?php echo e(number_format($stats->total_channels)); ?></dt>
-                            <dd class="text-lg font-medium text-gray-600">Total Channels</dd>
+                            <dd class="text-lg font-medium text-gray-600">Telegram Channels</dd>
                             <p class="mt-2 text-sm text-gray-500">Active and growing network</p>
+                        </div>
+                    </div>
+                    <div class="bg-white overflow-hidden shadow-lg rounded-lg transform transition duration-300 hover:scale-105">
+                        <div class="px-4 py-5 sm:p-6 text-center">
+                            <dt class="text-5xl font-extrabold mb-4" style="background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"><?php echo e(number_format($stats->total_instagram_profiles)); ?></dt>
+                            <dd class="text-lg font-medium text-gray-600">Instagram Pages</dd>
+                            <p class="mt-2 text-sm text-gray-500">Active creator profiles</p>
                         </div>
                     </div>
                     <div class="bg-white overflow-hidden shadow-lg rounded-lg transform transition duration-300 hover:scale-105">
@@ -129,7 +136,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
                     <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Why Choose AdLinker?</h2>
-                    <p class="mt-4 text-xl text-gray-600">Everything you need to succeed in Telegram advertising</p>
+                    <p class="mt-4 text-xl text-gray-600">Everything you need to succeed in social media advertising</p>
                 </div>
 
                 <div class="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

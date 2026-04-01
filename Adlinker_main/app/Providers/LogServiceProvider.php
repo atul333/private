@@ -16,7 +16,7 @@ class LogServiceProvider extends ServiceProvider
     public function boot()
     {
         // Ensure legacy log directory exists
-        $legacyLogPath = '/logs/adlinker';
+        $legacyLogPath = storage_path('logs/adlinker');
         if (!File::exists($legacyLogPath)) {
             File::makeDirectory($legacyLogPath, 0775, true);
         }
