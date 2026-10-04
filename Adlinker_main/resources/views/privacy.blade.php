@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-24 pb-16 bg-gray-50">
+<div class="pt-24 pb-28 sm:pb-16 bg-gray-50">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Privacy Policy</h1>
         

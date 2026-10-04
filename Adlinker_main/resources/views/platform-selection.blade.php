@@ -3,7 +3,7 @@
 @section('title', 'Select Platform')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-6 px-4">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-6 px-4 pb-28 sm:pb-12">
     <div class="max-w-2xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-6">

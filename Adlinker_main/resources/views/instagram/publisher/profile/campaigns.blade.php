@@ -296,7 +296,7 @@
                                             <div class="pt-3">
                                                 <div class="bg-gray-50 border border-gray-300 rounded-lg p-3">
                                                     <p class="text-sm font-semibold text-gray-700">⏰ Campaign Expired</p>
-                                                    <p class="text-xs text-gray-500 mt-1">You did not approve or reject within 24 hours. The advertiser was refunded.</p>
+                                                    <p class="text-xs text-gray-500 mt-1">Story link was not submitted within 24 hours. The advertiser was refunded.</p>
                                                 </div>
                                             </div>
                                         @elseif($campaign->status === 'rejected')
@@ -359,7 +359,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[data-countdown]').forEach(function(element) {
         let remaining = parseInt(element.getAttribute('data-countdown'));
         const interval = setInterval(function() {
-            if (remaining <= 0) { clearInterval(interval); window.location.reload(); return; }
+            if (remaining <= 0) { 
+                clearInterval(interval); 
+                if (!element.dataset.hasReloaded) {
+                    element.dataset.hasReloaded = 'true';
+                    setTimeout(() => window.location.reload(), 2000);
+                }
+                return; 
+            }
             remaining--;
             const h = Math.floor(remaining / 3600);
             const m = Math.floor((remaining % 3600) / 60);
