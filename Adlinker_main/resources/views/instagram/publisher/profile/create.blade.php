@@ -17,9 +17,9 @@
         </div>
 
         <!-- Content Section -->
-        <div class="px-4 py-4">
-            <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                <form method="POST" action="{{ route('instagram.publisher.profile.store', ['user' => auth()->id()]) }}" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-6">
+        <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
+            <div class="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-[#E1306C]/15">
+                <form method="POST" action="{{ route('instagram.publisher.profile.store', ['user' => auth()->id()]) }}" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-5">
                         @csrf
 
                         <!-- Error Messages -->
@@ -72,51 +72,45 @@
                         <div class="relative group">
                             <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
                             <div class="relative space-y-2">
-                                <label for="instagram_id" class="block text-sm font-semibold text-gray-900">Instagram Username</label>
+                                <label for="instagram_id" class="block text-xs sm:text-sm font-semibold text-gray-800">Instagram Username</label>
                                 <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">@</span>
+                                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                        <span class="text-gray-400 text-sm">@</span>
                                     </div>
-                                    <input type="text" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('instagram_id') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="instagram_id" name="instagram_id" value="{{ old('instagram_id') }}" placeholder="your_username" required oninput="removeAtSymbol(this)">
-                                    <div class="absolute inset-0 rounded-lg pointer-events-none border border-[#4895EF]/30 transition-colors duration-200"></div>
+                                    <input type="text" class="pl-8 block w-full px-3.5 py-2.5 sm:py-3 text-sm rounded-lg border-gray-300 shadow-sm focus:border-[#E1306C] focus:ring-2 focus:ring-[#E1306C]/30 transition duration-200 @error('instagram_id') border-[#E1306C] text-[#E1306C] placeholder-[#E1306C]/50 @enderror" id="instagram_id" name="instagram_id" value="{{ old('instagram_id') }}" placeholder="your_username" required oninput="removeAtSymbol(this)">
                                 </div>
-                                <p class="text-xs text-gray-500">Enter your Instagram username without the @ symbol</p>
+                                <p class="text-[11px] text-gray-500">Enter your Instagram username without the @ symbol</p>
                                 @error('instagram_id')
-                                    <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                                    <p class="mt-1.5 text-xs text-[#E1306C]">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
-
 
                         <!-- Price per Story -->
                         <div class="relative group">
-                            <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                            <div class="relative space-y-2">
-                                <label for="price_per_story" class="block text-sm font-semibold text-gray-900">Price per Story (₹)</label>
+                            <div class="relative space-y-1.5">
+                                <label for="price_per_story" class="block text-xs sm:text-sm font-semibold text-gray-800">Price per Story (₹)</label>
                                 <div class="relative rounded-lg shadow-sm">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">₹</span>
+                                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                        <span class="text-gray-400 text-sm font-semibold">₹</span>
                                     </div>
-                                    <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 @error('price_per_story') border-[#F72585] text-[#F72585] placeholder-[#F72585]/50 focus:border-[#F72585] focus:ring-[#F72585] @enderror" id="price_per_story" name="price_per_story" value="{{ old('price_per_story') }}" placeholder="e.g. 500" required min="0">
+                                    <input type="number" step="0.01" class="pl-8 block w-full px-3.5 py-2.5 sm:py-3 text-sm rounded-lg border-gray-300 shadow-sm focus:border-[#E1306C] focus:ring-2 focus:ring-[#E1306C]/30 transition duration-200 @error('price_per_story') border-[#E1306C] text-[#E1306C] placeholder-[#E1306C]/50 @enderror" id="price_per_story" name="price_per_story" value="{{ old('price_per_story') }}" placeholder="e.g. 500" required min="0">
                                 </div>
-                                <p class="text-xs text-gray-500">Set your price for a 24-hour Instagram story</p>
+                                <p class="text-[11px] text-gray-500">Set your price for a 24-hour Instagram story</p>
                                 @error('price_per_story')
-                                    <p class="mt-2 text-xs text-[#F72585]">{{ $message }}</p>
+                                    <p class="mt-1.5 text-xs text-[#E1306C]">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
-
                         <!-- Submit Button -->
-                        <div class="pt-4">
-                            <div class="relative group">
-                                <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                    </svg>
-                                    Add Instagram Profile
-                                </button>
-                            </div>
+                        <div class="pt-3">
+                            <button type="submit" class="w-full flex justify-center items-center px-6 py-3.5 sm:py-4 border border-transparent rounded-xl text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-[#E1306C] via-[#FD1D1D] to-[#833AB4] hover:opacity-95 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Add Instagram Profile
+                            </button>
                         </div>
                     </form>
             </div>

@@ -91,9 +91,9 @@
     </div>
 
     <!-- Content Section -->
-    <div class="px-4 py-4">
+    <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
       <!-- Campaign Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($campaigns as $campaign)
         <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#E1306C]/20 hover:border-[#E1306C]/40">
           <div class="relative p-6">

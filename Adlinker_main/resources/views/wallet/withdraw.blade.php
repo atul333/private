@@ -1,49 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
+<div class="min-h-screen bg-gradient-to-br from-sky-50/40 via-white to-indigo-50/40 flex flex-col">
     <div class="flex flex-col h-full">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center">
+        <div class="px-4 py-2 bg-gradient-to-r from-sky-50 to-indigo-50 border-b border-gray-200/80 flex justify-between items-center min-h-[52px]">
             <div class="flex items-center">
-                <a href="{{ route('publisher.wallet.index', ['id' => Auth::user()->id]) }}" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
+                <a href="{{ route('publisher.wallet.index', ['id' => Auth::user()->id]) }}" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    <span></span>
                 </a>
-                <h1 class="text-lg font-bold text-black">Withdraw Funds</h1>
+                <h1 class="text-sm sm:text-lg font-bold text-gray-900">Withdraw Funds</h1>
             </div>
-           
         </div>
 
         <!-- Content -->
-        <div class="flex-1 p-6">
-            <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50">
+        <div class="flex-1 px-3 sm:px-4 py-4 pb-28 sm:pb-12">
+            <div class="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-gray-200/80">
                     <form action="{{ route('publisher.wallet.process-withdrawal', ['id' => Auth::user()->id]) }}" method="POST">
                         @csrf
 
-                        @if(session('success'))
-                            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        @if(session('error'))
-                            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-
-                        <div class="p-6 space-y-6">
+                        <div class="p-4 sm:p-6 space-y-5">
                             @if(session('success'))
-                                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                                <div class="mb-4 p-3 sm:p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
                                     {{ session('success') }}
                                 </div>
                             @endif
 
                             @if(session('error'))
-                                <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                                <div class="mb-4 p-3 sm:p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
                                     {{ session('error') }}
                                 </div>
                             @endif

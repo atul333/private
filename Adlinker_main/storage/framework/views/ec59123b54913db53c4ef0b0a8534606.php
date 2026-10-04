@@ -38,7 +38,7 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="px-4 py-6">
+    <div class="px-3 sm:px-4 py-4 sm:py-6 pb-28 sm:pb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="campaignGrid">
         <?php $__empty_1 = true; $__currentLoopData = $campaigns; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $campaign): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
           <div class="campaign-card bg-white rounded-2xl shadow-sm overflow-hidden border border-[#3A0CA3]/20 hover:border-[#3A0CA3]/40 hover:shadow-md transition-all duration-300"

@@ -1,42 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-6 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-sky-50/40 via-white to-indigo-50/40 py-4 px-3 sm:px-6 lg:px-8 pb-28 sm:pb-12">
     <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-            <div class="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 flex justify-between items-center">
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+            <div class="px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 flex justify-between items-center">
                 <div class="flex items-center">
-                    <a href="{{ route('publisher.dashboard') }}" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('publisher.dashboard') }}" class="mr-3 flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
-                        
                     </a>
-                    <h1 class="text-lg font-semibold text-gray-800">Channel Campaigns</h1>
+                    <h1 class="text-sm sm:text-lg font-bold text-gray-800">Channel Campaigns</h1>
                 </div>
             </div>
 
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-                        <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Active Campaigns</h3>
-                                <p class="text-2xl font-bold mt-2">{{ $channel->campaigns->where('status', 'active')->count() }}</p>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Total Budget</h3>
-                                <p class="text-2xl font-bold mt-2">₹{{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Completed Campaigns</h3>
-                                <p class="text-2xl font-bold mt-2">{{ $channel->campaigns->where('status', 'completed')->count() }}</p>
-                            </div>
+            <div class="p-3.5 sm:p-6">
+                <div class="grid grid-cols-3 gap-2 sm:gap-6 mb-6">
+                    <div class="bg-gradient-to-br from-[#0088cc]/10 to-[#0099ff]/15 rounded-xl p-2.5 sm:p-5 text-gray-800 border border-[#0088cc]/20 shadow-sm">
+                        <div class="flex flex-col text-center sm:text-left">
+                            <h3 class="text-[11px] sm:text-sm font-semibold text-gray-700 leading-tight">Active</h3>
+                            <p class="text-sm sm:text-2xl font-bold mt-1 text-[#0088cc]">{{ $channel->campaigns->where('status', 'active')->count() }}</p>
                         </div>
                     </div>
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-2.5 sm:p-5 text-gray-800 border border-emerald-200/80 shadow-sm">
+                        <div class="flex flex-col text-center sm:text-left">
+                            <h3 class="text-[11px] sm:text-sm font-semibold text-gray-700 leading-tight">Budget</h3>
+                            <p class="text-sm sm:text-2xl font-bold mt-1 text-emerald-600 truncate">₹{{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-2.5 sm:p-5 text-gray-800 border border-indigo-200/80 shadow-sm">
+                        <div class="flex flex-col text-center sm:text-left">
+                            <h3 class="text-[11px] sm:text-sm font-semibold text-gray-700 leading-tight">Completed</h3>
+                            <p class="text-sm sm:text-2xl font-bold mt-1 text-indigo-600">{{ $channel->campaigns->where('status', 'completed')->count() }}</p>
+                        </div>
+                    </div>
+                </div>
 
                     @if($channel->campaigns->count() > 0)
                         <div class="overflow-x-auto rounded-xl shadow-md border border-gray-100">
