@@ -27,29 +27,29 @@
         </div>
 
         <!-- Content Section -->
-        <div class="px-4 py-4">
+        <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
             <div class="max-w-4xl mx-auto">
                 <!-- Main Content -->
-                <div class="space-y-6">
+                <div class="space-y-5">
                     <!-- Campaign Content Card -->
-                    <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30 overflow-hidden">
-                        <div class="bg-white border-b border-gray-300 px-6 py-4">
-                            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-[#E1306C]/15 overflow-hidden">
+                        <div class="bg-gradient-to-r from-pink-50/50 to-purple-50/30 border-b border-gray-100 px-4 py-3 sm:px-6 sm:py-4">
+                            <h2 class="text-base sm:text-lg font-bold text-gray-900 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-[#E1306C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                 </svg>
                                 Campaign Content
                             </h2>
                         </div>
-                        <div class="p-6 space-y-6">
+                        <div class="p-4 sm:p-6 space-y-5">
                             <!-- Media Preview -->
                             <div>
-                                <label class="block text-xs font-semibold text-gray-700 uppercase mb-2">Media Preview</label>
-                                <div class="bg-gray-100 rounded-lg p-4 flex items-center justify-center">
+                                <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Media Preview</label>
+                                <div class="bg-gray-100 rounded-xl p-3 sm:p-4 flex items-center justify-center">
                                     @if($campaign->media_type === 'image')
-                                        <img src="{{ asset('storage/' . $campaign->media_file) }}" class="max-h-96 rounded shadow-lg object-cover">
+                                        <img src="{{ asset('storage/' . $campaign->media_file) }}" class="max-h-72 sm:max-h-96 w-auto max-w-full rounded-lg shadow-sm object-contain">
                                     @else
-                                        <video controls class="max-h-96 rounded shadow-lg">
+                                        <video controls class="max-h-72 sm:max-h-96 w-auto max-w-full rounded-lg shadow-sm">
                                             <source src="{{ asset('storage/' . $campaign->media_file) }}" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
@@ -62,8 +62,8 @@
                                 <div class="space-y-3">
                                     @if($campaign->link_text)
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-700 uppercase mb-2">Advertisement Link Text</label>
-                                            <div class="bg-gray-50 rounded-lg p-4 text-gray-700">
+                                            <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Advertisement Link Text</label>
+                                            <div class="bg-gray-50 rounded-lg p-3 sm:p-3.5 text-sm font-medium text-gray-800 border border-gray-200/80">
                                                 {{ $campaign->link_text }}
                                             </div>
                                         </div>
@@ -71,10 +71,13 @@
 
                                     @if($campaign->link_url)
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-700 uppercase mb-2">Advertisement Link</label>
-                                            <div class="bg-gray-50 rounded-lg p-4">
-                                                <a href="{{ $campaign->link_url }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline break-all">
-                                                    {{ $campaign->link_url }}
+                                            <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Advertisement Link</label>
+                                            <div class="bg-gray-50 rounded-lg p-3 sm:p-3.5 border border-gray-200/80">
+                                                <a href="{{ $campaign->link_url }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline break-all text-xs sm:text-sm font-medium flex items-center gap-1.5">
+                                                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                                    </svg>
+                                                    <span class="break-all">{{ $campaign->link_url }}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -82,8 +85,8 @@
                                 </div>
                             @else
                                 <div>
-                                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-2">Link Details</label>
-                                    <div class="bg-gray-50 rounded-lg p-4 text-gray-500 italic">
+                                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Link Details</label>
+                                    <div class="bg-gray-50 rounded-lg p-3 sm:p-3.5 text-gray-500 italic text-xs sm:text-sm border border-gray-200/80">
                                         No link details provided.
                                     </div>
                                 </div>

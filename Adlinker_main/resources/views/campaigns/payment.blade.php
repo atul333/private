@@ -1,24 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex items-center justify-center p-4">
+<div class="min-h-screen bg-gradient-to-br from-sky-50/50 via-white to-indigo-50/40 flex flex-col">
+    <div class="flex-1 flex items-center justify-center p-3 sm:p-4 pb-28 sm:pb-12">
         <div class="max-w-md w-full">
             <!-- Payment Card -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border border-[#4895EF]/30 overflow-hidden">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-sky-100 overflow-hidden">
                 <!-- Header -->
-                <div class="bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white text-center py-6">
-                    <svg class="w-16 h-16 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
-                    <h2 class="text-2xl font-bold">Secure Payment</h2>
+                <div class="bg-gradient-to-r from-[#0088cc] to-[#4361EE] text-white text-center py-5 sm:py-6 px-4">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-2 sm:mb-3 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold">Secure Payment</h2>
+                    <p class="text-xs sm:text-sm text-white/80 mt-0.5">Complete your Telegram campaign order</p>
                 </div>
 
-                <div class="p-6 space-y-6">
+                <div class="p-4 sm:p-6 space-y-5">
                     <!-- Amount -->
                     <div class="text-center">
-                        <div class="text-4xl font-bold text-[#4361EE] mb-1">₹{{ number_format($campaign->price, 2) }}</div>
-                        <p class="text-sm text-gray-500">Campaign #{{ $campaign->id }}</p>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-[#0088cc] mb-1">₹{{ number_format($campaign->price, 2) }}</div>
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Campaign #{{ $campaign->id }}</p>
                     </div>
 
                     <!-- Payment Summary -->
@@ -93,13 +96,13 @@
 
                     <!-- Payment Form -->
                     <form action="{{ route('campaigns.payment.process', ['user' => auth()->id(), 'campaign' => $campaign->id]) }}" method="GET" class="space-y-3">
-                        <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl {{ $wallet->balance < $campaign->price ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $wallet->balance < $campaign->price ? 'disabled' : '' }}>
+                        <button type="submit" class="w-full flex justify-center items-center px-6 py-3.5 sm:py-4 border border-transparent rounded-xl text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-[#0088cc] to-[#4361EE] hover:opacity-95 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer {{ $wallet->balance < $campaign->price ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $wallet->balance < $campaign->price ? 'disabled' : '' }}>
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                             </svg>
                             Pay Securely ₹{{ number_format($campaign->price, 2) }}
                         </button>
-                        <a href="/{{ auth()->id() }}/advertiser/dashboard" class="block w-full text-center px-8 py-3 border-2 border-gray-300 rounded-lg text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200">
+                        <a href="/{{ auth()->id() }}/advertiser/dashboard" class="block w-full text-center px-6 py-3 border border-gray-300 rounded-xl text-sm sm:text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200">
                             Cancel Payment
                         </a>
                     </form>

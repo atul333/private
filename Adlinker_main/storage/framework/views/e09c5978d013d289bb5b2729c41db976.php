@@ -46,20 +46,20 @@
         <?php endif; ?>
 
         <!-- Content Section -->
-        <div class="px-4 py-4">
+        <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
             <?php if($campaigns->count() > 0): ?>
                 <!-- Campaigns Grid -->
                 <div class="grid grid-cols-1 gap-4 mb-4">
                     <?php $__currentLoopData = $campaigns; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $campaign): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50">
-                            <div class="p-6">
-                                <div class="flex justify-between items-start mb-4">
+                        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-all duration-300 border border-[#E1306C]/15">
+                            <div class="p-3.5 sm:p-5">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                                     <div>
-                                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Campaign #<?php echo e($campaign->id); ?></h3>
-                                        <p class="text-sm text-gray-500"><?php echo e($campaign->created_at->format('M d, Y')); ?> • <?php echo e($campaign->advertiser->name); ?></p>
+                                        <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-0.5">Campaign #<?php echo e($campaign->id); ?></h3>
+                                        <p class="text-xs text-gray-500"><?php echo e($campaign->created_at->format('M d, Y')); ?> • <?php echo e($campaign->advertiser->name); ?></p>
                                     </div>
-                                    <div class="flex gap-2">
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full 
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full 
                                             <?php if($campaign->status === 'pending'): ?> bg-yellow-100 text-yellow-800 border border-yellow-200
                                             <?php elseif($campaign->status === 'approved'): ?> bg-green-100 text-green-800 border border-green-200
                                             <?php elseif($campaign->status === 'rejected'): ?> bg-red-100 text-red-800 border border-red-200
@@ -69,14 +69,14 @@
 
                                         </span>
                                         <?php if($campaign->paid): ?>
-                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 border border-green-200">
+                                            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-green-100 text-green-800 border border-green-200">
                                                 <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                                 </svg>
                                                 Paid
                                             </span>
                                         <?php else: ?>
-                                            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800 border border-red-200">
+                                            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-800 border border-red-200">
                                                 <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                                 </svg>
@@ -237,8 +237,8 @@
                                                     <?php echo csrf_field(); ?>
                                                     <label class="block text-xs font-semibold text-gray-700 mb-2">Submit Story Link</label>
                                                     <div class="flex gap-2">
-                                                        <input type="url" name="story_link" placeholder="https://instagram.com/stories/..." required class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                                        <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors duration-200">Submit</button>
+                                                        <input type="url" name="story_link" placeholder="https://instagram.com/stories/..." required class="flex-1 min-w-0 px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E1306C]/30 focus:border-[#E1306C]">
+                                                        <button type="submit" class="shrink-0 px-4 py-2 bg-gradient-to-r from-[#E1306C] to-[#FD1D1D] hover:opacity-95 text-white text-xs sm:text-sm font-semibold rounded-lg shadow-sm transition-all duration-200 cursor-pointer">Submit</button>
                                                     </div>
                                                     <p class="text-xs text-gray-500 mt-1">Paste the Instagram story link here to start the 24-hour completion timer</p>
                                                 </form>

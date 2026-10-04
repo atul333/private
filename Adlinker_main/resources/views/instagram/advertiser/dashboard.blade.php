@@ -91,9 +91,9 @@
     </div>
 
     <!-- Content Section -->
-    <div class="px-4 py-4">
+    <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
       <!-- Campaign Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($campaigns as $campaign)
         <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#E1306C]/20 hover:border-[#E1306C]/40">
           <div class="relative p-6">
@@ -136,34 +136,34 @@
               @endif
 
               @if($campaign->status === 'published')
-                @if($campaign->published_at)
-                  @php
-                      $completionTime = $campaign->published_at->copy()->addHours(24);
-                      $remainingSeconds = max(0, $completionTime->diffInSeconds(now(), false));
-                  @endphp
-                  <p><span class="font-semibold">Campaign Timer:</span>
-                    <span class="countdown-timer text-gray-600" data-countdown="{{ $remainingSeconds }}" data-campaign-id="{{ $campaign->id }}">
-                      <span class="countdown-hours">{{ str_pad(floor($remainingSeconds / 3600), 2, '0', STR_PAD_LEFT) }}</span>h
-                      <span class="countdown-minutes">{{ str_pad(floor(($remainingSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</span>m
-                      <span class="countdown-seconds">{{ str_pad($remainingSeconds % 60, 2, '0', STR_PAD_LEFT) }}</span>s remaining
-                    </span>
-                  </p>
-                @endif
+                <p><span class="font-semibold">Campaign Timer:</span>
+                  <span class="countdown-timer text-gray-600" 
+                    data-campaign-id="{{ $campaign->id }}" 
+                    data-duration="1"
+                    data-start="{{ $campaign->published_at ? $campaign->published_at->toISOString() : '' }}"
+                    data-submitted="{{ $campaign->story_link ? 'true' : 'false' }}">
+                    <span class="countdown-text">Calculating...</span>
+                  </span>
+                </p>
               @elseif(($campaign->status === 'pending' || $campaign->status === 'approved') && $campaign->paid)
-                @php
-                    $deadline = $campaign->created_at->copy()->addHours(24);
-                    $remainingSeconds = max(0, now()->diffInSeconds($deadline, false));
-                @endphp
                 <div class="countdown-container rounded-lg bg-red-50 p-3 mb-2">
-                  <div class="approval-countdown text-xs font-semibold text-red-600 flex items-center justify-between" data-approval-seconds="{{ $remainingSeconds }}" data-campaign-id="{{ $campaign->id }}">
-                    <span>{{ $campaign->status === 'pending' ? 'Time Left to Respond:' : 'Time Left to Submit Story:' }}</span>
-                    <span>
-                      <span class="approval-hours">{{ str_pad(floor($remainingSeconds / 3600), 2, '0', STR_PAD_LEFT) }}</span>h
-                      <span class="approval-minutes">{{ str_pad(floor(($remainingSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</span>m
-                      <span class="approval-seconds">{{ str_pad($remainingSeconds % 60, 2, '0', STR_PAD_LEFT) }}</span>s
-                    </span>
+                  <div class="submission-countdown-timer text-xs font-semibold text-red-600" 
+                       data-campaign-id="{{ $campaign->id }}"
+                       data-created-at="{{ $campaign->created_at->toISOString() }}">
+                    <div class="countdown-text text-red-600 font-semibold">
+                      Time Left to Submit Story: <span class="submission-time">Loading...</span>
+                    </div>
                   </div>
                 </div>
+                <p><span class="font-semibold">Campaign Timer:</span>
+                  <span class="countdown-timer text-gray-600" 
+                    data-campaign-id="{{ $campaign->id }}" 
+                    data-duration="1"
+                    data-start=""
+                    data-submitted="false">
+                    <span class="countdown-text">Waiting for link submission...</span>
+                  </span>
+                </p>
               @endif
             </div>
 
@@ -220,48 +220,102 @@
 </div>
 
 <script>
+function updateSubmissionCountdown(element) {
+    if (element.dataset.status === 'expired') {
+        const timeEl = element.querySelector('.submission-time');
+        if (timeEl) timeEl.textContent = 'Campaign Expired';
+        return;
+    }
+
+    const campaignId = element.dataset.campaignId;
+    const createdAt = new Date(element.dataset.createdAt);
+    const deadline = new Date(createdAt.getTime() + (24 * 60 * 60 * 1000)); // 24 hours from creation
+    const now = new Date();
+    const timeLeft = deadline - now;
+
+    const timeEl = element.querySelector('.submission-time');
+    if (!timeEl) return;
+
+    if (timeLeft <= 0) {
+        timeEl.textContent = 'Submission deadline passed';
+        element.dataset.status = 'expired';
+        
+        // Reload once to let server update status to expired & refund
+        if (!element.dataset.hasReloaded) {
+            element.dataset.hasReloaded = 'true';
+            setTimeout(() => window.location.reload(), 2000);
+        }
+        return;
+    }
+
+    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    timeEl.textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function initializeSubmissionCountdowns() {
+    const submissionTimers = document.querySelectorAll('.submission-countdown-timer');
+    submissionTimers.forEach(timer => {
+        timer.dataset.status = timer.dataset.status || 'active';
+        updateSubmissionCountdown(timer);
+        setInterval(() => updateSubmissionCountdown(timer), 1000);
+    });
+}
+
+function updateCampaignTimer(element) {
+    const campaignId = element.dataset.campaignId;
+    const duration = parseInt(element.dataset.duration || 1) * 24 * 60 * 60 * 1000; // 1 day = 24 hours in ms
+    const startDate = element.dataset.start ? new Date(element.dataset.start) : null;
+    const submitted = element.dataset.submitted === 'true';
+    
+    const textEl = element.querySelector('.countdown-text');
+    if (!textEl) return;
+
+    if (!submitted || !startDate || isNaN(startDate.getTime())) {
+        textEl.textContent = 'Waiting for link submission...';
+        return;
+    }
+
+    const now = new Date();
+    const timeLeft = duration - (now - startDate);
+
+    if (timeLeft <= 0) {
+        textEl.textContent = 'Campaign Ended';
+        
+        // Reload once to let server update status to completed and pay publisher
+        if (!element.dataset.hasReloaded) {
+            element.dataset.hasReloaded = 'true';
+            setTimeout(() => window.location.reload(), 2000);
+        }
+        return;
+    }
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    if (days > 0) {
+        textEl.textContent = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s remaining`;
+    } else {
+        textEl.textContent = `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s remaining`;
+    }
+}
+
+function initializeCampaignTimers() {
+    const campaignTimers = document.querySelectorAll('.countdown-timer');
+    campaignTimers.forEach(timer => {
+        updateCampaignTimer(timer);
+        setInterval(() => updateCampaignTimer(timer), 1000);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-
-    // ── Published story countdown (blue) ──────────────────────────────────────
-    document.querySelectorAll('[data-countdown]').forEach(function(element) {
-        let remaining = parseInt(element.getAttribute('data-countdown'));
-        const interval = setInterval(function() {
-            if (remaining <= 0) { clearInterval(interval); window.location.reload(); return; }
-            remaining--;
-            const h = Math.floor(remaining / 3600);
-            const m = Math.floor((remaining % 3600) / 60);
-            const s = remaining % 60;
-            const hoursEl   = element.querySelector('.countdown-hours');
-            const minutesEl = element.querySelector('.countdown-minutes');
-            const secondsEl = element.querySelector('.countdown-seconds');
-            if (hoursEl)   hoursEl.textContent   = String(h).padStart(2, '0');
-            if (minutesEl) minutesEl.textContent = String(m).padStart(2, '0');
-            if (secondsEl) secondsEl.textContent = String(s).padStart(2, '0');
-        }, 1000);
-    });
-
-    // ── Approval countdown (orange) — publisher has 24h to respond ───────────
-    document.querySelectorAll('.approval-countdown').forEach(function(element) {
-        let remaining = parseInt(element.getAttribute('data-approval-seconds'));
-        const interval = setInterval(function() {
-            if (remaining <= 0) {
-                clearInterval(interval);
-                setTimeout(() => window.location.reload(), 1500);
-                return;
-            }
-            remaining--;
-            const h = Math.floor(remaining / 3600);
-            const m = Math.floor((remaining % 3600) / 60);
-            const s = remaining % 60;
-            const hoursEl   = element.querySelector('.approval-hours');
-            const minutesEl = element.querySelector('.approval-minutes');
-            const secondsEl = element.querySelector('.approval-seconds');
-            if (hoursEl)   hoursEl.textContent   = String(h).padStart(2, '0');
-            if (minutesEl) minutesEl.textContent = String(m).padStart(2, '0');
-            if (secondsEl) secondsEl.textContent = String(s).padStart(2, '0');
-        }, 1000);
-    });
-
+    initializeSubmissionCountdowns();
+    initializeCampaignTimers();
 });
 </script>
 @endsection

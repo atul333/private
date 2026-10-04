@@ -35,36 +35,36 @@
         </div>
 
         <!-- Fixed Metrics Section -->
-        <div class="bg-white/5 backdrop-blur-sm px-4 py-3 border-b border-[#7209B7]/10">
-            <div class="grid grid-cols-3 gap-6">
-                <div class="bg-gradient-to-br from-[#6CC1F0]/20 to-[#4895EF]/20 rounded-xl p-4 text-[#4895EF] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#4CC9F0]/30 hover:border-[#4CC9F0]/50">
+        <div class="bg-white/40 backdrop-blur-sm px-3 sm:px-4 py-3 border-b border-gray-200/80">
+            <div class="grid grid-cols-3 gap-2 sm:gap-4">
+                <div class="bg-gradient-to-br from-[#0088cc]/10 to-[#0099ff]/15 rounded-xl p-2.5 sm:p-4 text-gray-800 border border-[#0088cc]/20 shadow-sm">
                     <div class="text-center">
-                        <h3 class="text-sm font-semibold opacity-90 text-gray-900">Available Balance</h3>
-                        <p class="text-lg font-semibold mt-2 text-gray-900">₹<?php echo e(number_format($availableBalance ?? 0.00, 2)); ?></p>
+                        <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Available Balance</h3>
+                        <p class="text-xs sm:text-base font-bold mt-1 text-gray-900 truncate">₹<?php echo e(number_format($availableBalance ?? 0.00, 2)); ?></p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-[#7209B7]/20 to-[#560BAD]/20 rounded-xl p-4 text-[#560BAD] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#7209B7]/30 hover:border-[#7209B7]/50">
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-2.5 sm:p-4 text-gray-800 border border-amber-200/80 shadow-sm">
                     <div class="text-center">
-                        <h3 class="text-sm font-semibold opacity-90 text-gray-900">Pending Payments</h3>
-                        <p class="text-lg font-semibold mt-2 text-gray-900">₹<?php echo e(number_format($pendingPayments ?? 0.00, 2)); ?></p>
+                        <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Pending</h3>
+                        <p class="text-xs sm:text-base font-bold mt-1 text-amber-700 truncate">₹<?php echo e(number_format($pendingPayments ?? 0.00, 2)); ?></p>
                     </div>
                 </div>
-                <div class="bg-gradient-to-br from-[#3A0CA3]/20 to-[#4361EE]/20 rounded-xl p-4 text-[#4361EE] shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-[#3A0CA3]/30 hover:border-[#3A0CA3]/50">
+                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-2.5 sm:p-4 text-gray-800 border border-emerald-200/80 shadow-sm">
                     <div class="text-center">
-                        <h3 class="text-sm font-semibold opacity-90 text-gray-900">Payment Done</h3>
-                        <p class="text-lg font-semibold mt-2 text-gray-900">₹<?php echo e(number_format($completedPayments ?? 0.00, 2)); ?></p>
+                        <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Paid Out</h3>
+                        <p class="text-xs sm:text-base font-bold mt-1 text-emerald-700 truncate">₹<?php echo e(number_format($completedPayments ?? 0.00, 2)); ?></p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Scrollable Content Section -->
-        <div class="flex-1 px-4 py-4 overflow-y-auto">
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                <div class="px-4 py-3 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20">
-                    <h2 class="text-lg font-semibold text-gray-900">Transaction History</h2>
+        <div class="flex-1 px-3 sm:px-4 py-4 pb-28 sm:pb-12 overflow-y-auto">
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-gray-200/80">
+                <div class="px-4 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                    <h2 class="text-sm sm:text-base font-bold text-gray-900">Transaction History</h2>
                 </div>
-                        <div class="p-6">
+                <div class="p-3 sm:p-6 overflow-x-auto">
                             <?php if(isset($transactions) && count($transactions) > 0): ?>
                                 <div class="w-full">
                                     <table class="min-w-full table-fixed divide-y divide-gray-200">

@@ -19,9 +19,9 @@
         </div>
 
         <!-- Content Section -->
-        <div class="px-4 py-4">
-            <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                <form method="POST" action="<?php echo e(route('instagram.publisher.profile.update', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-6">
+        <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
+            <div class="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-[#E1306C]/15">
+                <form method="POST" action="<?php echo e(route('instagram.publisher.profile.update', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-5">
                         <?php echo csrf_field(); ?>
                         <?php echo method_field('PUT'); ?>
 
@@ -76,101 +76,85 @@
                         </div>
 
                         <!-- Instagram Username -->
-                        <div class="relative group">
-                            <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                            <div class="relative space-y-2">
-                                <label for="instagram_id" class="block text-sm font-semibold text-gray-900">Instagram Username</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="text-gray-500 sm:text-sm">@</span>
-                                    </div>
-                                    <input type="text" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 <?php $__errorArgs = ['instagram_id'];
+                        <div class="relative space-y-1.5">
+                            <label for="instagram_id" class="block text-xs sm:text-sm font-semibold text-gray-800">Instagram Username</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <span class="text-gray-400 text-sm">@</span>
+                                </div>
+                                <input type="text" class="pl-8 block w-full px-3.5 py-2.5 sm:py-3 text-sm rounded-lg border-gray-300 shadow-sm focus:border-[#E1306C] focus:ring-2 focus:ring-[#E1306C]/30 transition duration-200 <?php $__errorArgs = ['instagram_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> border-[#F72585] <?php unset($message);
+$message = $__bag->first($__errorArgs[0]); ?> border-[#E1306C] text-[#E1306C] <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" id="instagram_id" name="instagram_id" value="<?php echo e(old('instagram_id', $profile->instagram_id)); ?>" required oninput="removeAtSymbol(this)">
-                                </div>
-                                <?php $__errorArgs = ['instagram_id'];
+                            </div>
+                            <?php $__errorArgs = ['instagram_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <p class="mt-2 text-xs text-[#F72585]"><?php echo e($message); ?></p>
-                                <?php unset($message);
+                                <p class="mt-1.5 text-xs text-[#E1306C]"><?php echo e($message); ?></p>
+                            <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                            </div>
                         </div>
 
-                        <!-- Followers and Price Row -->
-                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-
-                            <!-- Price per Story -->
-                            <div class="relative group">
-                                <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                                <div class="relative space-y-2">
-                                    <label for="price_per_story" class="block text-sm font-semibold text-gray-900">Price per Story (₹)</label>
-                                    <div class="relative rounded-lg shadow-sm">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span class="text-gray-500 sm:text-sm">₹</span>
-                                        </div>
-                                        <input type="number" step="0.01" class="pl-7 block w-full px-4 py-3 rounded-lg border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200" id="price_per_story" name="price_per_story" value="<?php echo e(old('price_per_story', $profile->price_per_story)); ?>" required min="0">
-                                    </div>
+                        <!-- Price per Story -->
+                        <div class="relative space-y-1.5">
+                            <label for="price_per_story" class="block text-xs sm:text-sm font-semibold text-gray-800">Price per Story (₹)</label>
+                            <div class="relative rounded-lg shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                    <span class="text-gray-400 text-sm font-semibold">₹</span>
                                 </div>
+                                <input type="number" step="0.01" class="pl-8 block w-full px-3.5 py-2.5 sm:py-3 text-sm rounded-lg border-gray-300 shadow-sm focus:border-[#E1306C] focus:ring-2 focus:ring-[#E1306C]/30 transition duration-200" id="price_per_story" name="price_per_story" value="<?php echo e(old('price_per_story', $profile->price_per_story)); ?>" required min="0">
                             </div>
                         </div>
 
                         <!-- Profile Status Dropdown -->
-                        <div class="relative group">
-                            <div class="absolute -inset-0.5 bg-gradient-to-r rounded-lg blur opacity-0 group-hover:opacity-25 transition duration-300"></div>
-                            <div class="relative space-y-2">
-                                <label for="is_active" class="block text-sm font-semibold text-gray-900">Profile Status</label>
-                                <div class="relative">
-                                    <select name="is_active" id="is_active"
-                                        onchange="updateStatusStyle(this)"
-                                        class="block w-full pl-4 pr-10 py-3 rounded-lg border border-[#4895EF]/30 bg-white/80 backdrop-blur-sm shadow-sm focus:border-[#4361EE] focus:ring-2 focus:ring-[#4361EE] transition duration-200 text-sm font-medium appearance-none cursor-pointer">
-                                        <option value="1" <?php echo e(old('is_active', $profile->is_active) ? 'selected' : ''); ?>>✅ Active — Visible to advertisers</option>
-                                        <option value="0" <?php echo e(!old('is_active', $profile->is_active) ? 'selected' : ''); ?>>⛔ Inactive — Hidden from advertisers</option>
-                                    </select>
-                                    <!-- Chevron icon -->
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
+                        <div class="relative space-y-1.5">
+                            <label for="is_active" class="block text-xs sm:text-sm font-semibold text-gray-800">Profile Status</label>
+                            <div class="relative">
+                                <select name="is_active" id="is_active"
+                                    onchange="updateStatusStyle(this)"
+                                    class="block w-full pl-3.5 pr-10 py-2.5 sm:py-3 rounded-lg border border-gray-300 bg-white shadow-sm focus:border-[#E1306C] focus:ring-2 focus:ring-[#E1306C]/30 transition duration-200 text-xs sm:text-sm font-medium appearance-none cursor-pointer">
+                                    <option value="1" <?php echo e(old('is_active', $profile->is_active) ? 'selected' : ''); ?>>✅ Active — Visible to advertisers</option>
+                                    <option value="0" <?php echo e(!old('is_active', $profile->is_active) ? 'selected' : ''); ?>>⛔ Inactive — Hidden from advertisers</option>
+                                </select>
+                                <!-- Chevron icon -->
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
                                 </div>
-                                <!-- Status badge preview -->
-                                <div id="statusBadge" class="flex items-center mt-1 space-x-2">
-                                    <?php if(old('is_active', $profile->is_active)): ?>
-                                        <span id="statusLabel" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> Profile is Active
-                                        </span>
-                                        <p class="text-xs text-gray-500">Your profile will appear in advertiser search results.</p>
-                                    <?php else: ?>
-                                        <span id="statusLabel" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span> Profile is Inactive
-                                        </span>
-                                        <p class="text-xs text-gray-500">Your profile is hidden from advertisers.</p>
-                                    <?php endif; ?>
-                                </div>
+                            </div>
+                            <!-- Status badge preview -->
+                            <div id="statusBadge" class="flex flex-wrap items-center gap-1.5 mt-1">
+                                <?php if(old('is_active', $profile->is_active)): ?>
+                                    <span id="statusLabel" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> Active
+                                    </span>
+                                    <p class="text-xs text-gray-500">Your profile will appear in advertiser search results.</p>
+                                <?php else: ?>
+                                    <span id="statusLabel" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5"></span> Inactive
+                                    </span>
+                                    <p class="text-xs text-gray-500">Your profile is hidden from advertisers.</p>
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="pt-4 space-y-3">
-                            <!-- Update Button -->
-                            <div class="relative group">
-                                <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Update Profile
-                                </button>
-                            </div>
+                        <div class="pt-3">
+                            <button type="submit" class="w-full flex justify-center items-center px-6 py-3.5 sm:py-4 border border-transparent rounded-xl text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-[#E1306C] via-[#FD1D1D] to-[#833AB4] hover:opacity-95 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Update Profile
+                            </button>
                         </div>
                     </form>
             </div>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-  <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+  <div class="flex-1 flex flex-col">
     <!-- Header Section -->
     <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
       <div class="flex items-center">
@@ -83,7 +83,7 @@
     </div>
 
     <!-- Footer Section -->
-    <div class="mt-auto py-4 px-6 bg-gradient-to-r from-[#3A0CA3]/10 to-[#4361EE]/10 border-t border-[#7209B7]/20">
+    <div class="mt-auto py-4 px-6 pb-28 sm:pb-6 bg-gradient-to-r from-[#3A0CA3]/10 to-[#4361EE]/10 border-t border-[#7209B7]/20">
       <div class="text-center text-sm text-gray-600">
        
       </div>

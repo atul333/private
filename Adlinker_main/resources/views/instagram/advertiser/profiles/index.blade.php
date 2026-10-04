@@ -4,7 +4,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col pb-28 sm:pb-12">
   <div class="flex flex-col flex-1">
     <!-- Header Section -->
-    <div class="px-4 py-3 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/15 flex justify-between items-center min-h-[52px]">
+    <div class="px-4 py-3 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/15 flex items-center min-h-[52px]">
       <div class="flex items-center">
         <a href="{{ route('instagram.advertiser.dashboard', ['user' => auth()->id()]) }}" class="mr-3 text-gray-700 hover:text-gray-900 transition-colors duration-200">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,11 +12,6 @@
           </svg>
         </a>
         <h1 class="text-base sm:text-lg font-bold text-gray-900">Browse Profiles</h1>
-      </div>
-      <div>
-        <a href="{{ route('instagram.advertiser.dashboard', ['user' => auth()->id()]) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200">
-          Dashboard
-        </a>
       </div>
     </div>
 

@@ -15,9 +15,9 @@
         </div>
 
         <!-- Content Section -->
-        <div class="px-4 py-4">
-            <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                <form method="POST" action="<?php echo e(route('channels.store', ['user' => Auth::id()])); ?>" enctype="multipart/form-data" class="p-6 space-y-6">
+        <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
+            <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-[#0088cc]/20">
+                <form method="POST" action="<?php echo e(route('channels.store', ['user' => Auth::id()])); ?>" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-5">
                         <?php echo csrf_field(); ?>
 
                         <div class="relative group">
@@ -268,8 +268,8 @@ unset($__errorArgs, $__bag); ?>
                 </div>
 
 
-                <div class="pt-8">
-                    <button type="submit" class="w-full flex justify-center items-center px-8 py-4 border border-transparent rounded-lg text-base font-medium text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4361EE]">
+                <div class="pt-4">
+                    <button type="submit" class="w-full flex justify-center items-center px-6 py-3.5 sm:py-4 border border-transparent rounded-xl text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-[#0088cc] to-[#4361EE] hover:opacity-95 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer">
                         Submit Channel
                         <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

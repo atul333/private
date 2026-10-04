@@ -1,25 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+<div class="min-h-screen bg-gradient-to-br from-sky-50/40 via-white to-indigo-50/40 flex flex-col">
+    <div class="flex-1 flex flex-col">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
+        <div class="px-4 py-2 bg-gradient-to-r from-sky-50 to-indigo-50 border-b border-gray-200/80 flex justify-between items-center shrink-0 min-h-[52px]">
             <div class="flex items-center">
-                <a href="{{ Auth::user()->role === 'publisher' ? route('publisher.wallet.index') : '/' . Auth::user()->id . '/advertiser/wallet' }}" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
+                <a href="{{ Auth::user()->role === 'publisher' ? route('publisher.wallet.index') : '/' . Auth::user()->id . '/advertiser/wallet' }}" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    <span></span>
                 </a>
-                <h1 class="text-lg font-bold text-black">Add Funds</h1>
+                <h1 class="text-sm sm:text-lg font-bold text-gray-900">Add Funds</h1>
             </div>
         </div>
 
-         <!-- Scrollable Content Section -->
-         <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
-             <div class="max-w-md mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                 <div class="p-6">
+         <!-- Content Section -->
+         <div class="flex-1 px-3 sm:px-4 py-4 pb-28 sm:pb-12">
+             <div class="max-w-md mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-gray-200/80">
+                 <div class="p-4 sm:p-6">
                      @if (session('success'))
                      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
                          <strong class="font-bold">Success!</strong>

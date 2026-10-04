@@ -1,45 +1,104 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom py-6 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-sky-50/40 via-white to-indigo-50/40 py-4 px-3 sm:px-6 lg:px-8 pb-28 sm:pb-12">
     <div class="max-w-7xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-            <div class="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 flex justify-between items-center">
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+            <div class="px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 flex justify-between items-center">
                 <div class="flex items-center">
-                    <a href="{{ route('publisher.dashboard') }}" class="btn-back mr-4 flex items-center text-gray-600 hover:text-gray-900">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{{ route('publisher.dashboard') }}" class="mr-3 flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
-                        
                     </a>
-                    <h1 class="text-lg font-semibold text-gray-800">Channel Campaigns</h1>
+                    <h1 class="text-sm sm:text-lg font-bold text-gray-800">Channel Campaigns</h1>
                 </div>
             </div>
 
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-                        <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Active Campaigns</h3>
-                                <p class="text-2xl font-bold mt-2">{{ $channel->campaigns->where('status', 'active')->count() }}</p>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Total Budget</h3>
-                                <p class="text-2xl font-bold mt-2">₹{{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex flex-col">
-                                <h3 class="text-base font-medium opacity-90">Completed Campaigns</h3>
-                                <p class="text-2xl font-bold mt-2">{{ $channel->campaigns->where('status', 'completed')->count() }}</p>
-                            </div>
+            <div class="p-3.5 sm:p-6">
+                <div class="grid grid-cols-3 gap-2 sm:gap-6 mb-6">
+                    <div class="bg-gradient-to-br from-[#0088cc]/10 to-[#0099ff]/15 rounded-xl p-2.5 sm:p-5 text-gray-800 border border-[#0088cc]/20 shadow-sm">
+                        <div class="flex flex-col text-center sm:text-left">
+                            <h3 class="text-[11px] sm:text-sm font-semibold text-gray-700 leading-tight">Active</h3>
+                            <p class="text-sm sm:text-2xl font-bold mt-1 text-[#0088cc]">{{ $channel->campaigns->where('status', 'active')->count() }}</p>
                         </div>
                     </div>
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-2.5 sm:p-5 text-gray-800 border border-emerald-200/80 shadow-sm">
+                        <div class="flex flex-col text-center sm:text-left">
+                            <h3 class="text-[11px] sm:text-sm font-semibold text-gray-700 leading-tight">Budget</h3>
+                            <p class="text-sm sm:text-2xl font-bold mt-1 text-emerald-600 truncate">₹{{ number_format($channel->campaigns->sum('budget'), 2) }}</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-2.5 sm:p-5 text-gray-800 border border-indigo-200/80 shadow-sm">
+                        <div class="flex flex-col text-center sm:text-left">
+                            <h3 class="text-[11px] sm:text-sm font-semibold text-gray-700 leading-tight">Completed</h3>
+                            <p class="text-sm sm:text-2xl font-bold mt-1 text-indigo-600">{{ $channel->campaigns->where('status', 'completed')->count() }}</p>
+                        </div>
+                    </div>
+                </div>
 
                     @if($channel->campaigns->count() > 0)
-                        <div class="overflow-x-auto rounded-xl shadow-md border border-gray-100">
+                        <!-- Mobile Card View (visible on < md screens) -->
+                        <div class="block md:hidden space-y-3">
+                            @foreach($channel->campaigns as $campaign)
+                                <div class="bg-white/95 rounded-xl shadow-sm border border-gray-200 p-4 space-y-3">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="min-w-0">
+                                            <h4 class="text-sm font-bold text-gray-900 truncate">{{ $campaign->name ?? ('Campaign #' . $campaign->id) }}</h4>
+                                            <p class="text-xs text-gray-500 mt-0.5">Budget: <span class="font-semibold text-gray-800">₹{{ number_format($campaign->budget, 2) }}</span></p>
+                                        </div>
+                                        <span class="px-2.5 py-1 inline-flex text-xs leading-4 font-semibold rounded-full shrink-0 {{ $campaign->status === 'active' ? 'bg-green-100 text-green-800' : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                            {{ ucfirst($campaign->status) }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Time Left / Timer Section -->
+                                    <div class="bg-gray-50 rounded-lg p-2.5 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500 font-medium">Time Left:</span>
+                                        @if($campaign->post_link && $campaign->status === 'active')
+                                            <div class="countdown-timer font-semibold text-indigo-600" 
+                                                 data-duration="{{ $campaign->duration * 24 * 60 * 60 }}" 
+                                                 data-start-time="{{ $campaign->post_submitted_at }}"
+                                                 data-campaign-id="{{ $campaign->id }}"
+                                            >Calculating...</div>
+                                        @elseif(!$campaign->post_link && $campaign->status === 'active')
+                                            <span class="text-amber-600 font-semibold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Awaiting Post Link</span>
+                                        @else
+                                            <span class="text-gray-400 font-medium">-</span>
+                                        @endif
+                                    </div>
+
+                                    <!-- Actions Row -->
+                                    <div class="pt-1 flex items-center justify-between gap-2">
+                                        @if($campaign->post_link)
+                                            <a href="{{ $campaign->post_link }}" target="_blank" class="flex-1 inline-flex items-center justify-center px-3 py-2 text-xs font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs">
+                                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                View Post
+                                            </a>
+                                        @else
+                                            <a href="{{ route('publisher.campaign.submit-link.form', $campaign) }}" class="flex-1 inline-flex items-center justify-center px-3 py-2 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-xs">
+                                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                                                Submit Link
+                                            </a>
+                                        @endif
+
+                                        @if($campaign->status === 'pending')
+                                            <form action="{{ route('publisher.campaign.accept', $campaign) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                <button type="submit" class="px-3 py-2 text-xs font-semibold rounded-lg text-white bg-green-600 hover:bg-green-700 transition-colors shadow-xs">Accept</button>
+                                            </form>
+                                            <form action="{{ route('publisher.campaign.reject', $campaign) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                <button type="submit" class="px-3 py-2 text-xs font-semibold rounded-lg text-white bg-red-600 hover:bg-red-700 transition-colors shadow-xs">Reject</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Desktop Table View (hidden on mobile, visible on md+) -->
+                        <div class="hidden md:block overflow-x-auto rounded-xl shadow-md border border-gray-100">
                             <table class="min-w-full divide-y divide-gray-200 bg-white rounded-xl overflow-hidden border-separate border-spacing-0">
                                 <thead class="bg-gradient-to-r from-gray-50 to-white">
                                     <tr>

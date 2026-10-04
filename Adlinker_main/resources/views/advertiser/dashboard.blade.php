@@ -44,34 +44,35 @@
     </div>
 
     <!-- Fixed Metrics Section -->
-    <div class="bg-white/40 backdrop-blur-sm px-4 py-3 border-b border-[#0088cc]/10 shrink-0">
-      <div class="grid grid-cols-3 gap-3 sm:gap-4">
-        <div class="bg-gradient-to-br from-[#0088cc]/15 to-[#0099ff]/15 rounded-xl p-3 sm:p-4 text-[#0077b5] shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 border border-[#0088cc]/30 hover:border-[#0088cc]/50">
+    <!-- Fixed Metrics Section -->
+    <div class="bg-white/40 backdrop-blur-sm px-3 sm:px-4 py-3 border-b border-[#0088cc]/10 shrink-0">
+      <div class="grid grid-cols-3 gap-2 sm:gap-4">
+        <div class="bg-gradient-to-br from-[#0088cc]/10 to-[#0099ff]/15 rounded-xl p-2.5 sm:p-4 text-[#0077b5] shadow-sm border border-[#0088cc]/20">
           <div class="text-center">
-            <h3 class="text-xs sm:text-sm font-semibold opacity-90 text-gray-900 leading-tight">Active Campaigns</h3>
-            <p class="text-base sm:text-lg font-bold mt-1 sm:mt-2 text-gray-900">{{ $activeCampaigns }}</p>
+            <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Active Campaigns</h3>
+            <p class="text-sm sm:text-lg font-bold mt-1 text-gray-900">{{ $activeCampaigns }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#4361EE]/15 to-[#3A0CA3]/15 rounded-xl p-3 sm:p-4 text-[#4361EE] shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 border border-[#4361EE]/30 hover:border-[#4361EE]/50">
+        <div class="bg-gradient-to-br from-[#4361EE]/10 to-[#3A0CA3]/15 rounded-xl p-2.5 sm:p-4 text-[#4361EE] shadow-sm border border-[#4361EE]/20">
           <div class="text-center">
-            <h3 class="text-xs sm:text-sm font-semibold opacity-90 text-gray-900 leading-tight">Total Spent</h3>
-            <p class="text-base sm:text-lg font-bold mt-1 sm:mt-2 text-gray-900">₹{{ number_format($totalSpent, 2) }}</p>
+            <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Total Spent</h3>
+            <p class="text-sm sm:text-lg font-bold mt-1 text-gray-900 truncate">₹{{ number_format($totalSpent, 2) }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#0284c7]/15 to-[#0369a1]/15 rounded-xl p-3 sm:p-4 text-[#0284c7] shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 border border-[#0284c7]/30 hover:border-[#0284c7]/50">
+        <div class="bg-gradient-to-br from-[#0284c7]/10 to-[#0369a1]/15 rounded-xl p-2.5 sm:p-4 text-[#0284c7] shadow-sm border border-[#0284c7]/20">
           <div class="text-center">
-            <h3 class="text-xs sm:text-sm font-semibold opacity-90 text-gray-900 leading-tight">Completed Campaigns</h3>
-            <p class="text-base sm:text-lg font-bold mt-1 sm:mt-2 text-gray-900">{{ $completedCampaigns }}</p>
+            <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Completed</h3>
+            <p class="text-sm sm:text-lg font-bold mt-1 text-gray-900">{{ $completedCampaigns }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Filter Section -->
-    <div class="px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-[#0088cc]/10">
+    <div class="px-3 sm:px-4 py-2.5 bg-white/50 backdrop-blur-sm border-b border-[#0088cc]/10">
       <form id="filterForm" action="{{ url()->current() }}" method="GET" class="flex justify-end items-center gap-2 overflow-x-auto whitespace-nowrap">
         <!-- Status Filter -->
-        <select name="status" onchange="this.form.submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0088cc]/40 focus:border-[#0088cc] py-2 px-2 sm:px-3 min-w-[90px] bg-white">
+        <select name="status" onchange="this.form.submit()" class="text-xs sm:text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0088cc]/40 focus:border-[#0088cc] py-1.5 sm:py-2 px-2 sm:px-3 min-w-[85px] bg-white">
           <option value="all" {{ request('status') == 'all' || !request('status') ? 'selected' : '' }}>All Statuses</option>
           <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
           <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -80,7 +81,7 @@
         </select>
 
         <!-- Sort By -->
-        <select name="sort" onchange="this.form.submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0088cc]/40 focus:border-[#0088cc] py-2 px-2 sm:px-3 min-w-[110px] bg-white">
+        <select name="sort" onchange="this.form.submit()" class="text-xs sm:text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0088cc]/40 focus:border-[#0088cc] py-1.5 sm:py-2 px-2 sm:px-3 min-w-[100px] bg-white">
           <option value="newest" {{ request('sort') == 'newest' || !request('sort') ? 'selected' : '' }}>Newest First</option>
           <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
           <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Price (High to Low)</option>
@@ -92,31 +93,31 @@
     </div>
 
     <!-- Content Section -->
-    <div class="px-4 py-4">
+    <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
       <!-- Campaign Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($campaigns as $campaign)
-        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#0088cc]/20 hover:border-[#0088cc]/40">
-          <div class="relative p-6">
+        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-all duration-300 border border-[#0088cc]/15 hover:border-[#0088cc]/30">
+          <div class="relative p-4 sm:p-5">
             <!-- Status Badge -->
-            <span class="absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full {{ $campaign->status === 'active' ? ($campaign->post_link ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">
+            <span class="absolute top-3.5 right-3.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full {{ $campaign->status === 'active' ? ($campaign->post_link ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') : ($campaign->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">
               {{ $campaign->status === 'active' ? ($campaign->post_link ? 'Active' : 'Payment Successful') : ucfirst($campaign->status) }}
             </span>
 
             <!-- Campaign Details -->
-            <div class="flex items-center mb-4">
+            <div class="flex items-center mb-3 pr-20">
               @if($campaign->advertisement_image)
-                <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" class="w-16 h-16 rounded-full object-cover shadow">
+                <img src="{{ asset('storage/' . $campaign->advertisement_image) }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-sm shrink-0">
               @else
-                <div class="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0088cc]">
-                  <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-sky-50 border border-sky-100 flex items-center justify-center text-[#0088cc] shrink-0">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
                   </svg>
                 </div>
               @endif
-              <div class="ml-4">
-                <h3 class="text-base font-semibold text-gray-900">{{ $campaign->channel_name }}</h3>
-                <p class="text-xs text-gray-500 mt-0.5">{{ number_format($campaign->subscribers) }} Subscribers</p>
+              <div class="ml-3 min-w-0 flex-1">
+                <h3 class="text-sm sm:text-base font-bold text-gray-900 truncate">{{ $campaign->channel_name }}</h3>
+                <p class="text-xs text-gray-500 mt-0.5 truncate">{{ number_format($campaign->subscribers) }} Subscribers</p>
               </div>
             </div>
 

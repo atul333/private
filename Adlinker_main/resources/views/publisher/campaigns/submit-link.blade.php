@@ -16,17 +16,17 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="flex-1 px-4 py-8 flex items-center justify-center">
+    <div class="flex-1 px-3 sm:px-4 py-4 sm:py-8 pb-28 sm:pb-12 flex items-center justify-center">
       <div class="max-w-2xl w-full">
-        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden border border-[#4895EF]/30">
-          <div class="p-8">
+        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-[#0088cc]/20">
+          <div class="p-4 sm:p-8">
             <!-- Header Icon -->
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-[#4361EE]/10 to-[#3A0CA3]/10 mb-4">
-                    <svg class="w-8 h-8 text-[#4361EE]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+            <div class="text-center mb-6 sm:mb-8">
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#0088cc]/10 to-[#4361EE]/10 mb-3 sm:mb-4">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-[#0088cc]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900">Submit Your Link</h2>
-                <p class="text-sm text-gray-500 mt-2">Provide the link to your live post to complete the campaign.</p>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Submit Your Link</h2>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">Provide the link to your live post to complete the campaign.</p>
             </div>
 
             <form method="POST" action="{{ route('publisher.campaign.submit-link', ['campaign' => $campaign->id]) }}" class="space-y-6">

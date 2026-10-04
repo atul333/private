@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 py-12 px-4 sm:px-6 lg:px-8 pb-28 sm:pb-12 overflow-hidden">
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
             <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#4CC9F0] to-[#F72585] mb-4">Frequently Asked Questions</h1>

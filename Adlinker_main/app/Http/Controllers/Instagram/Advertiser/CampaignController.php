@@ -89,7 +89,7 @@ class CampaignController extends Controller
         $mediaPath = $request->file('media_file')
             ->store('instagram/campaigns', 'public');
 
-        // Create campaign
+        // Create campaign — status starts as 'approved' so publisher can submit story link immediately after payment
         $campaign = InstagramCampaign::create([
             'advertiser_id' => Auth::id(),
             'publisher_id' => $profile->user_id,
@@ -98,7 +98,7 @@ class CampaignController extends Controller
             'media_file' => $mediaPath,
             'link_text' => $validated['link_text'],
             'link_url' => $validated['link_url'],
-            'status' => 'pending',
+            'status' => 'approved',
             'price' => $profile->price_per_story,
             'paid' => false,
         ]);
@@ -174,14 +174,14 @@ class CampaignController extends Controller
                 throw new \Exception('Failed to process wallet transaction');
             }
 
-            // Mark campaign as paid
+            // Mark campaign as paid — status stays 'approved' so publisher can submit story link immediately
             $campaign->update(['paid' => true]);
 
             DB::commit();
 
             return redirect()
                 ->route('instagram.advertiser.dashboard', ['user' => auth()->id()])
-                ->with('success', 'Payment processed successfully! Your campaign is now pending publisher approval.');
+                ->with('success', 'Payment processed successfully! The publisher can now submit the story link.');
 
         } catch (\Exception $e) {
             DB::rollBack();

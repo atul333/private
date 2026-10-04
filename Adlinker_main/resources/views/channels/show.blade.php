@@ -2,21 +2,20 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
-    <div class="flex-1 flex flex-col min-h-0 max-h-screen overflow-hidden">
+    <div class="flex-1 flex flex-col">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20  flex justify-between items-center shrink-0">
-            <div class="flex items-center">
-                <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-black/90 hover:text-black transition-colors duration-200">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="px-4 py-2.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center min-h-[52px]">
+            <div class="flex items-center min-w-0 mr-2">
+                <a href="/{{ Auth::user()->id }}/publisher/dashboard" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200 mr-2 sm:mr-3 shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    <span></span>
                 </a>
-                <h1 class="text-lg font-bold text-black">Channel Details</h1>
+                <h1 class="text-base sm:text-lg font-bold text-gray-900 truncate">Channel Details</h1>
             </div>
-            <div class="flex items-center space-x-3">
-                <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] border border-transparent rounded-lg shadow-lg text-sm font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transform hover:-translate-y-0.5 transition-all duration-300">
-                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center shrink-0">
+                <a href="{{ route('channels.edit', ['user' => Auth::id(), 'channel' => $channel]) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-[#3A0CA3] to-[#4361EE] rounded-lg shadow-sm text-xs sm:text-sm font-medium text-white hover:from-[#3F37C9] hover:to-[#4895EF] transition-all duration-200 whitespace-nowrap">
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                     Edit Channel
@@ -24,8 +23,8 @@
             </div>
         </div>
 
-        <!-- Scrollable Content Section -->
-        <div class="flex-1 overflow-y-auto px-4 py-4 min-h-0">
+        <!-- Content Section -->
+        <div class="flex-1 px-3 sm:px-4 py-4 pb-28 sm:pb-12">
             <div class="max-w-4xl mx-auto">
                 <!-- Channel Info Card -->
                 <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">

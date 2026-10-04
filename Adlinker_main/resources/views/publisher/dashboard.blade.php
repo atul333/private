@@ -50,62 +50,62 @@ use App\Models\Channel;
     </div>
 
     <!-- Fixed Metrics Section -->
-    <div class="bg-white/40 backdrop-blur-sm px-4 py-3 border-b border-[#0088cc]/10 shrink-0">
-      <div class="grid grid-cols-3 gap-3 sm:gap-4">
+    <div class="bg-white/40 backdrop-blur-sm px-3 sm:px-4 py-3 border-b border-[#0088cc]/10 shrink-0">
+      <div class="grid grid-cols-3 gap-2 sm:gap-4">
         <!-- Metrics cards -->
-        <div class="bg-gradient-to-br from-[#0088cc]/15 to-[#0099ff]/15 rounded-xl p-3 sm:p-4 text-[#0077b5] shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 border border-[#0088cc]/30 hover:border-[#0088cc]/50">
+        <div class="bg-gradient-to-br from-[#0088cc]/10 to-[#0099ff]/15 rounded-xl p-2.5 sm:p-4 text-[#0077b5] shadow-sm border border-[#0088cc]/20">
           <div class="text-center">
-            <h3 class="text-xs sm:text-sm font-semibold opacity-90 text-gray-900 leading-tight">Active Channels</h3>
-            <p class="text-base sm:text-lg font-bold mt-1 sm:mt-2 text-gray-900">{{ $activeChannels }}</p>
+            <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Active Channels</h3>
+            <p class="text-sm sm:text-lg font-bold mt-1 text-gray-900">{{ $activeChannels }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#4361EE]/15 to-[#3A0CA3]/15 rounded-xl p-3 sm:p-4 text-[#4361EE] shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 border border-[#4361EE]/30 hover:border-[#4361EE]/50">
+        <div class="bg-gradient-to-br from-[#4361EE]/10 to-[#3A0CA3]/15 rounded-xl p-2.5 sm:p-4 text-[#4361EE] shadow-sm border border-[#4361EE]/20">
           <div class="text-center">
-            <h3 class="text-xs sm:text-sm font-semibold opacity-90 text-gray-900 leading-tight">Total Earnings</h3>
-            <p class="text-base sm:text-lg font-bold mt-1 sm:mt-2 text-gray-900">₹{{ number_format($totalEarnings, 2) }}</p>
+            <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Total Earnings</h3>
+            <p class="text-sm sm:text-lg font-bold mt-1 text-gray-900 truncate">₹{{ number_format($totalEarnings, 2) }}</p>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-[#0284c7]/15 to-[#0369a1]/15 rounded-xl p-3 sm:p-4 text-[#0284c7] shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 border border-[#0284c7]/30 hover:border-[#0284c7]/50">
+        <div class="bg-gradient-to-br from-[#0284c7]/10 to-[#0369a1]/15 rounded-xl p-2.5 sm:p-4 text-[#0284c7] shadow-sm border border-[#0284c7]/20">
           <div class="text-center">
-            <h3 class="text-xs sm:text-sm font-semibold opacity-90 text-gray-900 leading-tight">Total Subscribers</h3>
-            <p class="text-base sm:text-lg font-bold mt-1 sm:mt-2 text-gray-900">{{ Channel::where('publisher_id', Auth::user()->publisher->id)->sum('subscribers_count') }}</p>
+            <h3 class="text-[11px] sm:text-xs font-semibold text-gray-700 leading-tight">Subscribers</h3>
+            <p class="text-sm sm:text-lg font-bold mt-1 text-gray-900">{{ Channel::where('publisher_id', Auth::user()->publisher->id)->sum('subscribers_count') }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Content Section -->
-    <div class="px-4 py-4">
+    <div class="px-3 sm:px-4 py-4 pb-28 sm:pb-12">
       <!-- Channel Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($channels as $channel)
           <!-- Channel Card -->
-          <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#0088cc]/20 hover:border-[#0088cc]/40">
+          <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-all duration-300 border border-[#0088cc]/15 hover:border-[#0088cc]/30">
             <div class="relative border-b border-gray-100">
-              <div class="absolute top-3 right-3">
+              <div class="absolute top-3 right-3 z-10">
                 @if($channel->status === 'moderation')
                   <div class="flex flex-col items-end">
-                    <span class="px-2.5 py-1 text-xs font-semibold rounded-full border bg-amber-50 text-amber-700 border-amber-300">
+                    <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full border bg-amber-50 text-amber-700 border-amber-300">
                       {{ ucfirst($channel->status) }}
                     </span>
-                    <span class="text-[11px] text-amber-600 mt-1">Wait 24h for activation</span>
+                    <span class="text-[10px] text-amber-600 mt-0.5">Wait 24h</span>
                   </div>
                 @elseif($channel->status === 'active')
-                  <span class="px-2.5 py-1 text-xs font-semibold rounded-full border bg-green-50 text-green-700 border-green-300">
+                  <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full border bg-green-50 text-green-700 border-green-300">
                     {{ ucfirst($channel->status) }}
                   </span>
                 @else
-                  <span class="px-2.5 py-1 text-xs font-semibold rounded-full border bg-red-50 text-red-700 border-red-300">
+                  <span class="px-2 py-0.5 text-[11px] font-semibold rounded-full border bg-red-50 text-red-700 border-red-300">
                     {{ ucfirst($channel->status) }}
                   </span>
                 @endif
               </div>
               <div class="p-4">
-                <div class="flex items-center space-x-3 mb-3 border-b border-gray-100 pb-3">
+                <div class="flex items-center space-x-3 mb-3 border-b border-gray-100 pb-3 pr-20">
                   @if($channel->logo_path)
-                    <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="h-12 w-12 rounded-full object-cover border border-gray-200 shadow-sm">
+                    <img src="{{ asset('storage/' . $channel->logo_path) }}" alt="{{ $channel->name }} Logo" class="h-11 w-11 sm:h-12 sm:w-12 rounded-full object-cover border border-gray-200 shadow-sm shrink-0">
                   @else
-                    <div class="h-12 w-12 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0088cc]">
+                    <div class="h-11 w-11 sm:h-12 sm:w-12 rounded-full bg-sky-50 border border-sky-100 flex items-center justify-center text-[#0088cc] shrink-0">
                       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
                       </svg>

@@ -4,7 +4,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col pb-28 sm:pb-12">
     <div class="flex flex-col flex-1">
         <!-- Header Section -->
-        <div class="px-4 py-2.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex justify-between items-center min-h-[52px]">
+        <div class="px-4 py-2.5 bg-gradient-to-r from-[#4CC9F0]/10 to-[#4895EF]/10 border-b border-[#4895EF]/20 flex items-center min-h-[52px]">
             <div class="flex items-center">
                 <a href="/{{ Auth::user()->id }}/campaigns/create" class="mr-3 text-gray-700 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,11 +12,6 @@
                     </svg>
                 </a>
                 <h1 class="text-base sm:text-lg font-bold text-gray-900">Channel Details</h1>
-            </div>
-            <div>
-                <a href="/{{ Auth::user()->id }}/advertiser/dashboard" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200">
-                    Dashboard
-                </a>
             </div>
         </div>
 

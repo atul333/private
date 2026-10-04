@@ -1,138 +1,153 @@
 <?php $__env->startSection('content'); ?>
-<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5">
-  <div class="flex flex-col">
+<div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col pb-28 sm:pb-12">
+  <div class="flex flex-col flex-1">
     <!-- Header Section -->
-    <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
+    <div class="px-4 py-3 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/15 flex items-center min-h-[52px]">
       <div class="flex items-center">
-        <a href="<?php echo e(route('instagram.advertiser.dashboard', ['user' => auth()->id()])); ?>" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="<?php echo e(route('instagram.advertiser.dashboard', ['user' => auth()->id()])); ?>" class="mr-3 text-gray-700 hover:text-gray-900 transition-colors duration-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
-          <span></span>
         </a>
-        <h1 class="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">Browse Profiles</h1>
+        <h1 class="text-base sm:text-lg font-bold text-gray-900">Browse Profiles</h1>
       </div>
     </div>
 
-    <div class="px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-[#4895EF]/10">
-      <form action="<?php echo e(route('instagram.advertiser.profiles.index', ['user' => auth()->id()])); ?>" method="GET" id="filterForm" class="flex justify-end items-center gap-2">
-        <!-- Combined Sort Dropdown -->
-        <select name="sort_by" onchange="document.getElementById('filterForm').submit()" class="text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4361EE]/50 focus:border-[#4361EE] py-2 px-3 w-full sm:w-auto sm:min-w-[180px]">
-          <option value="max_followers" <?php echo e(request('sort_by', 'max_followers') == 'max_followers' ? 'selected' : ''); ?>>Max Followers</option>
-          <option value="lower_followers" <?php echo e(request('sort_by') == 'lower_followers' ? 'selected' : ''); ?>>Lower Followers</option>
-          <option value="max_price" <?php echo e(request('sort_by') == 'max_price' ? 'selected' : ''); ?>>Max Price</option>
-          <option value="lower_price" <?php echo e(request('sort_by') == 'lower_price' ? 'selected' : ''); ?>>Lower Price</option>
-        </select>
+    <!-- Filter Section -->
+    <div class="px-4 py-3 bg-white/70 backdrop-blur-sm border-b border-[#E1306C]/10">
+      <form action="<?php echo e(route('instagram.advertiser.profiles.index', ['user' => auth()->id()])); ?>" method="GET" id="filterForm" class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5">
+        <div class="text-xs sm:text-sm text-gray-600 font-medium">
+          Available Instagram Creators
+        </div>
+        <div class="flex items-center gap-2">
+          <label for="sort_by" class="text-xs text-gray-500 hidden sm:inline whitespace-nowrap">Sort by:</label>
+          <select id="sort_by" name="sort_by" onchange="document.getElementById('filterForm').submit()" class="text-xs sm:text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E1306C]/40 focus:border-[#E1306C] py-2 px-3 w-full sm:w-auto sm:min-w-[170px] bg-white font-medium text-gray-700 shadow-sm">
+            <option value="max_followers" <?php echo e(request('sort_by', 'max_followers') == 'max_followers' ? 'selected' : ''); ?>>Most Followers</option>
+            <option value="lower_followers" <?php echo e(request('sort_by') == 'lower_followers' ? 'selected' : ''); ?>>Least Followers</option>
+            <option value="max_price" <?php echo e(request('sort_by') == 'max_price' ? 'selected' : ''); ?>>Price: High to Low</option>
+            <option value="lower_price" <?php echo e(request('sort_by') == 'lower_price' ? 'selected' : ''); ?>>Price: Low to High</option>
+          </select>
+        </div>
       </form>
     </div>
 
     <!-- Content Section -->
-    <div class="px-4 py-4">
+    <div class="px-4 py-4 flex-1">
       <?php if($profiles->count() > 0): ?>
-        <!-- Profiles Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <!-- Profiles Grid: 1 column on mobile, 2 on tablet, 3-4 on desktop -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4">
           <?php $__currentLoopData = $profiles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $profile): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-[#4895EF]/30 hover:border-[#4361EE]/50">
-              <div class="p-6 text-center">
-                <div class="mb-4">
-                  <?php if($profile->profile_photo): ?>
-                    <img src="<?php echo e(asset('storage/' . $profile->profile_photo)); ?>" alt="<?php echo e($profile->instagram_id); ?>" class="w-24 h-24 rounded-full mx-auto object-cover shadow-md border-4 border-[#4CC9F0]/30">
-                  <?php else: ?>
-                    <div class="w-24 h-24 rounded-full mx-auto bg-gray-100 flex items-center justify-center shadow-md border-4 border-[#4CC9F0]/30">
-                      <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                      </svg>
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-[#E1306C]/20 hover:border-[#E1306C]/40 overflow-hidden group flex flex-col justify-between">
+              <div class="p-4 sm:p-5">
+                <!-- Top Row: Avatar + Info + Price Badge -->
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <!-- Instagram Gradient Ring Avatar -->
+                    <div class="relative shrink-0">
+                      <div class="p-0.5 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] shadow-sm">
+                        <?php if($profile->profile_photo): ?>
+                          <img src="<?php echo e(asset('storage/' . $profile->profile_photo)); ?>" alt="<?php echo e($profile->instagram_id); ?>" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover bg-white p-0.5">
+                        <?php else: ?>
+                          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-pink-50 flex items-center justify-center text-[#E1306C] bg-white p-0.5">
+                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                          </div>
+                        <?php endif; ?>
+                      </div>
                     </div>
-                  <?php endif; ?>
-                </div>
 
-                <h3 class="text-lg font-semibold text-gray-900 mb-1"><?php echo e('@' . $profile->instagram_id); ?></h3>
-                <p class="text-sm text-gray-500 mb-3">
-                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                  </svg>
-                  <?php echo e(number_format($profile->followers)); ?> followers
-                </p>
+                    <!-- Handle & Followers -->
+                    <div class="min-w-0">
+                      <h3 class="text-base font-bold text-gray-900 truncate group-hover:text-[#E1306C] transition-colors">
+                        <?php echo e('@' . $profile->instagram_id); ?>
 
-                <div class="flex justify-center gap-2 mb-4 flex-wrap">
-                  <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 border border-green-200">
-                    ₹<?php echo e(number_format($profile->price_per_story, 2)); ?>
-
-                  </span>
-                  <?php if($profile->mention_available): ?>
-                    <span class="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 border border-blue-200">
-                      <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                      </svg>
-                      Mentions
-                    </span>
-                  <?php endif; ?>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="space-y-2">
-                  <div class="flex justify-center">
-                    <a href="https://instagram.com/<?php echo e($profile->instagram_id); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-3 py-1.5 bg-white border border-purple-300 hover:border-purple-400 hover:bg-purple-50 text-purple-700 text-xs font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow">
-                      <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                      </svg>
-                      View Instagram Profile
-                    </a>
+                      </h3>
+                      <p class="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span class="font-medium text-gray-700"><?php echo e(number_format($profile->followers)); ?></span> followers
+                      </p>
+                    </div>
                   </div>
-                  
-                  <a href="<?php echo e(route('instagram.advertiser.campaigns.create', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" class="block w-full px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 hover:border-gray-400 text-gray-700 text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Create Campaign
-                  </a>
+
+                  <!-- Price Badge -->
+                  <div class="shrink-0 text-right">
+                    <span class="inline-block px-2.5 py-1 text-xs font-bold rounded-lg bg-green-50 text-green-700 border border-green-200">
+                      ₹<?php echo e(number_format($profile->price_per_story, 2)); ?>
+
+                    </span>
+                    <p class="text-[10px] text-gray-400 mt-0.5 font-medium">per story</p>
+                  </div>
                 </div>
+              </div>
+
+              <!-- Action Buttons Row -->
+              <div class="px-4 py-3 bg-gray-50/60 border-t border-gray-100 flex items-center gap-2">
+                <a href="https://instagram.com/<?php echo e($profile->instagram_id); ?>" target="_blank" rel="noopener noreferrer" 
+                   class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-medium rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900 transition-all duration-200 shadow-sm whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5 text-[#E1306C] shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                  <span>View Profile</span>
+                </a>
+                <a href="<?php echo e(route('instagram.advertiser.campaigns.create', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" 
+                   class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-lg text-white bg-gradient-to-r from-[#E1306C] to-[#FD1D1D] hover:from-[#C13584] hover:to-[#E1306C] transition-all duration-300 shadow-sm hover:shadow whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                  <span>Create Campaign</span>
+                </a>
               </div>
             </div>
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
 
         <!-- Pagination -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/50 backdrop-blur-sm rounded-lg px-6 py-4 border border-[#4895EF]/10">
-          <p class="text-sm text-gray-600">
-            Showing <span class="font-medium text-gray-900"><?php echo e($profiles->firstItem() ?? 0); ?></span> to
-            <span class="font-medium text-gray-900"><?php echo e($profiles->lastItem() ?? 0); ?></span> of
-            <span class="font-medium text-gray-900"><?php echo e($profiles->total()); ?></span> results
-          </p>
+        <div class="mt-6">
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/50 backdrop-blur-sm rounded-lg px-6 py-4 border border-[#E1306C]/15">
+            <p class="text-sm text-gray-600 text-center sm:text-left">
+              Showing <span class="font-medium text-gray-900"><?php echo e($profiles->firstItem() ?? 0); ?></span> to
+              <span class="font-medium text-gray-900"><?php echo e($profiles->lastItem() ?? 0); ?></span> of
+              <span class="font-medium text-gray-900"><?php echo e($profiles->total()); ?></span> results
+            </p>
 
-          <div class="flex items-center gap-2">
-            <?php if($profiles->onFirstPage()): ?>
-              <span class="px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed">
-                Previous
-              </span>
-            <?php else: ?>
-              <a href="<?php echo e($profiles->previousPageUrl()); ?>" class="px-4 py-2 text-sm text-gray-600 bg-white rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200">
-                Previous
-              </a>
-            <?php endif; ?>
+            <div class="flex items-center gap-2">
+              <?php if($profiles->onFirstPage()): ?>
+                <span class="px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed border border-gray-200">
+                  Previous
+                </span>
+              <?php else: ?>
+                <a href="<?php echo e($profiles->previousPageUrl()); ?>" class="px-4 py-2 text-sm text-gray-600 bg-white rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200 shadow-sm border border-gray-200">
+                  Previous
+                </a>
+              <?php endif; ?>
 
-            <?php if($profiles->hasMorePages()): ?>
-              <a href="<?php echo e($profiles->nextPageUrl()); ?>" class="px-4 py-2 text-sm text-white bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] rounded-lg hover:from-[#3F37C9] hover:to-[#4895EF] transition-all duration-200 shadow-sm hover:shadow">
-                Next
-              </a>
-            <?php else: ?>
-              <span class="px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed">
-                Next
-              </span>
-            <?php endif; ?>
+              <?php if($profiles->hasMorePages()): ?>
+                <a href="<?php echo e($profiles->nextPageUrl()); ?>" class="px-4 py-2 text-sm text-white bg-gradient-to-r from-[#E1306C] to-[#FD1D1D] rounded-lg hover:from-[#C13584] hover:to-[#E1306C] transition-all duration-200 shadow-sm hover:shadow">
+                  Next
+                </a>
+              <?php else: ?>
+                <span class="px-4 py-2 text-sm text-gray-400 bg-gray-50 rounded-lg cursor-not-allowed border border-gray-200">
+                  Next
+                </span>
+              <?php endif; ?>
+            </div>
           </div>
         </div>
       <?php else: ?>
         <!-- No Profiles Found -->
-        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-[#4895EF]/30 p-12 text-center">
-          <svg class="w-20 h-20 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-          </svg>
-          <h3 class="text-xl font-semibold text-gray-900 mb-2">No profiles found</h3>
-          <p class="text-gray-500 mb-4">Try adjusting your filters to see more results.</p>
-          <a href="<?php echo e(route('instagram.advertiser.profiles.index', ['user' => auth()->id()])); ?>" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-md border border-[#E1306C]/20 p-8 sm:p-12 text-center max-w-lg mx-auto my-8">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-50 flex items-center justify-center text-[#E1306C]">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-1">No profiles found</h3>
+          <p class="text-sm text-gray-500 mb-4">Try adjusting your filters or check back later.</p>
+          <a href="<?php echo e(route('instagram.advertiser.profiles.index', ['user' => auth()->id()])); ?>" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200">
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
             Clear Filters
