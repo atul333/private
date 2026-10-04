@@ -99,12 +99,10 @@
           <div class="relative p-6">
             <!-- Status Badge -->
             <span class="absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full 
-              {{ $campaign->status === 'approved'  ? 'bg-green-100 text-green-800'  : 
-                 ($campaign->status === 'pending'   ? 'bg-yellow-100 text-yellow-800': 
-                 ($campaign->status === 'published' ? 'bg-purple-100 text-purple-800': 
-                 ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800'   : 
-                 ($campaign->status === 'expired'   ? 'bg-gray-200 text-gray-700'   : 'bg-red-100 text-red-800')))) }}">
-              {{ ucfirst($campaign->status) }}
+              {{ $campaign->status === 'published' ? 'bg-green-100 text-green-800' : 
+                 ($campaign->status === 'pending' || $campaign->status === 'approved' ? 'bg-yellow-100 text-yellow-800' : 
+                 ($campaign->status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')) }}">
+              {{ $campaign->status === 'published' ? 'Active' : ucfirst($campaign->status) }}
             </span>
 
             <!-- Campaign Details -->
@@ -119,146 +117,63 @@
                 </div>
               @endif
               <div class="ml-4">
-                <h3 class="text-base font-semibold text-gray-900">{{ '@' . $campaign->instagramProfile->instagram_id }}</h3>
+                <a href="{{ route('instagram.advertiser.campaigns.show', ['user' => auth()->id(), 'campaign' => $campaign->id]) }}" class="hover:text-[#E1306C] transition-colors">
+                  <h3 class="text-base font-semibold text-gray-900">{{ '@' . $campaign->instagramProfile->instagram_id }}</h3>
+                </a>
                 <p class="text-xs text-gray-500 mt-0.5">{{ number_format($campaign->instagramProfile->followers) }} Followers</p>
               </div>
             </div>
 
             <div class="text-sm text-gray-700 space-y-2">
-              <p><span class="font-semibold">Media:</span> {{ ucfirst($campaign->media_type) }}</p>
+              <p><span class="font-semibold">Duration:</span> 1 days</p>
               <p><span class="font-semibold">Price:</span> <span class="text-green-600 font-semibold">₹{{ number_format($campaign->price, 2) }}</span></p>
               
-              @if($campaign->caption)
-                <p class="line-clamp-2 text-xs text-gray-600"><span class="font-semibold text-gray-700">Caption:</span> {{ $campaign->caption }}</p>
+              @php
+                $content = $campaign->link_text ?? $campaign->link_url ?? ($campaign->media_type ? ucfirst($campaign->media_type) . ' Story' : null);
+              @endphp
+              @if($content)
+                <p class="line-clamp-2 text-xs text-gray-600"><span class="font-semibold text-gray-700">Content:</span> {{ $content }}</p>
               @endif
 
-              <p><span class="font-semibold">Payment:</span> 
-                @if($campaign->paid)
-                  <span class="text-green-600 font-medium">Paid</span>
-                @else
-                  <span class="text-red-600 font-medium">Unpaid</span>
+              @if($campaign->status === 'published')
+                @if($campaign->published_at)
+                  @php
+                      $completionTime = $campaign->published_at->copy()->addHours(24);
+                      $remainingSeconds = max(0, $completionTime->diffInSeconds(now(), false));
+                  @endphp
+                  <p><span class="font-semibold">Campaign Timer:</span>
+                    <span class="countdown-timer text-gray-600" data-countdown="{{ $remainingSeconds }}" data-campaign-id="{{ $campaign->id }}">
+                      <span class="countdown-hours">{{ str_pad(floor($remainingSeconds / 3600), 2, '0', STR_PAD_LEFT) }}</span>h
+                      <span class="countdown-minutes">{{ str_pad(floor(($remainingSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</span>m
+                      <span class="countdown-seconds">{{ str_pad($remainingSeconds % 60, 2, '0', STR_PAD_LEFT) }}</span>s remaining
+                    </span>
+                  </p>
                 @endif
-              </p>
-
-              @if($campaign->status === 'pending' && $campaign->paid)
+              @elseif(($campaign->status === 'pending' || $campaign->status === 'approved') && $campaign->paid)
                 @php
-                    $approvalDeadline  = $campaign->created_at->copy()->addHours(24);
-                    $now               = now();
-                    $approvalRemaining = max(0, $now->diffInSeconds($approvalDeadline, false));
+                    $deadline = $campaign->created_at->copy()->addHours(24);
+                    $remainingSeconds = max(0, now()->diffInSeconds($deadline, false));
                 @endphp
-                <div class="mt-3 pt-3 border-t border-orange-200">
-                  <p class="font-semibold text-orange-600 mb-2 text-xs">⏳ Publisher must respond within:</p>
-                  <div class="flex items-center justify-center gap-1 text-center approval-countdown" data-approval-seconds="{{ $approvalRemaining }}" data-campaign-id="{{ $campaign->id }}">
-                    <div class="bg-orange-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-orange-600 approval-hours">{{ str_pad(floor($approvalRemaining / 3600), 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">H</div>
-                    </div>
-                    <div class="text-lg font-bold text-orange-600">:</div>
-                    <div class="bg-orange-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-orange-600 approval-minutes">{{ str_pad(floor(($approvalRemaining % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">M</div>
-                    </div>
-                    <div class="text-lg font-bold text-orange-600">:</div>
-                    <div class="bg-orange-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-orange-600 approval-seconds">{{ str_pad($approvalRemaining % 60, 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">S</div>
-                    </div>
+                <div class="countdown-container rounded-lg bg-red-50 p-3 mb-2">
+                  <div class="approval-countdown text-xs font-semibold text-red-600 flex items-center justify-between" data-approval-seconds="{{ $remainingSeconds }}" data-campaign-id="{{ $campaign->id }}">
+                    <span>{{ $campaign->status === 'pending' ? 'Time Left to Respond:' : 'Time Left to Submit Story:' }}</span>
+                    <span>
+                      <span class="approval-hours">{{ str_pad(floor($remainingSeconds / 3600), 2, '0', STR_PAD_LEFT) }}</span>h
+                      <span class="approval-minutes">{{ str_pad(floor(($remainingSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</span>m
+                      <span class="approval-seconds">{{ str_pad($remainingSeconds % 60, 2, '0', STR_PAD_LEFT) }}</span>s
+                    </span>
                   </div>
-                  <p class="text-xs text-orange-500 text-center mt-1">If not actioned, you will be auto-refunded.</p>
-                </div>
-              @elseif($campaign->status === 'approved')
-                @php
-                    $approvalDeadline  = $campaign->created_at->copy()->addHours(24);
-                    $now               = now();
-                    $approvalRemaining = max(0, $now->diffInSeconds($approvalDeadline, false));
-                @endphp
-                <div class="mt-3 pt-3 border-t border-orange-200">
-                  <p class="font-semibold text-orange-600 mb-2 text-xs">⏳ Story link must be submitted within:</p>
-                  <div class="flex items-center justify-center gap-1 text-center approval-countdown" data-approval-seconds="{{ $approvalRemaining }}" data-campaign-id="{{ $campaign->id }}">
-                    <div class="bg-orange-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-orange-600 approval-hours">{{ str_pad(floor($approvalRemaining / 3600), 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">H</div>
-                    </div>
-                    <div class="text-lg font-bold text-orange-600">:</div>
-                    <div class="bg-orange-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-orange-600 approval-minutes">{{ str_pad(floor(($approvalRemaining % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">M</div>
-                    </div>
-                    <div class="text-lg font-bold text-orange-600">:</div>
-                    <div class="bg-orange-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-orange-600 approval-seconds">{{ str_pad($approvalRemaining % 60, 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">S</div>
-                    </div>
-                  </div>
-                  <p class="text-xs text-orange-500 text-center mt-1">Campaign expires if story link not submitted in time.</p>
-                </div>
-              @elseif($campaign->status === 'published' && $campaign->published_at)
-                @php
-                    $publishedAt = $campaign->published_at;
-                    $completionTime = $publishedAt->copy()->addHours(24);
-                    $now = now();
-                    $remainingSeconds = $completionTime > $now ? $completionTime->diffInSeconds($now) : 0;
-                @endphp
-                <div class="mt-3 pt-3 border-t border-gray-200">
-                  <p class="font-semibold text-rose-600 mb-2 text-xs">Time Remaining:</p>
-                  <div class="flex items-center justify-center gap-1 text-center" data-countdown="{{ $remainingSeconds }}" data-campaign-id="{{ $campaign->id }}">
-                    <div class="bg-pink-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-[#E1306C] countdown-hours">{{ str_pad(floor($remainingSeconds / 3600), 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">H</div>
-                    </div>
-                    <div class="text-lg font-bold text-[#E1306C]">:</div>
-                    <div class="bg-pink-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-[#E1306C] countdown-minutes">{{ str_pad(floor(($remainingSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">M</div>
-                    </div>
-                    <div class="text-lg font-bold text-[#E1306C]">:</div>
-                    <div class="bg-pink-50 rounded px-2 py-1">
-                      <div class="text-lg font-bold text-[#E1306C] countdown-seconds">{{ str_pad($remainingSeconds % 60, 2, '0', STR_PAD_LEFT) }}</div>
-                      <div class="text-xs text-gray-500">S</div>
-                    </div>
-                  </div>
-                </div>
-              @elseif($campaign->status === 'expired')
-                <div class="mt-3 pt-3 border-t border-gray-200">
-                  <div class="bg-gray-50 border border-gray-300 rounded-lg p-3">
-                    <p class="text-xs font-semibold text-gray-700">⏰ Campaign Expired</p>
-                    <p class="text-xs text-gray-500 mt-1">Publisher did not respond in 24h.</p>
-                    <p class="text-xs text-green-600 font-semibold mt-1">✓ ₹{{ number_format($campaign->price, 2) }} refunded to your wallet</p>
-                  </div>
-                </div>
-              @else
-                <div class="mt-3 pt-3 border-t border-gray-200">
-                  <div class="h-16"></div>
                 </div>
               @endif
             </div>
 
             <!-- Action Buttons -->
-            <div class="mt-4 flex justify-between items-center gap-2 pt-3 border-t border-gray-100">
-              <a href="{{ route('instagram.advertiser.campaigns.show', ['user' => auth()->id(), 'campaign' => $campaign->id]) }}" class="px-3.5 py-1.5 text-xs font-medium text-white rounded-lg bg-gradient-to-r from-[#E1306C] to-[#FD1D1D] hover:from-[#C13584] hover:to-[#E1306C] transition-all duration-300 shadow-sm hover:shadow flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-                Details
-              </a>
-              
-              @if($campaign->status === 'published' && $campaign->story_link)
-                <a href="{{ $campaign->story_link }}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 text-xs font-medium text-white rounded-lg bg-gradient-to-r from-[#833AB4] to-[#C13584] hover:from-[#5851DB] hover:to-[#833AB4] transition-all duration-300 shadow-sm hover:shadow flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                  </svg>
-                  View Story
-                </a>
-              @endif
-              
-              @if(!$campaign->paid)
-                <a href="{{ route('instagram.advertiser.campaigns.payment', ['user' => auth()->id(), 'campaign' => $campaign->id]) }}" class="px-3.5 py-1.5 text-xs font-medium text-white rounded-lg bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] transition-all duration-300 shadow-sm hover:shadow flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                  </svg>
-                  Pay
-                </a>
+            <div class="mt-4 flex justify-between items-center pt-3 border-t border-gray-100">
+              <a href="https://instagram.com/{{ $campaign->instagramProfile->instagram_id }}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 text-xs font-medium text-white rounded-lg bg-gradient-to-r from-[#E1306C] to-[#FD1D1D] hover:from-[#C13584] hover:to-[#E1306C] transition-all duration-300 shadow-sm hover:shadow">View Channel</a>
+              @if($campaign->story_link)
+                <a href="{{ $campaign->story_link }}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 text-xs font-medium text-white rounded-lg bg-gradient-to-r from-[#833AB4] to-[#C13584] hover:from-[#5851DB] hover:to-[#833AB4] transition-all duration-300 shadow-sm hover:shadow">View Post</a>
+              @elseif(!$campaign->paid)
+                <a href="{{ route('instagram.advertiser.campaigns.payment', ['user' => auth()->id(), 'campaign' => $campaign->id]) }}" class="px-3.5 py-1.5 text-xs font-medium text-white rounded-lg bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] transition-all duration-300 shadow-sm hover:shadow">Pay Now</a>
               @endif
             </div>
           </div>

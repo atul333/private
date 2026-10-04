@@ -2,7 +2,7 @@
 <div class="min-h-screen bg-gradient-to-br from-[#4CC9F0]/5 to-[#F72585]/5 flex flex-col">
     <div class="flex-1">
         <!-- Header Section -->
-        <div class="px-4 py-1.5 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center">
+        <div class="px-4 py-2 bg-gradient-to-r from-[#FFEEF8] to-[#FFF4E6] border-b border-[#E1306C]/10 flex justify-between items-center min-h-[52px]">
             <div class="flex items-center">
                 <a href="<?php echo e(route('instagram.publisher.dashboard', ['user' => auth()->id()])); ?>" class="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,9 +10,9 @@
                     </svg>
                     <span></span>
                 </a>
-                <h1 class="text-lg font-bold text-gray-800">Edit Instagram Profile</h1>
+                <h1 class="text-sm sm:text-lg font-bold text-gray-800 whitespace-nowrap">Edit Profile</h1>
             </div>
-            <span class="px-3 py-1 text-xs font-semibold rounded-full <?php echo e($profile->is_active ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-gray-100 text-gray-800 border border-gray-200'); ?>">
+            <span class="hidden sm:inline px-3 py-1 text-xs font-semibold rounded-full <?php echo e($profile->is_active ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-gray-100 text-gray-800 border border-gray-200'); ?>">
                 <?php echo e($profile->is_active ? 'Active' : 'Inactive'); ?>
 
             </span>
@@ -21,7 +21,7 @@
         <!-- Content Section -->
         <div class="px-4 py-4">
             <div class="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-[#4895EF]/30 hover:border-[#4361EE]/50 transition-all duration-300">
-                <form method="POST" action="<?php echo e(route('instagram.publisher.profile.update', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" enctype="multipart/form-data" class="p-6 space-y-6">
+                <form method="POST" action="<?php echo e(route('instagram.publisher.profile.update', ['user' => auth()->id(), 'profile' => $profile->id])); ?>" enctype="multipart/form-data" class="p-4 sm:p-6 space-y-6">
                         <?php echo csrf_field(); ?>
                         <?php echo method_field('PUT'); ?>
 
