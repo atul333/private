@@ -143,7 +143,7 @@
 
         <!-- Telegram Contact Button -->
         <div class="fixed bottom-5 right-5 z-50">
-            <a href="https://t.me/SocialAdLinker" target="_blank" class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#0088cc] to-[#0099ff] text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+            <a href="https://t.me/SocialAdLinker_Admin" target="_blank" class="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-[#0088cc] to-[#0099ff] text-white rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                 <i class="fab fa-telegram-plane text-xl"></i>
             </a>
         </div>
@@ -252,7 +252,7 @@
                 </div>
                 <div class="mt-4 text-center space-y-3 border-t border-gray-100 pt-4">
                     <p class="text-gray-600">Still have questions?</p>
-                    <a href="https://t.me/SocialAdLinker" target="_blank" class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                    <a href="https://t.me/SocialAdLinker_Admin" target="_blank" class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-[#4361EE] to-[#3A0CA3] text-white rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                         <i class="fab fa-telegram-plane mr-2"></i>
                         <span class="font-medium">Contact Support</span>
                     </a>
